@@ -16,10 +16,8 @@ export const DefaultLayout = ({ title, children }: DefaultLayoutProps) => {
         <link rel="shortcut icon" href="/favicon.svg" type="image/svg" />
       </Head>
 
-      <Content>
-        <SideBar />
-        {children}
-      </Content>
+      <SideBar />
+      <Content>{children}</Content>
     </Container>
   )
 }
