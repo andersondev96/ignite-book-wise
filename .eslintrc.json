@@ -1,10 +1,11 @@
 {
 	"extends": [
-	  "@rocketseat/eslint-config/react"
-	  // "next/core-web-vitals"
+		"@rocketseat/eslint-config/react"
+		// "next/core-web-vitals"
 	],
 	"rules": {
-	  "@typescript-eslint/no-explicit-any": "off",
-	  "camelcase": "off"
+		"@typescript-eslint/no-explicit-any": "off",
+		"camelcase": "off",
+		"@typescript-eslint/ban-types": "off"
 	}
-  }
+}
