@@ -1,6 +1,6 @@
 import { ChartLineUp } from '@phosphor-icons/react/dist/ssr'
 import { NavigationContainer, NavItemContainer } from './styles'
-import { Binoculars } from '@phosphor-icons/react'
+import { Binoculars, User } from '@phosphor-icons/react'
 
 export const Navigation = () => {
   return (
@@ -12,6 +12,10 @@ export const Navigation = () => {
       <NavItemContainer href="/explore">
         <Binoculars size={20} />
         Explorar
+      </NavItemContainer>
+      <NavItemContainer href="/profile">
+        <User size={20} />
+        Perfil
       </NavItemContainer>
     </NavigationContainer>
   )
