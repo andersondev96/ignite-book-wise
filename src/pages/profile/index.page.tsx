@@ -13,7 +13,7 @@ const Profile: NextPageWithLayout = () => {
     <Container>
       <Main>
         <PageTitle title="Perfil" icon={<User />} />
-        <SearchInput />
+        <SearchInput name="book" placeholder="Buscar livro avaliado" />
         <RatedBooksProfile />
         <RatedBooksProfile />
       </Main>

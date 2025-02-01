@@ -3,7 +3,7 @@ import { styled } from '@/stitches.config'
 export const Container = styled('div', {
   display: 'flex',
   alignItems: 'center',
-  width: '624px',
+  width: 'auto',
   height: '48px',
   padding: '20px 14px',
 
