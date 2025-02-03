@@ -35,6 +35,7 @@ export const Overlay = styled(Dialog.Overlay, {
 export const Content = styled(Dialog.Content, {
   display: 'flex',
   flexDirection: 'column',
+  gap: '40px',
   width: '680px',
   height: '100%',
   borderRadius: '4px',
@@ -67,8 +68,139 @@ export const CloseButton = styled(Dialog.Close, {
   color: '$gray200',
 })
 
-export const BookInfo = styled('div', {})
+export const BookInfo = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '40px',
 
-export const Divisor = styled('div', {})
+  width: '564px',
+  height: '414px',
+  padding: '24px 32px',
+  borderRadius: '10px',
+  background: '$gray700',
+})
 
-export const RattingsSection = styled('div', {})
+export const BookData = styled('div', {
+  display: 'flex',
+  gap: '32px',
+
+  img: {
+    width: '171px',
+    height: '242px',
+    objectFit: 'contain',
+  },
+})
+
+export const BookDataDescription = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+})
+
+export const TitleAndActorBook = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '8px',
+
+  strong: {
+    fontSize: '$sm',
+    fontWeight: 'bold',
+    color: '$gray100',
+  },
+
+  span: {
+    fontSize: '$md',
+    color: '$gray300',
+  },
+})
+
+export const RatingBook = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '4px',
+
+  span: {
+    fontSize: '$sm',
+    color: '$gray400',
+  },
+})
+
+export const About = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '56px',
+})
+
+export const Category = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '16px',
+
+  div: {
+    display: 'flex',
+    flexDirection: 'column',
+
+    span: {
+      fontSize: '$sm',
+      color: '$gray300',
+    },
+
+    strong: {
+      fontSize: '$xs',
+      fontWeight: 'bold',
+      color: '$gray200',
+    },
+  },
+
+  svg: {
+    color: '$green100',
+  },
+})
+
+export const Pages = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '16px',
+
+  div: {
+    display: 'flex',
+    flexDirection: 'column',
+
+    span: {
+      fontSize: '$sm',
+      color: '$gray300',
+    },
+
+    strong: {
+      fontSize: '$xs',
+      fontWeight: 'bold',
+      color: '$gray200',
+    },
+  },
+
+  svg: {
+    color: '$green100',
+  },
+})
+export const RattingsSection = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+})
+
+export const Title = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+
+  span: {
+    fontSize: '$sm',
+    color: '$gray200',
+  },
+
+  strong: {
+    fontSize: '$md',
+    fontWeight: 'bold',
+    color: '$purple100',
+  },
+})

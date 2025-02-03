@@ -1,13 +1,17 @@
 import { Stars } from '../Stars'
-import { Container, Header } from './styles'
+import { Container, Header, User } from './styles'
 
 export const RattingCard = () => {
   return (
     <Container>
       <Header>
-        <img src="" alt="" />
-        <strong>Brandon Botosh</strong>
-        <span>Há 2 dias</span>
+        <User>
+          <img src="" alt="" />
+          <div>
+            <strong>Brandon Botosh</strong>
+            <span>Há 2 dias</span>
+          </div>
+        </User>
         <Stars />
       </Header>
 

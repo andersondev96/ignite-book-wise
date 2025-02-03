@@ -1,7 +1,21 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { BookInfo, Content, Divisor, Overlay, RattingsSection } from './styles'
+import {
+  About,
+  BookData,
+  BookDataDescription,
+  BookInfo,
+  Category,
+  CloseButton,
+  Content,
+  Overlay,
+  Pages,
+  RatingBook,
+  RattingsSection,
+  Title,
+  TitleAndActorBook,
+} from './styles'
 import { Stars } from '../../Stars'
-import { BookmarkSimple, BookOpen } from '@phosphor-icons/react'
+import { BookmarkSimple, BookOpen, X } from '@phosphor-icons/react'
 import { RattingCard } from '../../RattingCard'
 
 export const Modal = () => {
@@ -10,28 +24,49 @@ export const Modal = () => {
       <Overlay />
 
       <Content>
+        <CloseButton>
+          <X size={21} />
+        </CloseButton>
         <BookInfo>
-          <img src="" alt="" />
-          <strong>14 Hábitos de Desenvolvedores Altamente Produtivos</strong>
-          <span>Zeno Rocha</span>
-          <Stars />
-          <span>3 avaliações</span>
-          <Divisor />
-          <div>
-            <BookmarkSimple size={32} />
-            <span>Categoria</span>
-            <strong>Computação, educação</strong>
-          </div>
-          <div>
-            <BookOpen size={32} />
-            <span>Páginas</span>
-            <strong>160</strong>
-          </div>
+          <BookData>
+            <img src="../images/books/arquitetura-limpa.png" alt="" />
+            <BookDataDescription>
+              <TitleAndActorBook>
+                <strong>
+                  14 Hábitos de Desenvolvedores Altamente Produtivos
+                </strong>
+                <span>Zeno Rocha</span>
+              </TitleAndActorBook>
+              <RatingBook>
+                <Stars />
+                <span>3 avaliações</span>
+              </RatingBook>
+            </BookDataDescription>
+          </BookData>
+          <About>
+            <Category>
+              <BookmarkSimple size={24} />
+              <div>
+                <span>Categoria</span>
+                <strong>Computação, educação</strong>
+              </div>
+            </Category>
+
+            <Pages>
+              <BookOpen size={24} />
+              <div>
+                <span>Páginas</span>
+                <strong>160</strong>
+              </div>
+            </Pages>
+          </About>
         </BookInfo>
 
         <RattingsSection>
-          <span>Avaliações</span>
-          <strong>Avaliar</strong>
+          <Title>
+            <span>Avaliações</span>
+            <strong>Avaliar</strong>
+          </Title>
 
           <RattingCard />
         </RattingsSection>
