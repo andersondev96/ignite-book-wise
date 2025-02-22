@@ -17,6 +17,7 @@ import {
 import { Stars } from '../../Stars'
 import { BookmarkSimple, BookOpen, X } from '@phosphor-icons/react'
 import { RattingCard } from '../../RattingCard'
+import { RattingForm } from '../../RattingForm'
 
 export const Modal = () => {
   return (
@@ -67,6 +68,7 @@ export const Modal = () => {
             <span>Avaliações</span>
             <strong>Avaliar</strong>
           </Title>
+          <RattingForm />
 
           <RattingCard />
         </RattingsSection>
