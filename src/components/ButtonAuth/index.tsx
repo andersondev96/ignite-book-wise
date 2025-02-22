@@ -1,15 +1,20 @@
-import type { ReactNode } from 'react'
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import { Container } from './styles'
 
-type ButtonAuthProps = {
+type ButtonAuthProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   icon?: ReactNode
   image_url?: string
   title: string
 }
 
-export const ButtonAuth = ({ icon, image_url, title }: ButtonAuthProps) => {
+export const ButtonAuth = ({
+  icon,
+  image_url,
+  title,
+  ...rest
+}: ButtonAuthProps) => {
   return (
-    <Container>
+    <Container {...rest}>
       {icon || <img src={image_url} alt="" />}
       <span>{title}</span>
     </Container>

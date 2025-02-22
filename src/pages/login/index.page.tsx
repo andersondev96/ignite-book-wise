@@ -1,8 +1,14 @@
 import { ButtonAuth } from '@/src/components/ButtonAuth'
 import { AuthButtons, Container, LoginForm } from '@/src/styles/pages/login'
 import { RocketLaunch } from '@phosphor-icons/react/dist/ssr'
+import { signIn } from 'next-auth/react'
+import { useCallback } from 'react'
 
 export default function Login() {
+  const handleSignIn = useCallback(async (provider: string) => {
+    await signIn(provider, { callbackUrl: '/' })
+  }, [])
+
   return (
     <Container>
       <img src="/images/background-login.png" alt="" />
@@ -14,11 +20,13 @@ export default function Login() {
           <ButtonAuth
             image_url="/images/icons/logo_google.svg"
             title="Entrar com Google"
+            onClick={async () => await handleSignIn('google')}
           />
 
           <ButtonAuth
             image_url="/images/icons/logo_github.svg"
             title="Entrar com Github"
+            onClick={async () => await handleSignIn('github')}
           />
 
           <ButtonAuth
