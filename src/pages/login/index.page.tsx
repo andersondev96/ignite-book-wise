@@ -2,9 +2,12 @@ import { ButtonAuth } from '@/src/components/ButtonAuth'
 import { AuthButtons, Container, LoginForm } from '@/src/styles/pages/login'
 import { RocketLaunch } from '@phosphor-icons/react/dist/ssr'
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 
 export default function Login() {
+  const router = useRouter()
+
   const handleSignIn = useCallback(async (provider: string) => {
     await signIn(provider, { callbackUrl: '/' })
   }, [])
@@ -32,6 +35,7 @@ export default function Login() {
           <ButtonAuth
             icon={<RocketLaunch size={32} />}
             title="Acessar como visitante"
+            onClick={() => router.push('/')}
           />
         </AuthButtons>
       </LoginForm>

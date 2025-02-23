@@ -34,3 +34,32 @@ export const LogInButton = styled(Link, {
     color: '$green100',
   },
 })
+
+export const SignOutButton = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: '0.75rem',
+
+  img: {
+    width: '2rem',
+    height: '2rem',
+    objectFit: 'cover',
+    borderRadius: '999px',
+  },
+
+  span: {
+    fontSize: '$sm',
+    color: '$gray200',
+  },
+
+  svg: {
+    color: '#F75A68',
+    cursor: 'pointer',
+
+    '&:hover': {
+      opacity: 0.8,
+      transition: 'opacity 0.2s',
+    },
+  },
+})

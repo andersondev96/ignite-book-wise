@@ -27,4 +27,9 @@ export const Container = styled('button', {
     fontSize: '$lg',
     fontWeight: 'bold',
   },
+
+  '&:hover': {
+    opacity: 0.8,
+    transition: 'opacity 0.2s',
+  },
 })
