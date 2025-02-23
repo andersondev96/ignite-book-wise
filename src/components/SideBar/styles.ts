@@ -2,8 +2,11 @@ import { styled } from '@/stitches.config'
 import Link from 'next/link'
 
 export const SideBarContainer = styled('aside', {
+  position: 'fixed',
+  top: '20px',
+  left: '20px',
   width: '232px',
-  height: 'calc(100% - 40px)',
+  height: 'calc(100vh - 40px)',
   margin: 20,
   background: "$gray700 url('/images/sidebar-background.png') no-repeat center",
   backgroundSize: 'cover',
@@ -14,6 +17,7 @@ export const SideBarContainer = styled('aside', {
   justifyContent: 'space-between',
   paddingTop: 40,
   paddingBottom: 24,
+  zIndex: 10,
 
   '.logo': {
     width: 128,
