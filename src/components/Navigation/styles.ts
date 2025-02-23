@@ -12,8 +12,30 @@ export const NavItemContainer = styled(Link, {
   fontSize: '$md',
   display: 'flex',
   alignItems: 'center',
+  position: 'relative',
+  paddingLeft: '1rem',
 
   svg: {
     marginRight: '$3',
+    size: '1.25rem',
+  },
+
+  variants: {
+    active: {
+      true: {
+        color: '$gray100',
+        fontWeight: '$bold',
+
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          left: 0,
+          width: '4px',
+          height: '24px',
+          background: 'linear-gradient(to bottom, #7FD1CC, #9694F5)',
+          borderRadius: '2px',
+        },
+      },
+    },
   },
 })

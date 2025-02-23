@@ -7,8 +7,17 @@ import { User } from '@phosphor-icons/react'
 import { SearchInput } from '@/src/components/SearchInput'
 import { RatedBooksProfile } from '@/src/components/RatedBooksProfile'
 import { ProfileDetails } from '@/src/components/ProfileDetails'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const Profile: NextPageWithLayout = () => {
+  const { status } = useSession()
+  const router = useRouter()
+
+  if (status === 'unauthenticated') {
+    router.push('/login')
+  }
+
   return (
     <Container>
       <Main>
