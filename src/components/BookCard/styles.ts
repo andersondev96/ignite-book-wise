@@ -9,16 +9,14 @@ export const BookCardContainer = styled('div', {
 })
 export const AuthorSection = styled('section', {
   display: 'flex',
-  alignContent: 'center',
-  gap: '16px',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+})
 
-  img: {
-    width: '40px',
-    height: '40px',
-    objectFit: 'cover',
-    borderRadius: '999px',
-    border: '1px solid $gray400',
-  },
+export const AuthorInfo = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  gap: '16px',
 
   span: {
     color: '$gray100',
@@ -32,9 +30,38 @@ export const AuthorSection = styled('section', {
     fontWeight: '$regular',
   },
 })
-export const BookInfoSection = styled('section', {
+
+export const Avatar = styled('div', {
+  position: 'relative',
+  width: '40px',
+  height: '40px',
+  borderRadius: '50%',
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'center',
+
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    inset: '-2px',
+    borderRadius: '50%',
+    background: 'linear-gradient(to bottom, #7FD1CC, #9694F5)',
+    zIndex: -1,
+  },
+
+  '& img': {
+    width: '100%',
+    height: '100%',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    position: 'relative',
+    zIndex: 1,
+  },
+})
+
+export const BookInfoSection = styled('section', {
+  marginTop: '32px',
+  display: 'flex',
   gap: '20px',
 
   img: {
@@ -45,7 +72,6 @@ export const BookInfoSection = styled('section', {
 export const BookInfoContent = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  marginTop: '32px',
 
   strong: {
     color: '$gray100',
@@ -64,4 +90,11 @@ export const Text = styled('p', {
   marginTop: '20px',
   color: '$gray300',
   fontSize: '$sm',
+
+  span: {
+    fontSize: '$sm',
+    fontWeight: '$bold',
+    color: '$purple100',
+    cursor: 'pointer',
+  },
 })
