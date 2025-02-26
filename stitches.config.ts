@@ -72,5 +72,11 @@ export const { styled, getCssText, globalCss, theme } = createStitches({
       lg: '20px',
       full: '99999px',
     },
+
+    media: {
+      bp1: '(min-width: 640px)',
+      bp2: '(min-width: 768px)',
+      bp3: '(min-width: 1024px)',
+    },
   },
 })

@@ -32,6 +32,21 @@ export const LoginForm = styled('div', {
     color: '$gray200',
     fontSize: '$md',
   },
+
+  '@bp2': {
+    marginTop: '100px',
+  },
+
+  '@bp1': {
+    marginTop: '50px',
+    h1: {
+      fontSize: '$md',
+    },
+
+    span: {
+      fontSize: '$sm',
+    },
+  },
 })
 
 export const AuthButtons = styled('div', {
