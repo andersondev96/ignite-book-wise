@@ -3,18 +3,32 @@ import { Stars } from '../Stars'
 import { BookInfo, BookName, Container } from './styles'
 import { Modal } from '../ui/Modal'
 
-export const Book = () => {
+interface BookSchema {
+  id: string
+  name: string
+  author: string
+  cover_url: string
+  ratings: {
+    rate: number
+  }
+}
+
+interface BookProps {
+  book: BookSchema
+}
+
+export const Book = ({ book }: BookProps) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
         <Container>
-          <img src="./images/books/arquitetura-limpa.png" alt="" />
+          <img src={book.cover_url.replace('public', '')} alt={book.name} />
           <BookInfo>
             <BookName>
-              <strong>A revolução dos bichos</strong>
-              <span>George Orwell</span>
+              <strong>{book.name}</strong>
+              <span>{book.author}</span>
             </BookName>
-            <Stars quantity={4} />
+            <Stars quantity={book.ratings.rate} />
           </BookInfo>
         </Container>
       </Dialog.Trigger>

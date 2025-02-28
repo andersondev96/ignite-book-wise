@@ -1,4 +1,4 @@
-import type { ReactElement } from 'react'
+import { useEffect, useState, type ReactElement } from 'react'
 import type { NextPageWithLayout } from '../_app.page'
 import { DefaultLayout } from '@/src/layouts'
 import { Container, Header, ListBooks } from '@/src/styles/pages/explore'
@@ -7,8 +7,27 @@ import { Binoculars } from '@phosphor-icons/react'
 import { SearchInput } from '@/src/components/SearchInput'
 import { Filters } from '@/src/components/Filters'
 import { Book } from '@/src/components/Book'
+import { api } from '@/src/lib/axios'
+
+export interface BookSchema {
+  id: string
+  name: string
+  author: string
+  cover_url: string
+  ratings: {
+    rate: number
+  }
+}
 
 export const ExplorePage: NextPageWithLayout = () => {
+  const [books, setBooks] = useState<BookSchema[]>([])
+
+  useEffect(() => {
+    api
+      .get('books')
+      .then((response) => setBooks(response.data))
+      .catch((err) => console.log('Erro ao carregar os livros: ' + err))
+  }, [])
   return (
     <Container>
       <Header>
@@ -17,15 +36,9 @@ export const ExplorePage: NextPageWithLayout = () => {
       </Header>
       <Filters />
       <ListBooks>
-        <Book />
-        <Book />
-        <Book />
-        <Book />
-        <Book />
-        <Book />
-        <Book />
-        <Book />
-        <Book />
+        {books.map((book) => {
+          return <Book key={book.id} book={book} />
+        })}
       </ListBooks>
     </Container>
   )

@@ -28,7 +28,7 @@ export const LatestRatings = () => {
   const [ratings, setRatings] = useState<Rating[]>([])
 
   const loadingRatings = useCallback(async () => {
-    const response = await api.get<Rating[]>('/books/ratings')
+    const response = await api.get<Rating[]>('/ratings/latest')
 
     setRatings(response.data)
   }, [])

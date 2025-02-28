@@ -31,7 +31,7 @@ export const LastReading = () => {
   useEffect(() => {
     if (userId) {
       api
-        .get(`/books/${userId}/last-reading`)
+        .get(`/ratings/last-reading?userId=${userId}`)
         .then((response) => {
           console.log(response.data)
           setBook(response.data)
