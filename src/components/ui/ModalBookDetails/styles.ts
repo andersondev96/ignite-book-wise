@@ -37,14 +37,16 @@ export const Content = styled(Dialog.Content, {
   flexDirection: 'column',
   gap: '40px',
   width: '680px',
-  height: '100%',
+  maxHeight: '100vh',
   borderRadius: '4px',
   position: 'fixed',
   right: 0,
   top: 0,
+  transform: 'translateY(-50%)',
   padding: '64px 48px',
 
   backgroundColor: '$gray800',
+  overflowY: 'auto',
 
   animation: `${contentShow} 300ms ease-in-out forwards`,
 
@@ -202,5 +204,12 @@ export const Title = styled('div', {
     fontSize: '$md',
     fontWeight: 'bold',
     color: '$purple100',
+
+    cursor: 'pointer',
+
+    '&:hover': {
+      opacity: '0.8',
+      transition: 'all 0.2s',
+    },
   },
 })

@@ -39,14 +39,19 @@ interface Book {
   categories: Category[]
   ratings: {
     id: string
-    rate: string
+    rate: number
     description: string
     created_at: string
-    user_id: string
-  }
+    user: {
+      id: string
+      name: string
+      avatar_url: string
+    }
+  }[]
 }
 
 export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
+  const [showRatingForm, setShowRatingForm] = useState(false)
   const [book, setBook] = useState<Book | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
 
@@ -133,11 +138,14 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
         <RattingsSection>
           <Title>
             <span>Avaliações</span>
-            <strong>Avaliar</strong>
+            <strong onClick={() => setShowRatingForm(true)}>Avaliar</strong>
           </Title>
-          <RattingForm />
 
-          <RattingCard />
+          {showRatingForm && <RattingForm />}
+
+          {book.ratings.map((rating) => {
+            return <RattingCard key={rating.id} rating={rating} />
+          })}
         </RattingsSection>
       </Content>
     </Dialog.Portal>

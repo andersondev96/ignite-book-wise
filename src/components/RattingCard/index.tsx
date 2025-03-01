@@ -1,25 +1,46 @@
 import { Stars } from '../Stars'
-import { Container, Header, User } from './styles'
+import { Container, Header, User, UserInfo } from './styles'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/pt-br'
 
-export const RattingCard = () => {
+dayjs.extend(relativeTime)
+
+interface User {
+  id: string
+  name: string
+  avatar_url: string
+}
+
+interface Rating {
+  id: string
+  rate: number
+  description: string
+  created_at: string
+  user: User
+}
+
+interface RatingCardProops {
+  rating: Rating
+}
+
+export const RattingCard = ({ rating }: RatingCardProops) => {
   return (
     <Container>
       <Header>
         <User>
-          <img src="" alt="" />
-          <div>
-            <strong>Brandon Botosh</strong>
-            <span>Há 2 dias</span>
-          </div>
+          <img src={rating.user?.avatar_url} alt={rating.user.name} />
+          <UserInfo>
+            <strong>{rating.user.name}</strong>
+            <span>
+              {dayjs().locale('pt-br').from(dayjs(rating.created_at))}
+            </span>
+          </UserInfo>
         </User>
-        <Stars />
+        <Stars quantity={rating.rate} />
       </Header>
 
-      <p>
-        Nec tempor nunc in egestas. Euismod nisi eleifend at et in sagittis.
-        Penatibus id vestibulum imperdiet a at imperdiet lectus leo. Sit porta
-        eget nec vitae sit vulputate eget
-      </p>
+      <p>{rating.description}</p>
     </Container>
   )
 }
