@@ -1,28 +1,28 @@
-import { useEffect, useState } from 'react'
+import { useCategory } from '@/src/contexts/CategoryContext'
 import { FilterItem } from '../FilterItem'
 import { Container } from './styles'
-import { api } from '@/src/lib/axios'
-
-interface Category {
-  id: string
-  name: string
-}
+import { useCategories } from '@/src/hooks/useCategories'
 
 export const Filters = () => {
-  const [categories, setCategories] = useState<Category[]>([])
-
-  useEffect(() => {
-    api
-      .get('books/categories')
-      .then((response) => setCategories(response.data))
-      .catch((err) => console.log('Erro ao carregar as categorias: ' + err))
-  }, [])
+  const { categories } = useCategories()
+  const { setSelectedCategory } = useCategory()
 
   return (
     <Container>
-      <FilterItem title="Tudo" />
+      <FilterItem
+        id=""
+        title="Tudo"
+        handleCategory={() => setSelectedCategory('')}
+      />
       {categories.map((category) => {
-        return <FilterItem key={category.id} title={category.name} />
+        return (
+          <FilterItem
+            key={category.id}
+            id={category.id}
+            title={category.name}
+            handleCategory={() => setSelectedCategory(category.id)}
+          />
+        )
       })}
     </Container>
   )

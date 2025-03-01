@@ -4,6 +4,7 @@ import { AppProps } from 'next/app'
 import { globalStyles } from '../styles/global'
 import { NextPage } from 'next'
 import { ReactElement, ReactNode } from 'react'
+import { CategoryProvider } from '../contexts/CategoryContext'
 
 export const nunito = Nunito({ subsets: ['latin'] })
 
@@ -25,7 +26,9 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <div className={`${nunito.className}`}>
-        {getLayout(<Component {...pageProps} />)}
+        <CategoryProvider>
+          {getLayout(<Component {...pageProps} />)}
+        </CategoryProvider>
       </div>
     </SessionProvider>
   )

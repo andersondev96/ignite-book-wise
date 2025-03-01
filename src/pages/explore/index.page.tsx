@@ -8,6 +8,7 @@ import { SearchInput } from '@/src/components/SearchInput'
 import { Filters } from '@/src/components/Filters'
 import { Book } from '@/src/components/Book'
 import { api } from '@/src/lib/axios'
+import { useCategory } from '@/src/contexts/CategoryContext'
 
 export interface BookSchema {
   id: string
@@ -21,13 +22,15 @@ export interface BookSchema {
 
 export const ExplorePage: NextPageWithLayout = () => {
   const [books, setBooks] = useState<BookSchema[]>([])
+  const { selectedCategory } = useCategory()
 
   useEffect(() => {
     api
-      .get('books')
+      .get(`books${selectedCategory ? `?category=${selectedCategory}` : ''}`)
       .then((response) => setBooks(response.data))
       .catch((err) => console.log('Erro ao carregar os livros: ' + err))
-  }, [])
+  }, [selectedCategory])
+
   return (
     <Container>
       <Header>

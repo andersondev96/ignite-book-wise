@@ -21,4 +21,24 @@ export const Container = styled('div', {
     color: '$purple100',
     // color: '$gray100',
   },
+
+  cursor: 'pointer',
+
+  '&:hover': {
+    background: '$purple200',
+    transition: 'all 0.2s',
+  },
+
+  variants: {
+    active: {
+      true: {
+        background: '$purple200',
+        border: 'none',
+
+        span: {
+          color: '$white',
+        },
+      },
+    },
+  },
 })
