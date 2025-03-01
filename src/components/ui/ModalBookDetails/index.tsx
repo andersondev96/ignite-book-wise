@@ -1,0 +1,145 @@
+import * as Dialog from '@radix-ui/react-dialog'
+import {
+  About,
+  BookData,
+  BookDataDescription,
+  BookInfo,
+  Category,
+  CloseButton,
+  Content,
+  Overlay,
+  Pages,
+  RatingBook,
+  RattingsSection,
+  Title,
+  TitleAndActorBook,
+} from './styles'
+import { Stars } from '../../Stars'
+import { BookmarkSimple, BookOpen, X } from '@phosphor-icons/react'
+import { RattingCard } from '../../RattingCard'
+import { RattingForm } from '../../RattingForm'
+import { useCallback, useEffect, useState } from 'react'
+import { api } from '@/src/lib/axios'
+
+interface ModalBookDetailsProps {
+  id: string
+}
+
+interface Category {
+  categoryId: string
+  name: string
+}
+
+interface Book {
+  id: string
+  name: string
+  author: string
+  cover_url: string
+  total_pages: string
+  categories: Category[]
+  ratings: {
+    id: string
+    rate: string
+    description: string
+    created_at: string
+    user_id: string
+  }
+}
+
+export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
+  const [book, setBook] = useState<Book | null>(null)
+  const [categories, setCategories] = useState<Category[]>([])
+
+  useEffect(() => {
+    api
+      .get(`books/details/${id}`)
+      .then((response) => setBook(response.data))
+      .catch((err) => `Erro ao carregar detalhes do livro: ${err}`)
+  }, [id])
+
+  const fetchCategories = useCallback(async () => {
+    if (!book) return
+
+    try {
+      const categoryIds = book.categories.map((category) => category.categoryId)
+
+      const categoryRequests = categoryIds.map((categoryId) =>
+        api.get(`/categories/${categoryId}`),
+      )
+
+      const categoryResponses = await Promise.all(categoryRequests)
+
+      const categoryData = categoryResponses.map((response) => response.data)
+
+      setCategories(categoryData)
+    } catch (err) {
+      console.error(`Ocorreu um erro ao carregar as categorias: ${err}`)
+    }
+  }, [book])
+
+  useEffect(() => {
+    if (book) {
+      fetchCategories()
+    }
+  }, [book, fetchCategories])
+
+  if (!book) {
+    return null
+  }
+
+  const categoryNames = categories.map((category) => category.name).join(', ')
+
+  return (
+    <Dialog.Portal>
+      <Overlay />
+
+      <Content>
+        <CloseButton>
+          <X size={21} />
+        </CloseButton>
+        <BookInfo>
+          <BookData>
+            <img src={book.cover_url.replace('public', '')} alt={book.name} />
+            <BookDataDescription>
+              <TitleAndActorBook>
+                <strong>{book.name}</strong>
+                <span>{book.author}</span>
+              </TitleAndActorBook>
+              <RatingBook>
+                <Stars />
+                <span>3 avaliações</span>
+              </RatingBook>
+            </BookDataDescription>
+          </BookData>
+          <About>
+            <Category>
+              <BookmarkSimple size={24} />
+              <div>
+                <span>Categoria</span>
+                <strong>{categoryNames}</strong>
+              </div>
+            </Category>
+
+            <Pages>
+              <BookOpen size={24} />
+              <div>
+                <span>Páginas</span>
+                <strong>{book.total_pages}</strong>
+              </div>
+            </Pages>
+          </About>
+        </BookInfo>
+
+        <RattingsSection>
+          <Title>
+            <span>Avaliações</span>
+            <strong>Avaliar</strong>
+          </Title>
+          <RattingForm />
+
+          <RattingCard />
+        </RattingsSection>
+      </Content>
+    </Dialog.Portal>
+  )
+}

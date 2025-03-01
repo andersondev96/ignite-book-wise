@@ -1,7 +1,7 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { Stars } from '../Stars'
 import { BookInfo, BookName, Container } from './styles'
-import { Modal } from '../ui/Modal'
+import { ModalBookDetails } from '../ui/ModalBookDetails'
 
 interface BookSchema {
   id: string
@@ -32,7 +32,7 @@ export const Book = ({ book }: BookProps) => {
           </BookInfo>
         </Container>
       </Dialog.Trigger>
-      <Modal />
+      <ModalBookDetails id={book.id} />
     </Dialog.Root>
   )
 }

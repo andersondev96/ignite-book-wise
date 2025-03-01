@@ -17,6 +17,8 @@ export const Container = styled('div', {
     height: '152px',
     objectFit: 'cover',
   },
+
+  cursor: 'pointer',
 })
 
 export const BookInfo = styled('div', {

@@ -11,8 +11,6 @@ type FilterItemProps = {
 export const FilterItem = ({ id, title, handleCategory }: FilterItemProps) => {
   const { selectedCategory } = useCategory()
 
-  console.log(selectedCategory)
-
   const handleClick = useCallback(() => {
     handleCategory()
   }, [handleCategory])

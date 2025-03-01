@@ -33,7 +33,6 @@ export const LastReading = () => {
       api
         .get(`/ratings/last-reading?userId=${userId}`)
         .then((response) => {
-          console.log(response.data)
           setBook(response.data)
         })
         .catch((error) => {
