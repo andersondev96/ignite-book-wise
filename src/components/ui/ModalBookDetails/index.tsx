@@ -20,6 +20,8 @@ import { RattingCard } from '../../RattingCard'
 import { RattingForm } from '../../RattingForm'
 import { useCallback, useEffect, useState } from 'react'
 import { api } from '@/src/lib/axios'
+import { useSession } from 'next-auth/react'
+import { LoginModal } from '../../LoginModal'
 
 interface ModalBookDetailsProps {
   id: string
@@ -52,8 +54,11 @@ interface Book {
 
 export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
   const [showRatingForm, setShowRatingForm] = useState(false)
+  const [showLoginModal, setShowLoginModal] = useState(false)
   const [book, setBook] = useState<Book | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
+
+  const { status } = useSession()
 
   useEffect(() => {
     api
@@ -81,6 +86,14 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
       console.error(`Ocorreu um erro ao carregar as categorias: ${err}`)
     }
   }, [book])
+
+  const handleShowRatingsForm = useCallback(() => {
+    if (status === 'authenticated') {
+      setShowRatingForm(true)
+    } else {
+      setShowLoginModal(true)
+    }
+  }, [status])
 
   useEffect(() => {
     if (book) {
@@ -138,10 +151,17 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
         <RattingsSection>
           <Title>
             <span>Avaliações</span>
-            <strong onClick={() => setShowRatingForm(true)}>Avaliar</strong>
+            <strong onClick={handleShowRatingsForm}>Avaliar</strong>
           </Title>
 
           {showRatingForm && <RattingForm />}
+          {showLoginModal && (
+            <Dialog.Root open={showLoginModal} onOpenChange={setShowLoginModal}>
+              <Dialog.Portal>
+                <LoginModal />
+              </Dialog.Portal>
+            </Dialog.Root>
+          )}
 
           {book.ratings.map((rating) => {
             return <RattingCard key={rating.id} rating={rating} />
