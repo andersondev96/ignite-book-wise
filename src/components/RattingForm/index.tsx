@@ -29,7 +29,7 @@ export const RattingForm = () => {
           <img src={user?.avatar_url ?? ''} alt={user?.name ?? ''} />
           <span>{user?.name}</span>
         </UserInfo>
-        <Stars quantity={0} />
+        <Stars rate={0} mode="edit" />
       </Header>
       <Form>
         <TextArea placeholder="Escreva a sua avaliação" />

@@ -1,22 +1,59 @@
-import { Star } from '@phosphor-icons/react'
-import { Container } from './styles'
+import { useState } from 'react'
+import {
+  Container,
+  StarContainer,
+  StarBackground,
+  StarForeground,
+} from './styles'
 
 type StarsProps = {
-  quantity?: number
+  mode?: 'edit' | 'view'
+  rate: number
 }
 
-export const Stars = ({ quantity = 5 }: StarsProps) => {
-  const filledStars = quantity ?? 5
-  const emptyStars = Math.max(0, 5 - filledStars)
+export const Stars = ({ mode = 'view', rate }: StarsProps) => {
+  const [stars, setStars] = useState(rate)
+  const [hovered, setHovered] = useState<number | null>(null)
+
+  const handleClick = (value: number) => {
+    if (mode === 'edit') {
+      setStars(value === stars ? 0 : value)
+    }
+  }
+
+  const handleMouseEnter = (index: number) => {
+    if (mode === 'edit') setHovered(index)
+  }
+
+  const handleMouseLeave = () => {
+    if (mode === 'edit') setHovered(null)
+  }
+
+  const getStarStyle = (i: number) => {
+    if (hovered !== null && mode === 'edit') {
+      return { width: hovered >= i ? '100%' : '0%' }
+    } else if (stars >= i) {
+      return { width: '100%' }
+    } else if (stars + 0.5 >= i) {
+      return { width: '50%' }
+    }
+
+    return { width: '0%' }
+  }
 
   return (
     <Container>
-      {Array.from({ length: filledStars }).map((_, i) => (
-        <Star key={`filled-${i}`} size={16} weight="fill" />
-      ))}
-
-      {Array.from({ length: emptyStars }).map((_, i) => (
-        <Star key={`empty-${i}`} size={16} />
+      {Array.from({ length: 5 }).map((_, i) => (
+        <StarContainer
+          key={i}
+          onClick={() => handleClick(i + 1)}
+          onMouseEnter={() => handleMouseEnter(i + 1)}
+          onMouseLeave={handleMouseLeave}
+          style={{ cursor: mode === 'view' ? 'default' : 'pointer' }}
+        >
+          <StarBackground size={16} weight="fill" />
+          <StarForeground style={getStarStyle(i + 1)} size={16} weight="fill" />
+        </StarContainer>
       ))}
     </Container>
   )
