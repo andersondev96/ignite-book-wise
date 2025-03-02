@@ -24,7 +24,8 @@
     "nookies": "^2.5.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "uuid": "^11.0.5"
+    "uuid": "^11.0.5",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.2.2",
