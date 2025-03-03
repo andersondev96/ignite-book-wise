@@ -28,7 +28,7 @@ export const Book = ({ book }: BookProps) => {
               <strong>{book.name}</strong>
               <span>{book.author}</span>
             </BookName>
-            <Stars quantity={book.ratings.rate} />
+            <Stars rate={book.ratings.rate} />
           </BookInfo>
         </Container>
       </Dialog.Trigger>

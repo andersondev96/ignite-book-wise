@@ -9,15 +9,18 @@ import {
 type StarsProps = {
   mode?: 'edit' | 'view'
   rate: number
+  onRateChange?: (rate: number) => void
 }
 
-export const Stars = ({ mode = 'view', rate }: StarsProps) => {
+export const Stars = ({ mode = 'view', rate, onRateChange }: StarsProps) => {
   const [stars, setStars] = useState(rate)
   const [hovered, setHovered] = useState<number | null>(null)
 
   const handleClick = (value: number) => {
     if (mode === 'edit') {
-      setStars(value === stars ? 0 : value)
+      const newValue = value === stars ? 0 : value
+      setStars(newValue)
+      onRateChange?.(newValue)
     }
   }
 

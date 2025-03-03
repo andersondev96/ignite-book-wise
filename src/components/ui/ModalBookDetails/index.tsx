@@ -124,7 +124,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
                 <span>{book.author}</span>
               </TitleAndActorBook>
               <RatingBook>
-                <Stars />
+                <Stars mode="view" rate={book.ratings[0].rate} />
                 <span>3 avaliações</span>
               </RatingBook>
             </BookDataDescription>
@@ -154,7 +154,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
             <strong onClick={handleShowRatingsForm}>Avaliar</strong>
           </Title>
 
-          {showRatingForm && <RattingForm />}
+          {showRatingForm && <RattingForm bookId={book.id} />}
           {showLoginModal && (
             <Dialog.Root open={showLoginModal} onOpenChange={setShowLoginModal}>
               <Dialog.Portal>

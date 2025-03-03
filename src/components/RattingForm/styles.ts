@@ -15,6 +15,7 @@ export const Header = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  marginBottom: '24px',
 })
 
 export const UserInfo = styled('div', {
@@ -39,7 +40,8 @@ export const UserInfo = styled('div', {
 })
 
 export const Form = styled('form', {
-  marginTop: '24px',
+  display: 'flex',
+  flexDirection: 'column',
 })
 
 export const Footer = styled('div', {
