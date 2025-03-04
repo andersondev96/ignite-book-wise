@@ -53,7 +53,7 @@ export const BookCard = ({
             <p>{dayjs().locale('pt-br').from(dayjs(rating_date))}</p>
           </div>
         </AuthorInfo>
-        <Stars quantity={rate} />
+        <Stars rate={rate} />
       </AuthorSection>
       <BookInfoSection>
         <img src={book_cover_url} alt={book_name} />

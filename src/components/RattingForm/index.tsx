@@ -7,11 +7,6 @@ import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { api } from '@/src/lib/axios'
-
-interface RatingFormProps {
-  bookId: string
-}
 
 interface User {
   id: string
@@ -25,9 +20,13 @@ const rateFormSchema = z.object({
   rate: z.number().min(1).max(5),
 })
 
-type RateFormData = z.infer<typeof rateFormSchema>
+export type RateFormData = z.infer<typeof rateFormSchema>
 
-export const RattingForm = ({ bookId }: RatingFormProps) => {
+interface RatingFormProps {
+  onSubmit: (data: RateFormData) => void
+}
+
+export const RattingForm = ({ onSubmit }: RatingFormProps) => {
   const { data, status } = useSession()
   const [user, setUser] = useState<User>()
   const {
@@ -56,23 +55,6 @@ export const RattingForm = ({ bookId }: RatingFormProps) => {
     [setValue],
   )
 
-  const onSubmit = useCallback(
-    async (data: RateFormData) => {
-      console.log('Enviando', data)
-      try {
-        const { description, rate } = data
-
-        await api.post(`/books/${bookId}/rate`, {
-          description,
-          rate,
-        })
-      } catch (err) {
-        console.error(err)
-      }
-    },
-    [bookId],
-  )
-
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -98,7 +80,7 @@ export const RattingForm = ({ bookId }: RatingFormProps) => {
             ) : (
               <span>Erro ao enviar avaliação</span>
             ))}
-          <Button>
+          <Button type="reset">
             <X size={24} color="#8381D9" />
           </Button>
           <Button type="submit">

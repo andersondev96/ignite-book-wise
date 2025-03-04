@@ -17,7 +17,7 @@ import {
 import { Stars } from '../../Stars'
 import { BookmarkSimple, BookOpen, X } from '@phosphor-icons/react'
 import { RattingCard } from '../../RattingCard'
-import { RattingForm } from '../../RattingForm'
+import { RattingForm, type RateFormData } from '../../RattingForm'
 import { useCallback, useEffect, useState } from 'react'
 import { api } from '@/src/lib/axios'
 import { useSession } from 'next-auth/react'
@@ -60,12 +60,16 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
 
   const { status } = useSession()
 
-  useEffect(() => {
-    api
+  const fetchBook = useCallback(async () => {
+    await api
       .get(`books/details/${id}`)
       .then((response) => setBook(response.data))
       .catch((err) => `Erro ao carregar detalhes do livro: ${err}`)
   }, [id])
+
+  useEffect(() => {
+    fetchBook()
+  }, [fetchBook])
 
   const fetchCategories = useCallback(async () => {
     if (!book) return
@@ -94,6 +98,33 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
       setShowLoginModal(true)
     }
   }, [status])
+
+  const onSubmit = useCallback(
+    async (data: RateFormData) => {
+      if (!book) {
+        return
+      }
+      console.log('Enviando', data)
+      try {
+        const bookId = book.id
+        const { description, rate } = data
+
+        const response = await api.post(`/books/${bookId}/rate`, {
+          description,
+          rate,
+        })
+
+        if (response.status === 201) {
+          setShowRatingForm(false)
+
+          fetchBook()
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    },
+    [book, fetchBook],
+  )
 
   useEffect(() => {
     if (book) {
@@ -154,7 +185,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
             <strong onClick={handleShowRatingsForm}>Avaliar</strong>
           </Title>
 
-          {showRatingForm && <RattingForm bookId={book.id} />}
+          {showRatingForm && <RattingForm onSubmit={onSubmit} />}
           {showLoginModal && (
             <Dialog.Root open={showLoginModal} onOpenChange={setShowLoginModal}>
               <Dialog.Portal>

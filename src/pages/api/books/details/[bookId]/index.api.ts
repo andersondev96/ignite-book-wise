@@ -20,6 +20,9 @@ export default async function handle(
         include: {
           user: true,
         },
+        orderBy: {
+          created_at: 'desc',
+        },
       },
       categories: true,
     },

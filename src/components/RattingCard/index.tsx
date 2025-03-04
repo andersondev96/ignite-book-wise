@@ -37,7 +37,7 @@ export const RattingCard = ({ rating }: RatingCardProops) => {
             </span>
           </UserInfo>
         </User>
-        <Stars quantity={rating.rate} />
+        <Stars rate={rating.rate} />
       </Header>
 
       <p>{rating.description}</p>
