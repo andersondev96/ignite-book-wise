@@ -56,7 +56,7 @@ export const PopularBooks = () => {
                   <span>{book.book.name}</span>
                   <p>{book.book.author}</p>
                 </TitleBook>
-                <Stars quantity={book.rate} />
+                <Stars rate={book.rate} />
               </div>
             </PopularBookCard>
           )

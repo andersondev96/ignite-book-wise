@@ -3,7 +3,7 @@ import { Container, ItemInfo } from './styles'
 
 interface ItemInfoProfileProps {
   icon: ReactNode
-  title: string
+  title: string | number
   description: string
 }
 

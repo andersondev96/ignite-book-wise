@@ -5,20 +5,25 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import path from 'path'
 
-const menu = [
-  { title: 'Início', icon: <ChartLineUp />, href: '/', permission: 'public' },
-  {
-    title: 'Explorar',
-    icon: <Binoculars />,
-    href: '/explore',
-    permission: 'public',
-  },
-  { title: 'Perfil', icon: <User />, href: '/profile', permission: 'private' },
-]
-
 export const Navigation = () => {
-  const { status } = useSession()
+  const { status, data } = useSession()
   const { pathname } = useRouter()
+
+  const menu = [
+    { title: 'Início', icon: <ChartLineUp />, href: '/', permission: 'public' },
+    {
+      title: 'Explorar',
+      icon: <Binoculars />,
+      href: '/explore',
+      permission: 'public',
+    },
+    {
+      title: 'Perfil',
+      icon: <User />,
+      href: `/profile/${data?.user.id}`,
+      permission: 'private',
+    },
+  ]
 
   return (
     <NavigationContainer>

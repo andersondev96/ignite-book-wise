@@ -3,8 +3,10 @@ import { styled } from '@/stitches.config'
 export const Container = styled('div', {
   display: 'flex',
   flexDirection: 'column',
+  alignItems: 'center',
 
   height: '100%',
+  paddingLeft: '99px',
 
   borderLeft: '1px solid $gray700',
 })
@@ -15,7 +17,12 @@ export const UserInfo = styled('div', {
   alignItems: 'center',
   marginBottom: '40px',
 
-  paddingLeft: '99px',
+  img: {
+    width: '72px',
+    height: '72px',
+    borderRadius: '999px',
+    objectFit: 'cover',
+  },
 
   strong: {
     fontSize: '$md',
@@ -30,7 +37,6 @@ export const UserInfo = styled('div', {
 })
 
 export const Divisor = styled('div', {
-  marginLeft: '138px',
   borderRadius: '999px',
   width: '32px',
   height: '4px',
@@ -42,6 +48,4 @@ export const BooksInfo = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   gap: '40px',
-
-  paddingLeft: '56px',
 })
