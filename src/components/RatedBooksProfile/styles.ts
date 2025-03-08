@@ -28,22 +28,35 @@ export const BookCard = styled('div', {
 
 export const BookInfo = styled('div', {
   display: 'flex',
+  gap: '24px',
+
+  img: {
+    width: '98px',
+    height: '134px',
+    borderRadius: '4px',
+    objectFit: 'cover',
+  },
+})
+
+export const DetailsBook = styled('div', {
+  display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'space-between',
+})
 
-  div: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '2px',
+export const TitleAndActorBook = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '2px',
 
-    strong: {
-      color: '$gray100',
-      fontSize: '$sm',
-      fontWeight: '$bold',
-    },
+  strong: {
+    color: '$gray100',
+    fontSize: '$sm',
+    fontWeight: '$bold',
+  },
 
-    span: {
-      color: '$gray400',
-      fontSize: '$sm',
-    },
+  span: {
+    color: '$gray400',
+    fontSize: '$sm',
   },
 })

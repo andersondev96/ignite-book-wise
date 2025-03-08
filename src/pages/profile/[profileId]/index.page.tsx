@@ -10,23 +10,26 @@ import { ProfileDetails } from '@/src/components/ProfileDetails'
 import { GetStaticProps, GetStaticPaths } from 'next'
 import { api } from '@/src/lib/axios'
 
+export interface RatingsProps {
+  id: string
+  rate: number
+  description: string
+  created_at: string
+  book: {
+    id: string
+    name: string
+    author: string
+    summary: string
+    cover_url: string
+  }
+}
+
 export interface UserProps {
   id: string
   name: string
   avatar_url: string
   created_at: string
-  ratings: {
-    id: string
-    rate: number
-    description: string
-    created_at: string
-    book: {
-      id: string
-      name: string
-      author: string
-      summary: string
-    }
-  }[]
+  ratings: RatingsProps[]
   totalPagesRead: number
   totalBooksRates: number
   totalAuthorRead: number
@@ -63,8 +66,9 @@ const Profile: NextPageWithLayout<ProfileProps> = ({ profileId }) => {
       <Main>
         <PageTitle title="Perfil" icon={<User />} />
         <SearchInput name="book" placeholder="Buscar livro avaliado" />
-        <RatedBooksProfile />
-        <RatedBooksProfile />
+        {user.ratings.map((rate) => {
+          return <RatedBooksProfile key={rate.id} rate={rate} />
+        })}
       </Main>
       <ProfileDetails user={user} />
     </Container>

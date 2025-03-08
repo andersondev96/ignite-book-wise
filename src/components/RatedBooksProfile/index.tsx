@@ -1,27 +1,42 @@
-import { BookInfo, Container, BookCard } from './styles'
+import { RatingsProps } from '@/src/pages/profile/[profileId]/index.page'
 
-export const RatedBooksProfile = () => {
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/pt-br'
+
+import {
+  BookInfo,
+  Container,
+  BookCard,
+  DetailsBook,
+  TitleAndActorBook,
+} from './styles'
+import { Stars } from '../Stars'
+
+dayjs.extend(relativeTime)
+
+interface RatedBooksProfileInterface {
+  rate: RatingsProps
+}
+export const RatedBooksProfile = ({ rate }: RatedBooksProfileInterface) => {
   return (
     <Container>
-      <span>Há 2 dias</span>
+      <span>{dayjs().locale('pt-br').from(dayjs(rate.created_at))}</span>
       <BookCard>
         <BookInfo>
-          <img src="" alt="" />
-          <div>
-            <strong>Entendendo Algoritmos</strong>
-            <span>Aditya Bhargava</span>
-          </div>
+          <img
+            src={rate.book.cover_url.replace('public', '')}
+            alt={rate.book.name}
+          />
+          <DetailsBook>
+            <TitleAndActorBook>
+              <strong>{rate.book.name}</strong>
+              <span>{rate.book.author}</span>
+            </TitleAndActorBook>
+            <Stars rate={rate.rate} />
+          </DetailsBook>
         </BookInfo>
-        <p>
-          Tristique massa sed enim lacinia odio. Congue ut faucibus nunc vitae
-          non. Nam feugiat vel morbi viverra vitae mi. Vitae fringilla ut et
-          suspendisse enim suspendisse vitae. Leo non eget lacus sollicitudin
-          tristique pretium quam. Mollis et luctus amet sed convallis varius
-          massa sagittis. Proin sed proin at leo quis ac sem. Nam donec accumsan
-          curabitur amet tortor quam sit. Bibendum enim sit dui lorem urna amet
-          elit rhoncus ut. Aliquet euismod vitae ut turpis. Aliquam amet integer
-          pellentesque.
-        </p>
+        <p>{rate.book.summary}</p>
       </BookCard>
     </Container>
   )

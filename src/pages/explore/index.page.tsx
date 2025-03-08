@@ -22,26 +22,47 @@ export interface BookSchema {
 
 export const ExplorePage: NextPageWithLayout = () => {
   const [books, setBooks] = useState<BookSchema[]>([])
+  const [name, setName] = useState('')
   const { selectedCategory } = useCategory()
-
   useEffect(() => {
-    api
-      .get(`books${selectedCategory ? `?category=${selectedCategory}` : ''}`)
-      .then((response) => setBooks(response.data))
-      .catch((err) => console.log('Erro ao carregar os livros: ' + err))
-  }, [selectedCategory])
+    const fetchBooks = async () => {
+      const queryParams = []
+
+      if (selectedCategory) {
+        queryParams.push(`category=${selectedCategory}`)
+      }
+
+      if (name) {
+        queryParams.push(`name=${name}`)
+      }
+
+      const url = `books${queryParams.length > 0 ? `?${queryParams.join('&')}` : ''}`
+
+      try {
+        const response = await api.get(url)
+        setBooks(response.data)
+      } catch (err) {
+        console.log('Erro ao carregar os livros:', err)
+      }
+    }
+    fetchBooks()
+  }, [selectedCategory, name])
 
   return (
     <Container>
       <Header>
         <PageTitle title="Explorar" icon={<Binoculars size={32} />} />
-        <SearchInput name="actor" placeholder="Buscar livro ou autor" />
+        <SearchInput
+          name="actor"
+          placeholder="Buscar livro ou autor"
+          onChange={(e) => setName(e.target.value)}
+        />
       </Header>
       <Filters />
       <ListBooks>
-        {books.map((book) => {
-          return <Book key={book.id} book={book} />
-        })}
+        {books.map((book) => (
+          <Book key={book.id} book={book} />
+        ))}
       </ListBooks>
     </Container>
   )

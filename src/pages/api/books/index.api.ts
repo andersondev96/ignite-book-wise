@@ -10,14 +10,30 @@ export default async function handle(
   }
 
   const categoryId = req.query.category as string
+  const name = req.query.name as string
+
+  const where: any = {}
+
+  if (categoryId) {
+    where.categories = {
+      some: categoryId,
+    }
+  }
 
   const books = await prisma.book.findMany({
     where: {
-      categories: {
-        some: {
-          categoryId,
+      ...(name && {
+        name: {
+          contains: name,
         },
-      },
+      }),
+      ...(categoryId && {
+        categories: {
+          some: {
+            categoryId,
+          },
+        },
+      }),
     },
     include: {
       ratings: true,

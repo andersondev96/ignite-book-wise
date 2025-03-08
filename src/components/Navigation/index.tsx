@@ -25,6 +25,8 @@ export const Navigation = () => {
     },
   ]
 
+  console.log(pathname)
+
   return (
     <NavigationContainer>
       {menu.map((item, key) => {
