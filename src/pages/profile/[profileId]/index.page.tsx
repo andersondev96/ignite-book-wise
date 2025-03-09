@@ -43,15 +43,18 @@ interface ProfileProps {
 
 const Profile: NextPageWithLayout<ProfileProps> = ({ profileId }) => {
   const [user, setUser] = useState<UserProps>()
+  const [book, setBook] = useState('')
 
   const fetchUser = useCallback(async () => {
-    await api
-      .get<UserProps>(`/profile/${profileId}`)
-      .then((response) => setUser(response.data))
-      .catch((err) =>
-        console.error(`Erro ao carregar as informações do usuário: ${err}`),
-      )
-  }, [profileId])
+    const url = `profile/${profileId}${book ? `?book=${book}` : ''}`
+
+    try {
+      const response = await api.get(url)
+      setUser(response.data)
+    } catch (err) {
+      console.error(`Erro ao carregar as informações do usuário: ${err}`)
+    }
+  }, [book, profileId])
 
   useEffect(() => {
     fetchUser()
@@ -65,7 +68,11 @@ const Profile: NextPageWithLayout<ProfileProps> = ({ profileId }) => {
     <Container>
       <Main>
         <PageTitle title="Perfil" icon={<User />} />
-        <SearchInput name="book" placeholder="Buscar livro avaliado" />
+        <SearchInput
+          name="book"
+          placeholder="Buscar livro avaliado"
+          onChange={(e) => setBook(e.target.value)} // Corrigido para capturar o valor correto
+        />
         {user.ratings.map((rate) => {
           return <RatedBooksProfile key={rate.id} rate={rate} />
         })}

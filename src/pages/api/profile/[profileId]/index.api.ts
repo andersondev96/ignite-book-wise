@@ -15,16 +15,22 @@ export default async function handle(
     where: {
       id: profileId,
     },
+  })
+
+  if (!profile) {
+    return res.status(404).json({ error: 'Perfil não encontrado' })
+  }
+
+  const ratings = await prisma.rating.findMany({
+    where: {
+      user_id: profileId,
+    },
     include: {
-      ratings: {
+      book: {
         include: {
-          book: {
+          categories: {
             include: {
-              categories: {
-                include: {
-                  category: true,
-                },
-              },
+              category: true,
             },
           },
         },
@@ -32,23 +38,23 @@ export default async function handle(
     },
   })
 
-  if (!profile) {
-    return res.status(404).json({ error: 'Perfil não encontrado' })
+  if (!ratings) {
+    return res.status(404).json({ error: 'Avaliações não encontradas' })
   }
 
-  const totalPagesRead = profile.ratings.reduce((sum, rating) => {
+  const totalPagesRead = ratings.reduce((sum, rating) => {
     return sum + (rating.book.total_pages || 0)
   }, 0)
 
-  const totalBooksRates = profile.ratings.length
+  const totalBooksRates = ratings.length
 
   const authors = new Set(
-    profile.ratings.map((rating) => rating.book.author).filter(Boolean),
+    ratings.map((rating) => rating.book.author).filter(Boolean),
   )
 
   const categoryCount: Record<string, number> = {}
 
-  profile.ratings.forEach((rating) => {
+  ratings.forEach((rating) => {
     rating.book.categories.forEach((category) => {
       categoryCount[category.category.name] =
         (categoryCount[category.category.name] || 0) + 1
