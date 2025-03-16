@@ -10,6 +10,8 @@ export const Container = styled('div', {
   border: '1px solid $gray500',
   borderRadius: '4px',
 
+  marginBottom: '16px',
+
   svg: {
     marginLeft: '20px',
     color: '$gray500',

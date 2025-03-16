@@ -9,13 +9,10 @@ export default async function handle(
     return res.status(405).end()
   }
 
-  const ratings = await prisma.book.findMany({
+  const ratings = await prisma.rating.findMany({
     include: {
-      ratings: {
-        include: {
-          user: true,
-        },
-      },
+      book: true,
+      user: true,
     },
   })
 

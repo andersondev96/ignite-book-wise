@@ -23,7 +23,5 @@ export default async function handle(
     },
   })
 
-  const latestBook = ratings ? ratings.book : null
-
-  return res.status(201).json(latestBook)
+  return res.status(201).json(ratings)
 }

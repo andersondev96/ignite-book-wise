@@ -9,6 +9,7 @@ import { Filters } from '@/src/components/Filters'
 import { Book } from '@/src/components/Book'
 import { api } from '@/src/lib/axios'
 import { useCategory } from '@/src/contexts/CategoryContext'
+import { ClipLoader } from 'react-spinners'
 
 export interface BookSchema {
   id: string
@@ -24,6 +25,8 @@ export const ExplorePage: NextPageWithLayout = () => {
   const [books, setBooks] = useState<BookSchema[]>([])
   const [name, setName] = useState('')
   const { selectedCategory } = useCategory()
+  const [loading, setLoading] = useState<boolean>(true)
+
   useEffect(() => {
     const fetchBooks = async () => {
       const queryParams = []
@@ -41,8 +44,10 @@ export const ExplorePage: NextPageWithLayout = () => {
       try {
         const response = await api.get(url)
         setBooks(response.data)
+        setLoading(false)
       } catch (err) {
         console.log('Erro ao carregar os livros:', err)
+        setLoading(false)
       }
     }
     fetchBooks()
@@ -59,11 +64,15 @@ export const ExplorePage: NextPageWithLayout = () => {
         />
       </Header>
       <Filters />
-      <ListBooks>
-        {books.map((book) => (
-          <Book key={book.id} book={book} />
-        ))}
-      </ListBooks>
+      {loading ? (
+        <ClipLoader size={50} color="#4fa94d" loading={loading} />
+      ) : (
+        <ListBooks>
+          {books.map((book) => (
+            <Book key={book.id} book={book} />
+          ))}
+        </ListBooks>
+      )}
     </Container>
   )
 }

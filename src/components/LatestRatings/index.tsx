@@ -5,37 +5,58 @@ import { LastRatingContainer, LatestRatingsContainer } from './styles'
 import { LastReading } from '../LastReading'
 import { useCallback, useEffect, useState } from 'react'
 import { api } from '@/src/lib/axios'
+import { ClipLoader } from 'react-spinners'
 
 interface Rating {
   id: string
-  name: string
-  author: string
-  summary: string
-  cover_url: string
-  ratings: Array<{
+  rate: number
+  description: string
+  created_at: string
+  book_id: string
+  user_id: string
+  book: {
     id: string
-    rate: number
+    name: string
+    author: string
+    summary: string
+    cover_url: string
     created_at: string
-    user: {
-      id: string
-      name: string
-      avatar_url: string
-    }
-  }>
+  }
+  user: {
+    id: string
+    name: string
+    avatar_url: string
+  }
 }
 
 export const LatestRatings = () => {
   const [ratings, setRatings] = useState<Rating[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
 
   const loadingRatings = useCallback(async () => {
-    const response = await api.get<Rating[]>('/ratings/latest')
-
-    setRatings(response.data)
+    await api
+      .get<Rating[]>('/ratings/latest')
+      .then((response) => {
+        setRatings(response.data)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.log(error)
+        setLoading(false)
+      })
   }, [])
 
   useEffect(() => {
     loadingRatings()
   }, [loadingRatings])
+
+  if (loading) {
+    return
+  }
+
+  if (!ratings) {
+    return null
+  }
 
   return (
     <LatestRatingsContainer>
@@ -43,21 +64,13 @@ export const LatestRatings = () => {
       <LastReading />
       <LastRatingContainer>
         <span>Avaliações mais recentes</span>
-        {ratings.map((rating) => {
-          return (
-            <BookCard
-              key={rating.id}
-              name={rating.ratings[0].user.name}
-              avatar_url={rating.ratings[0].user.avatar_url}
-              rating_date={rating.ratings[0].created_at}
-              rate={rating.ratings[0].rate}
-              book_cover_url={rating.cover_url.replace('public', '')}
-              book_name={rating.name}
-              book_author={rating.author}
-              book_description={rating.summary}
-            />
-          )
-        })}
+        {loading ? (
+          <ClipLoader size={50} color="#4fa94d" loading={loading} />
+        ) : (
+          ratings.map((rating) => {
+            return <BookCard key={rating.id} rating={rating} />
+          })
+        )}
       </LastRatingContainer>
     </LatestRatingsContainer>
   )

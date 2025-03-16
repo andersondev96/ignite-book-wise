@@ -13,53 +13,66 @@ import {
   Text,
 } from './styles'
 import { Stars } from '../Stars'
+import { useRouter } from 'next/router'
 
 dayjs.extend(relativeTime)
 
-interface BookCardProps {
-  name: string
-  avatar_url: string
-  rating_date: string
+interface Rating {
+  id: string
   rate: number
-  book_cover_url: string
-  book_name: string
-  book_author: string
-  book_description: string
+  description: string
+  created_at: string
+  book_id: string
+  user_id: string
+  book: {
+    id: string
+    name: string
+    author: string
+    summary: string
+    cover_url: string
+    created_at: string
+  }
+  user: {
+    id: string
+    name: string
+    avatar_url: string
+  }
 }
 
-export const BookCard = ({
-  name,
-  avatar_url,
-  rating_date,
-  rate,
-  book_cover_url,
-  book_name,
-  book_author,
-  book_description,
-}: BookCardProps) => {
-  const [expanded, setExpanded] = useState(false)
+interface BookCardProps {
+  rating: Rating
+}
 
-  const safeDescription = book_description ?? ''
+export const BookCard = ({ rating }: BookCardProps) => {
+  const [expanded, setExpanded] = useState(false)
+  const route = useRouter()
+
+  const safeDescription = rating.description ?? ''
 
   return (
     <BookCardContainer>
       <AuthorSection>
-        <AuthorInfo>
-          <Avatar>
-            <img src={avatar_url} alt={name} />
-          </Avatar>
-          <div>
-            <span>{name}</span>
-            <p>{dayjs().locale('pt-br').from(dayjs(rating_date))}</p>
-          </div>
-        </AuthorInfo>
-        <Stars rate={rate} />
+        {rating.user && (
+          <AuthorInfo onClick={() => route.push(`/profile/${rating.user.id}`)}>
+            <Avatar>
+              <img src={rating.user.avatar_url} alt={rating.user.name} />
+            </Avatar>
+            <div>
+              <span>{rating.user.name}</span>
+              <p>{dayjs().locale('pt-br').from(dayjs(rating.created_at))}</p>
+            </div>
+          </AuthorInfo>
+        )}
+        <Stars rate={rating.rate} />
       </AuthorSection>
       <BookInfoSection>
-        <img src={book_cover_url} alt={book_name} />
+        <img
+          src={rating.book.cover_url.replace('public', '')}
+          alt={rating.book.name}
+        />
         <BookInfoContent>
-          <strong>{book_name}</strong>
-          <span>{book_author}</span>
+          <strong>{rating.book.name}</strong>
+          <span>{rating.book.author}</span>
 
           <Text>
             {safeDescription && typeof safeDescription === 'string' ? (
