@@ -1,4 +1,4 @@
-import { RatingsProps } from '@/src/pages/profile/[profileId]/index.page'
+import { RatingsProps } from '@/src/pages/profile/[id].page'
 
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'

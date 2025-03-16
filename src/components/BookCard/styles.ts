@@ -1,4 +1,5 @@
 import { styled } from '@/stitches.config'
+import Link from 'next/link'
 
 export const BookCardContainer = styled('div', {
   background: '$gray600',
@@ -13,7 +14,9 @@ export const AuthorSection = styled('section', {
   justifyContent: 'space-between',
 })
 
-export const AuthorInfo = styled('div', {
+export const AuthorInfo = styled(Link, {
+  textDecoration: 'none',
+
   display: 'flex',
   alignItems: 'center',
   gap: '16px',

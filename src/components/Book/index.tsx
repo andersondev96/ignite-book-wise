@@ -8,9 +8,7 @@ interface BookSchema {
   name: string
   author: string
   cover_url: string
-  ratings: {
-    rate: number
-  }
+  avgRating: number
 }
 
 interface BookProps {
@@ -28,7 +26,7 @@ export const Book = ({ book }: BookProps) => {
               <strong>{book.name}</strong>
               <span>{book.author}</span>
             </BookName>
-            <Stars rate={book.ratings.rate} />
+            <Stars rate={book.avgRating} />
           </BookInfo>
         </Container>
       </Dialog.Trigger>

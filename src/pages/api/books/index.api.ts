@@ -40,5 +40,19 @@ export default async function handle(
     },
   })
 
-  return res.status(201).json(books)
+  const booksWithAvgRatings = books.map((book) => {
+    const totalRatings = book.ratings.length
+    const sumRatings = book.ratings.reduce(
+      (acc, rating) => acc + rating.rate,
+      0,
+    )
+    const avgRating = totalRatings > 0 ? sumRatings / totalRatings : 0
+
+    return {
+      ...book,
+      avgRating,
+    }
+  })
+
+  return res.status(201).json(booksWithAvgRatings)
 }

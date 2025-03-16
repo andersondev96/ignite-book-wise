@@ -7,7 +7,7 @@ import {
 } from '@phosphor-icons/react'
 import { BooksInfo, Container, Divisor, UserInfo } from './styles'
 import { ItemInfoProfile } from '../ItemInfoProfile'
-import { UserProps } from '@/src/pages/profile/[profileId]/index.page'
+import { UserProps } from '@/src/pages/profile/[id].page'
 
 interface ProfileDetailsProps {
   user: UserProps

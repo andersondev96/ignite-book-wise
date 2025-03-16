@@ -13,7 +13,6 @@ import {
   Text,
 } from './styles'
 import { Stars } from '../Stars'
-import { useRouter } from 'next/router'
 
 dayjs.extend(relativeTime)
 
@@ -45,7 +44,6 @@ interface BookCardProps {
 
 export const BookCard = ({ rating }: BookCardProps) => {
   const [expanded, setExpanded] = useState(false)
-  const route = useRouter()
 
   const safeDescription = rating.description ?? ''
 
@@ -53,7 +51,7 @@ export const BookCard = ({ rating }: BookCardProps) => {
     <BookCardContainer>
       <AuthorSection>
         {rating.user && (
-          <AuthorInfo onClick={() => route.push(`/profile/${rating.user.id}`)}>
+          <AuthorInfo href={`/profile/${rating.user.id}`}>
             <Avatar>
               <img src={rating.user.avatar_url} alt={rating.user.name} />
             </Avatar>

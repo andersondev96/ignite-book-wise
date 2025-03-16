@@ -16,9 +16,7 @@ export interface BookSchema {
   name: string
   author: string
   cover_url: string
-  ratings: {
-    rate: number
-  }
+  avgRating: number
 }
 
 export const ExplorePage: NextPageWithLayout = () => {

@@ -1,4 +1,5 @@
 import { styled } from '@/stitches.config'
+import Link from 'next/link'
 
 export const Container = styled('div', {
   display: 'flex',
@@ -10,7 +11,8 @@ export const Main = styled('div', {
   marginBottom: '64px',
 })
 
-export const BackButton = styled('div', {
+export const BackButton = styled(Link, {
+  textDecoration: 'none',
   display: 'flex',
   alignItems: 'center',
   gap: '12px',

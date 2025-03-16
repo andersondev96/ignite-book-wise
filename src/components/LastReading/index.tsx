@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { api } from '@/src/lib/axios'
 import { useSession } from 'next-auth/react'
 import { ClipLoader } from 'react-spinners'
+import Link from 'next/link'
 
 interface Rating {
   id: string
@@ -61,10 +62,10 @@ export const LastReading = () => {
     <Container>
       <Title>
         <span>Sua última leitura</span>
-        <a href="#">
+        <Link href={`/profile/${userId}`}>
           Ver todas
           <CaretRight size={16} />
-        </a>
+        </Link>
       </Title>
       {loading ? (
         <ClipLoader size={50} color="#4fa94d" loading={loading} />
