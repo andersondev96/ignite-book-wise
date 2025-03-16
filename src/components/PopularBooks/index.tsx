@@ -1,4 +1,4 @@
-import { Books, CaretRight } from '@phosphor-icons/react'
+import { CaretRight } from '@phosphor-icons/react'
 import {
   Container,
   PopularBookCard,
@@ -6,30 +6,34 @@ import {
   TitleBook,
   TitleSection,
 } from './styles'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { api } from '@/src/lib/axios'
 import { Stars } from '../Stars'
 import Link from 'next/link'
 import { ClipLoader } from 'react-spinners'
+import { useRouter } from 'next/router'
 
-interface Books {
+interface Rating {
   id: string
   rate: number
   book: {
+    id: string
     name: string
     cover_url: string
     author: string
   }
 }
 export const PopularBooks = () => {
-  const [books, setBooks] = useState<Books[]>([])
+  const [ratings, setRatings] = useState<Rating[]>([])
   const [loading, setLoading] = useState<boolean>(true)
+
+  const route = useRouter()
 
   useEffect(() => {
     api
       .get('/books/populars')
       .then((response) => {
-        setBooks(response.data)
+        setRatings(response.data)
         setLoading(false)
       })
       .catch((err) => {
@@ -37,6 +41,15 @@ export const PopularBooks = () => {
         setLoading(false)
       })
   }, [])
+
+  const handleSelectedBook = useCallback(
+    (bookId: string) => {
+      localStorage.setItem('bookId', bookId)
+
+      route.push('explore')
+    },
+    [route],
+  )
 
   return (
     <Container>
@@ -52,20 +65,21 @@ export const PopularBooks = () => {
         <ClipLoader size={50} color="#4fa94d" loading={loading} />
       ) : (
         <PopularsBooks>
-          {books.map((book) => {
+          {ratings.map((rating) => {
             return (
-              <PopularBookCard key={book.id}>
+              <PopularBookCard key={rating.id}>
                 <img
-                  src={book.book.cover_url.replace('public', '')}
-                  alt={book.book.name}
+                  src={rating.book.cover_url.replace('public', '')}
+                  alt={rating.book.name}
+                  onClick={() => handleSelectedBook(rating.book.id)}
                 />
 
                 <div>
                   <TitleBook>
-                    <span>{book.book.name}</span>
-                    <p>{book.book.author}</p>
+                    <span>{rating.book.name}</span>
+                    <p>{rating.book.author}</p>
                   </TitleBook>
-                  <Stars rate={book.rate} />
+                  <Stars rate={rating.rate} />
                 </div>
               </PopularBookCard>
             )

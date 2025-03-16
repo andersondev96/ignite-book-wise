@@ -1,5 +1,6 @@
-import { useEffect, useState, type ReactElement } from 'react'
-import type { NextPageWithLayout } from '../_app.page'
+import * as Dialog from '@radix-ui/react-dialog'
+import { useCallback, useEffect, useState, type ReactElement } from 'react'
+import { NextPageWithLayout } from '../_app.page'
 import { DefaultLayout } from '@/src/layouts'
 import { Container, Header, ListBooks } from '@/src/styles/pages/explore'
 import { PageTitle } from '@/src/components/ui/PageTitle'
@@ -10,6 +11,7 @@ import { Book } from '@/src/components/Book'
 import { api } from '@/src/lib/axios'
 import { useCategory } from '@/src/contexts/CategoryContext'
 import { ClipLoader } from 'react-spinners'
+import { ModalBookDetails } from '@/src/components/ui/ModalBookDetails'
 
 export interface BookSchema {
   id: string
@@ -24,6 +26,17 @@ export const ExplorePage: NextPageWithLayout = () => {
   const [name, setName] = useState('')
   const { selectedCategory } = useCategory()
   const [loading, setLoading] = useState<boolean>(true)
+
+  const [bookSelected, setBookSelected] = useState<string | null>(null)
+
+  const loadingBookSelected = useCallback(() => {
+    const bookId = localStorage.getItem('bookId')
+
+    if (bookId) {
+      setBookSelected(bookId)
+      localStorage.removeItem('bookId')
+    }
+  }, [])
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -49,29 +62,38 @@ export const ExplorePage: NextPageWithLayout = () => {
       }
     }
     fetchBooks()
-  }, [selectedCategory, name])
+    loadingBookSelected()
+  }, [selectedCategory, name, loadingBookSelected])
 
   return (
-    <Container>
-      <Header>
-        <PageTitle title="Explorar" icon={<Binoculars size={32} />} />
-        <SearchInput
-          name="actor"
-          placeholder="Buscar livro ou autor"
-          onChange={(e) => setName(e.target.value)}
-        />
-      </Header>
-      <Filters />
-      {loading ? (
-        <ClipLoader size={50} color="#4fa94d" loading={loading} />
-      ) : (
-        <ListBooks>
-          {books.map((book) => (
-            <Book key={book.id} book={book} />
-          ))}
-        </ListBooks>
-      )}
-    </Container>
+    <>
+      <Container>
+        <Header>
+          <PageTitle title="Explorar" icon={<Binoculars size={32} />} />
+          <SearchInput
+            name="actor"
+            placeholder="Buscar livro ou autor"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Header>
+        <Filters />
+        {loading ? (
+          <ClipLoader size={50} color="#4fa94d" loading={loading} />
+        ) : (
+          <ListBooks>
+            {books.map((book) => (
+              <Book key={book.id} book={book} />
+            ))}
+          </ListBooks>
+        )}
+      </Container>
+      <Dialog.Root
+        open={!!bookSelected}
+        onOpenChange={() => setBookSelected(null)}
+      >
+        {bookSelected && <ModalBookDetails id={bookSelected} />}
+      </Dialog.Root>
+    </>
   )
 }
 

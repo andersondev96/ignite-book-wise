@@ -54,6 +54,8 @@ export const PopularBookCard = styled('div', {
     height: '94px',
     objectFit: 'cover',
     borderRadius: '4px',
+
+    cursor: 'pointer',
   },
 })
 

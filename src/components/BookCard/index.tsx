@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/pt-br'
@@ -13,6 +13,7 @@ import {
   Text,
 } from './styles'
 import { Stars } from '../Stars'
+import { useRouter } from 'next/router'
 
 dayjs.extend(relativeTime)
 
@@ -43,9 +44,20 @@ interface BookCardProps {
 }
 
 export const BookCard = ({ rating }: BookCardProps) => {
+  const route = useRouter()
+
   const [expanded, setExpanded] = useState(false)
 
   const safeDescription = rating.description ?? ''
+
+  const handleSelectedBook = useCallback(
+    (bookId: string) => {
+      localStorage.setItem('bookId', bookId)
+
+      route.push('explore')
+    },
+    [route],
+  )
 
   return (
     <BookCardContainer>
@@ -67,6 +79,7 @@ export const BookCard = ({ rating }: BookCardProps) => {
         <img
           src={rating.book.cover_url.replace('public', '')}
           alt={rating.book.name}
+          onClick={() => handleSelectedBook(rating.book.id)}
         />
         <BookInfoContent>
           <strong>{rating.book.name}</strong>

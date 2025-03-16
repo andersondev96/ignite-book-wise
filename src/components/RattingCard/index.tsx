@@ -28,7 +28,7 @@ export const RattingCard = ({ rating }: RatingCardProops) => {
   return (
     <Container>
       <Header>
-        <User>
+        <User href={`profile/${rating.user.id}`}>
           <img src={rating.user?.avatar_url} alt={rating.user.name} />
           <UserInfo>
             <strong>{rating.user.name}</strong>

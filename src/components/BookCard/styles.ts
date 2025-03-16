@@ -69,6 +69,7 @@ export const BookInfoSection = styled('section', {
 
   img: {
     width: '108px',
+    cursor: 'pointer',
   },
 })
 

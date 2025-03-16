@@ -1,4 +1,5 @@
 import { styled } from '@/stitches.config'
+import Link from 'next/link'
 
 export const Container = styled('div', {
   display: 'flex',
@@ -23,7 +24,9 @@ export const Header = styled('div', {
   justifyContent: 'space-between',
 })
 
-export const User = styled('div', {
+export const User = styled(Link, {
+  textDecoration: 'none',
+
   display: 'flex',
   alignItems: 'center',
   gap: '16px',
