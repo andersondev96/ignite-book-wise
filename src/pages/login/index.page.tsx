@@ -14,6 +14,7 @@ export default function Login() {
 
   return (
     <Container>
+      <title>Login</title>
       <img src="/images/background-login.png" alt="" />
       <LoginForm>
         <h1>Boas vindas!</h1>
