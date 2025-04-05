@@ -34,34 +34,6 @@ export const AuthorInfo = styled(Link, {
   },
 })
 
-export const Avatar = styled('div', {
-  position: 'relative',
-  width: '40px',
-  height: '40px',
-  borderRadius: '50%',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    inset: '-2px',
-    borderRadius: '50%',
-    background: 'linear-gradient(to bottom, #7FD1CC, #9694F5)',
-    zIndex: -1,
-  },
-
-  '& img': {
-    width: '100%',
-    height: '100%',
-    borderRadius: '50%',
-    objectFit: 'cover',
-    position: 'relative',
-    zIndex: 1,
-  },
-})
-
 export const BookInfoSection = styled('section', {
   marginTop: '32px',
   display: 'flex',

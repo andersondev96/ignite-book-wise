@@ -8,6 +8,7 @@ import {
 import { BooksInfo, Container, Divisor, UserInfo } from './styles'
 import { ItemInfoProfile } from '../ItemInfoProfile'
 import { UserProps } from '@/src/pages/profile/[id].page'
+import { Avatar } from '../ui/Avatar'
 
 interface ProfileDetailsProps {
   user: UserProps
@@ -17,7 +18,7 @@ export const ProfileDetails = ({ user }: ProfileDetailsProps) => {
   return (
     <Container>
       <UserInfo>
-        <img src={user.avatar_url} alt={user.name} />
+        <Avatar image_url={user.avatar_url} image_name={user.name} />
         <strong>{user.name}</strong>
         <span>membro desde {dayjs(new Date(user.created_at)).year()}</span>
       </UserInfo>

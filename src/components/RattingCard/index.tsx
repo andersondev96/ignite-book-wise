@@ -1,4 +1,4 @@
-import { Stars } from '../Stars'
+import { Stars } from '../ui/Stars'
 import { Container, Header, User, UserInfo } from './styles'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'

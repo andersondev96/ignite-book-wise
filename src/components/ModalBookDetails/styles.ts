@@ -184,7 +184,7 @@ export const Pages = styled('div', {
     color: '$green100',
   },
 })
-export const RattingsSection = styled('div', {
+export const RatingsSection = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   gap: '16px',

@@ -10,19 +10,18 @@ import {
   Overlay,
   Pages,
   RatingBook,
-  RattingsSection,
+  RatingsSection,
   Title,
   TitleAndActorBook,
 } from './styles'
-import { Stars } from '../../Stars'
 import { BookmarkSimple, BookOpen, X } from '@phosphor-icons/react'
-import { RattingCard } from '../../RattingCard'
-import { RattingForm, type RateFormData } from '../../RattingForm'
 import { useCallback, useEffect, useState } from 'react'
 import { api } from '@/src/lib/axios'
 import { useSession } from 'next-auth/react'
-import { LoginModal } from '../../LoginModal'
-
+import { LoginModal } from '../LoginModal'
+import { RattingCard } from '../RattingCard'
+import { RattingForm, type RateFormData } from '../RattingForm'
+import { Stars } from '../ui/Stars'
 interface ModalBookDetailsProps {
   id: string
 }
@@ -179,7 +178,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
           </About>
         </BookInfo>
 
-        <RattingsSection>
+        <RatingsSection>
           <Title>
             <span>Avaliações</span>
             <strong onClick={handleShowRatingsForm}>Avaliar</strong>
@@ -197,7 +196,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
           {book.ratings.map((rating) => {
             return <RattingCard key={rating.id} rating={rating} />
           })}
-        </RattingsSection>
+        </RatingsSection>
       </Content>
     </Dialog.Portal>
   )

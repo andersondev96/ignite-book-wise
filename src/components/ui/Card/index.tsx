@@ -6,7 +6,6 @@ import 'dayjs/locale/pt-br'
 import {
   AuthorInfo,
   AuthorSection,
-  Avatar,
   BookCardContainer,
   BookInfoContent,
   BookInfoSection,
@@ -14,6 +13,7 @@ import {
 } from './styles'
 import { Stars } from '../Stars'
 import { useRouter } from 'next/router'
+import { Avatar } from '../Avatar'
 
 dayjs.extend(relativeTime)
 
@@ -43,7 +43,7 @@ interface BookCardProps {
   rating: Rating
 }
 
-export const BookCard = ({ rating }: BookCardProps) => {
+export const Card = ({ rating }: BookCardProps) => {
   const route = useRouter()
 
   const [expanded, setExpanded] = useState(false)
@@ -64,9 +64,12 @@ export const BookCard = ({ rating }: BookCardProps) => {
       <AuthorSection>
         {rating.user && (
           <AuthorInfo href={`/profile/${rating.user.id}`}>
-            <Avatar>
-              <img src={rating.user.avatar_url} alt={rating.user.name} />
-            </Avatar>
+            <Avatar
+              image_url={rating.user.avatar_url}
+              image_name={rating.user.name}
+              size="small"
+            />
+
             <div>
               <span>{rating.user.name}</span>
               <p>{dayjs().locale('pt-br').from(dayjs(rating.created_at))}</p>

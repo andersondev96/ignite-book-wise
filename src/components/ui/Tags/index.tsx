@@ -1,10 +1,10 @@
 import { useRef, useState, MouseEvent } from 'react'
 import { useCategory } from '@/src/contexts/CategoryContext'
-import { FilterItem } from '../FilterItem'
+import { FilterItem } from '../../FilterItem'
 import { Container } from './styles'
 import { useCategories } from '@/src/hooks/useCategories'
 
-export const Filters = () => {
+export const Tags = () => {
   const { categories } = useCategories()
   const { setSelectedCategory } = useCategory()
   const containerRef = useRef<HTMLDivElement | null>(null)

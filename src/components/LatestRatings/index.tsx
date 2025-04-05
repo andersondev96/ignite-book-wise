@@ -1,11 +1,11 @@
 import { ChartLineUp } from '@phosphor-icons/react'
-import { BookCard } from '../BookCard'
 import { PageTitle } from '../ui/PageTitle'
 import { LastRatingContainer, LatestRatingsContainer } from './styles'
 import { LastReading } from '../LastReading'
 import { useCallback, useEffect, useState } from 'react'
 import { api } from '@/src/lib/axios'
 import { ClipLoader } from 'react-spinners'
+import { Card } from '../ui/Card'
 
 interface Rating {
   id: string
@@ -68,7 +68,7 @@ export const LatestRatings = () => {
           <ClipLoader size={50} color="#4fa94d" loading={loading} />
         ) : (
           ratings.map((rating) => {
-            return <BookCard key={rating.id} rating={rating} />
+            return <Card key={rating.id} rating={rating} />
           })
         )}
       </LastRatingContainer>

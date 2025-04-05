@@ -1,11 +1,11 @@
 import { Container, Title } from './styles'
 import { CaretRight } from '@phosphor-icons/react'
-import { BookCard } from '../BookCard'
 import { useEffect, useState } from 'react'
 import { api } from '@/src/lib/axios'
 import { useSession } from 'next-auth/react'
 import { ClipLoader } from 'react-spinners'
 import Link from 'next/link'
+import { Card } from '../ui/Card'
 
 interface Rating {
   id: string
@@ -70,7 +70,7 @@ export const LastReading = () => {
       {loading ? (
         <ClipLoader size={50} color="#4fa94d" loading={loading} />
       ) : (
-        <BookCard rating={rating} />
+        <Card rating={rating} />
       )}
     </Container>
   )

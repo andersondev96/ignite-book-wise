@@ -11,7 +11,7 @@ import {
   DetailsBook,
   TitleAndActorBook,
 } from './styles'
-import { Stars } from '../Stars'
+import { Stars } from '../ui/Stars'
 
 dayjs.extend(relativeTime)
 

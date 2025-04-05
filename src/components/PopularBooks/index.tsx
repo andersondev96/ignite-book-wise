@@ -8,7 +8,7 @@ import {
 } from './styles'
 import { useCallback, useEffect, useState } from 'react'
 import { api } from '@/src/lib/axios'
-import { Stars } from '../Stars'
+import { Stars } from '../ui/Stars'
 import Link from 'next/link'
 import { ClipLoader } from 'react-spinners'
 import { useRouter } from 'next/router'

@@ -6,12 +6,12 @@ import { Container, Header, ListBooks } from '@/src/styles/pages/explore'
 import { PageTitle } from '@/src/components/ui/PageTitle'
 import { Binoculars } from '@phosphor-icons/react'
 import { SearchInput } from '@/src/components/SearchInput'
-import { Filters } from '@/src/components/Filters'
 import { Book } from '@/src/components/Book'
 import { api } from '@/src/lib/axios'
 import { useCategory } from '@/src/contexts/CategoryContext'
 import { ClipLoader } from 'react-spinners'
-import { ModalBookDetails } from '@/src/components/ui/ModalBookDetails'
+import { Tags } from '@/src/components/ui/Tags'
+import { ModalBookDetails } from '@/src/components/ModalBookDetails'
 
 export interface BookSchema {
   id: string
@@ -76,7 +76,7 @@ export const ExplorePage: NextPageWithLayout = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </Header>
-        <Filters />
+        <Tags />
         {loading ? (
           <ClipLoader size={50} color="#4fa94d" loading={loading} />
         ) : (
