@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import {
   Container,
   StarContainer,
@@ -13,49 +13,74 @@ type StarsProps = {
 }
 
 export const Stars = ({ mode = 'view', rate, onRateChange }: StarsProps) => {
-  const [stars, setStars] = useState(rate)
-  const [hovered, setHovered] = useState<number | null>(null)
+  const [currentRate, setCurrentRate] = useState(rate)
+  const [hoveredRate, setHoveredRate] = useState<number | null>(null)
 
-  const handleClick = (value: number) => {
-    if (mode === 'edit') {
-      const newValue = value === stars ? 0 : value
-      setStars(newValue)
+  const isEditable = mode === 'edit'
+
+  const handleClick = useCallback(
+    (value: number) => {
+      if (!isEditable) return
+
+      const newValue = value === currentRate ? 0 : value
+      setCurrentRate(newValue)
       onRateChange?.(newValue)
+    },
+    [currentRate, isEditable, onRateChange],
+  )
+
+  const handleMouseEnter = useCallback(
+    (value: number) => {
+      if (isEditable) {
+        setHoveredRate(value)
+      }
+    },
+    [isEditable],
+  )
+
+  const handleMouseLeave = useCallback(() => {
+    if (isEditable) {
+      setHoveredRate(null)
     }
-  }
+  }, [isEditable])
 
-  const handleMouseEnter = (index: number) => {
-    if (mode === 'edit') setHovered(index)
-  }
+  const getStarStyle = useCallback(
+    (index: number) => {
+      if (hoveredRate !== null && isEditable) {
+        return { width: hoveredRate >= index ? '100%' : '0%' }
+      }
 
-  const handleMouseLeave = () => {
-    if (mode === 'edit') setHovered(null)
-  }
+      if (currentRate >= index) {
+        return { width: '100%' }
+      }
 
-  const getStarStyle = (i: number) => {
-    if (hovered !== null && mode === 'edit') {
-      return { width: hovered >= i ? '100%' : '0%' }
-    } else if (stars >= i) {
-      return { width: '100%' }
-    } else if (stars + 0.5 >= i) {
-      return { width: '50%' }
-    }
+      if (currentRate + 0.5 >= index) {
+        return { width: '50%' }
+      }
 
-    return { width: '0%' }
-  }
+      return { width: '0%' }
+    },
+    [currentRate, hoveredRate, isEditable],
+  )
+
+  const stars = useMemo(() => Array.from({ length: 5 }, (_, i) => i + 1), [])
 
   return (
     <Container>
-      {Array.from({ length: 5 }).map((_, i) => (
+      {stars.map((starIndex) => (
         <StarContainer
-          key={i}
-          onClick={() => handleClick(i + 1)}
-          onMouseEnter={() => handleMouseEnter(i + 1)}
+          key={starIndex}
+          onClick={() => handleClick(starIndex)}
+          onMouseEnter={() => handleMouseEnter(starIndex)}
           onMouseLeave={handleMouseLeave}
-          style={{ cursor: mode === 'view' ? 'default' : 'pointer' }}
+          style={{ cursor: isEditable ? 'pointer' : 'default' }}
         >
           <StarBackground size={16} weight="fill" />
-          <StarForeground style={getStarStyle(i + 1)} size={16} weight="fill" />
+          <StarForeground
+            style={getStarStyle(starIndex)}
+            size={16}
+            weight="fill"
+          />
         </StarContainer>
       ))}
     </Container>

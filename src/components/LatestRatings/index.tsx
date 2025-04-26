@@ -1,11 +1,14 @@
-import { ChartLineUp } from '@phosphor-icons/react'
-import { PageTitle } from '../ui/PageTitle'
-import { LastRatingContainer, LatestRatingsContainer } from './styles'
-import { LastReading } from '../LastReading'
 import { useCallback, useEffect, useState } from 'react'
-import { api } from '@/src/lib/axios'
+import { ChartLineUp } from '@phosphor-icons/react'
 import { ClipLoader } from 'react-spinners'
+
+import { api } from '@/src/lib/axios'
+
+import { PageTitle } from '../ui/PageTitle'
+import { LastReading } from '../LastReading'
 import { Card } from '../ui/Card'
+
+import { LastRatingContainer, LatestRatingsContainer } from './styles'
 
 interface Rating {
   id: string
@@ -31,7 +34,7 @@ interface Rating {
 
 export const LatestRatings = () => {
   const [ratings, setRatings] = useState<Rating[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
+  const [isLoading, setLoading] = useState<boolean>(true)
 
   const loadingRatings = useCallback(async () => {
     await api
@@ -50,12 +53,12 @@ export const LatestRatings = () => {
     loadingRatings()
   }, [loadingRatings])
 
-  if (loading) {
-    return
-  }
-
-  if (!ratings) {
-    return null
+  if (isLoading) {
+    return (
+      <LastRatingContainer>
+        <ClipLoader size={50} color="#4fa94d" />
+      </LastRatingContainer>
+    )
   }
 
   return (
@@ -64,13 +67,9 @@ export const LatestRatings = () => {
       <LastReading />
       <LastRatingContainer>
         <span>Avaliações mais recentes</span>
-        {loading ? (
-          <ClipLoader size={50} color="#4fa94d" loading={loading} />
-        ) : (
-          ratings.map((rating) => {
-            return <Card key={rating.id} rating={rating} />
-          })
-        )}
+        {ratings.map((rating) => {
+          return <Card key={rating.id} rating={rating} />
+        })}
       </LastRatingContainer>
     </LatestRatingsContainer>
   )

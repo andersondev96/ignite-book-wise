@@ -1,11 +1,28 @@
-import { Container, Title } from './styles'
+import { useCallback, useEffect, useState } from 'react'
 import { CaretRight } from '@phosphor-icons/react'
-import { useEffect, useState } from 'react'
-import { api } from '@/src/lib/axios'
-import { useSession } from 'next-auth/react'
-import { ClipLoader } from 'react-spinners'
 import Link from 'next/link'
+import { ClipLoader } from 'react-spinners'
+import { useSession } from 'next-auth/react'
+
+import { api } from '@/src/lib/axios'
+
+import { Container, Title } from './styles'
 import { Card } from '../ui/Card'
+
+interface Book {
+  id: string
+  name: string
+  author: string
+  summary: string
+  cover_url: string
+  created_at: string
+}
+
+interface User {
+  id: string
+  name: string
+  avatar_url: string
+}
 
 interface Rating {
   id: string
@@ -14,44 +31,42 @@ interface Rating {
   created_at: string
   book_id: string
   user_id: string
-  book: {
-    id: string
-    name: string
-    author: string
-    summary: string
-    cover_url: string
-    created_at: string
-  }
-  user: {
-    id: string
-    name: string
-    avatar_url: string
-  }
+  book: Book
+  user: User
 }
 
 export const LastReading = () => {
   const [rating, setRating] = useState<Rating>()
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const { data: session } = useSession()
-  const userId = session ? session.user.id : null
-  const [loading, setLoading] = useState<boolean>(true)
 
-  useEffect(() => {
-    if (userId) {
-      api
-        .get(`/ratings/user-latest?userId=${userId}`)
-        .then((response) => {
-          setRating(response.data)
-          setLoading(false)
-        })
-        .catch((error) => {
-          console.log(error)
-          setLoading(false)
-        })
+  const userId = session?.user.id
+
+  const fetchLastReading = useCallback(async () => {
+    if (!userId) return
+
+    try {
+      const { data } = await api.get<Rating>(
+        `/ratings/user-latest?userId=${userId}`,
+      )
+      setRating(data)
+    } catch (error) {
+      console.error('Erro ao buscar a última leitura:', error)
+    } finally {
+      setIsLoading(false)
     }
   }, [userId])
 
-  if (loading) {
-    return
+  useEffect(() => {
+    fetchLastReading()
+  }, [fetchLastReading])
+
+  if (isLoading) {
+    return (
+      <Container>
+        <ClipLoader size={50} color="#4fa94d" />
+      </Container>
+    )
   }
 
   if (!rating) {
@@ -67,11 +82,7 @@ export const LastReading = () => {
           <CaretRight size={16} />
         </Link>
       </Title>
-      {loading ? (
-        <ClipLoader size={50} color="#4fa94d" loading={loading} />
-      ) : (
-        <Card rating={rating} />
-      )}
+      {<Card rating={rating} />}
     </Container>
   )
 }

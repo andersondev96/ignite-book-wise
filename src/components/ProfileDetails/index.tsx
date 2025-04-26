@@ -18,7 +18,7 @@ export const ProfileDetails = ({ user }: ProfileDetailsProps) => {
   return (
     <Container>
       <UserInfo>
-        <Avatar image_url={user.avatar_url} image_name={user.name} />
+        <Avatar imageUrl={user.avatar_url} imageName={user.name} />
         <strong>{user.name}</strong>
         <span>membro desde {dayjs(new Date(user.created_at)).year()}</span>
       </UserInfo>
