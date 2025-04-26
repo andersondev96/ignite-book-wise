@@ -1,12 +1,19 @@
 import { useRef, useState, MouseEvent } from 'react'
-import { useCategory } from '@/src/contexts/CategoryContext'
 import { FilterItem } from '../../FilterItem'
 import { Container } from './styles'
-import { useCategories } from '@/src/hooks/useCategories'
+import { Category } from '@prisma/client'
 
-export const Tags = () => {
-  const { categories } = useCategories()
-  const { setSelectedCategory } = useCategory()
+interface TagsProps {
+  categories: Category[]
+  selectedCategory: string
+  setSelectedCategory: (category: string) => void
+}
+
+export const Tags = ({
+  categories,
+  selectedCategory,
+  setSelectedCategory,
+}: TagsProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   const [isDragging, setIsDragging] = useState(false)
@@ -41,16 +48,16 @@ export const Tags = () => {
       onMouseUp={handleMouseUp}
     >
       <FilterItem
-        id=""
         title="Tudo"
-        handleCategory={() => setSelectedCategory('')}
+        active={selectedCategory === ''}
+        onClick={() => setSelectedCategory('')}
       />
       {categories.map((category) => (
         <FilterItem
           key={category.id}
-          id={category.id}
           title={category.name}
-          handleCategory={() => setSelectedCategory(category.id)}
+          active={selectedCategory === category.id}
+          onClick={() => setSelectedCategory(category.id)}
         />
       ))}
     </Container>

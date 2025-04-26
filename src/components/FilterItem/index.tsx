@@ -1,22 +1,19 @@
 import { useCallback } from 'react'
 import { Container } from './styles'
-import { useCategory } from '@/src/contexts/CategoryContext'
 
 type FilterItemProps = {
-  id: string
   title: string
-  handleCategory: () => void
+  active: boolean
+  onClick: () => void
 }
 
-export const FilterItem = ({ id, title, handleCategory }: FilterItemProps) => {
-  const { selectedCategory } = useCategory()
-
+export const FilterItem = ({ title, active, onClick }: FilterItemProps) => {
   const handleClick = useCallback(() => {
-    handleCategory()
-  }, [handleCategory])
+    onClick()
+  }, [onClick])
 
   return (
-    <Container onClick={handleClick} active={selectedCategory === id}>
+    <Container onClick={handleClick} active={active}>
       <span>{title}</span>
     </Container>
   )

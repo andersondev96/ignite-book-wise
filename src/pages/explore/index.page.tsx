@@ -8,10 +8,10 @@ import { Binoculars } from '@phosphor-icons/react'
 import { SearchInput } from '@/src/components/SearchInput'
 import { Book } from '@/src/components/Book'
 import { api } from '@/src/lib/axios'
-import { useCategory } from '@/src/contexts/CategoryContext'
 import { ClipLoader } from 'react-spinners'
 import { Tags } from '@/src/components/ui/Tags'
 import { ModalBookDetails } from '@/src/components/ModalBookDetails'
+import { Category } from '@/src/components/ModalBookDetails/styles'
 
 export interface BookSchema {
   id: string
@@ -21,49 +21,62 @@ export interface BookSchema {
   avgRating: number
 }
 
+export interface Category {
+  id: string
+  name: string
+}
+
 export const ExplorePage: NextPageWithLayout = () => {
   const [books, setBooks] = useState<BookSchema[]>([])
   const [name, setName] = useState('')
-  const { selectedCategory } = useCategory()
   const [loading, setLoading] = useState<boolean>(true)
-
+  const [categories, setCategories] = useState<Category[]>([])
+  const [selectedCategory, setSelectedCategory] = useState('')
   const [bookSelected, setBookSelected] = useState<string | null>(null)
 
   const loadingBookSelected = useCallback(() => {
     const bookId = localStorage.getItem('bookId')
-
     if (bookId) {
       setBookSelected(bookId)
       localStorage.removeItem('bookId')
     }
   }, [])
 
-  useEffect(() => {
-    const fetchBooks = async () => {
-      const queryParams = []
+  const loadingCategories = useCallback(() => {
+    api
+      .get('books/categories')
+      .then((response) => setCategories(response.data))
+      .catch((err) => console.error('Erro ao carregar as categorias:', err))
+  }, [])
 
-      if (selectedCategory) {
-        queryParams.push(`category=${selectedCategory}`)
-      }
+  const fetchBooks = useCallback(async () => {
+    setLoading(true)
 
-      if (name) {
-        queryParams.push(`name=${name}`)
-      }
+    const params = new URLSearchParams()
 
-      const url = `books${queryParams.length > 0 ? `?${queryParams.join('&')}` : ''}`
-
-      try {
-        const response = await api.get(url)
-        setBooks(response.data)
-        setLoading(false)
-      } catch (err) {
-        console.log('Erro ao carregar os livros:', err)
-        setLoading(false)
-      }
+    if (selectedCategory) {
+      params.append('category', selectedCategory)
     }
+
+    if (name) {
+      params.append('name', name)
+    }
+
+    try {
+      const response = await api.get(`books?${params.toString()}`)
+      setBooks(response.data)
+    } catch (err) {
+      console.log('Erro ao carregar os livros:', err)
+    } finally {
+      setLoading(false)
+    }
+  }, [selectedCategory, name])
+
+  useEffect(() => {
     fetchBooks()
     loadingBookSelected()
-  }, [selectedCategory, name, loadingBookSelected])
+    loadingCategories()
+  }, [fetchBooks, loadingBookSelected, loadingCategories])
 
   return (
     <>
@@ -76,7 +89,11 @@ export const ExplorePage: NextPageWithLayout = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </Header>
-        <Tags />
+        <Tags
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
         {loading ? (
           <ClipLoader size={50} color="#4fa94d" loading={loading} />
         ) : (
