@@ -5,6 +5,7 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/pt-br'
 
 dayjs.extend(relativeTime)
+dayjs.locale('pt-br')
 
 interface User {
   id: string
@@ -20,27 +21,28 @@ interface Rating {
   user: User
 }
 
-interface RatingCardProops {
+interface RatingCardProps {
   rating: Rating
 }
 
-export const RattingCard = ({ rating }: RatingCardProops) => {
+export const RattingCard = ({ rating }: RatingCardProps) => {
+  const { user, description, rate } = rating
+  const timeAgo = dayjs(rating.created_at).fromNow()
+
   return (
     <Container>
       <Header>
-        <User href={`profile/${rating.user.id}`}>
-          <img src={rating.user?.avatar_url} alt={rating.user.name} />
+        <User href={`profile/${user.id}`}>
+          <img src={user?.avatar_url} alt={user.name} />
           <UserInfo>
-            <strong>{rating.user.name}</strong>
-            <span>
-              {dayjs().locale('pt-br').from(dayjs(rating.created_at))}
-            </span>
+            <strong>{user.name}</strong>
+            <span>{timeAgo}</span>
           </UserInfo>
         </User>
-        <Stars rate={rating.rate} />
+        <Stars rate={rate} />
       </Header>
 
-      <p>{rating.description}</p>
+      <p>{description}</p>
     </Container>
   )
 }

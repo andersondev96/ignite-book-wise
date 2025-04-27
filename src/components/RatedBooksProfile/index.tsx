@@ -14,29 +14,31 @@ import {
 import { Stars } from '../ui/Stars'
 
 dayjs.extend(relativeTime)
+dayjs.locale('pt-br')
 
 interface RatedBooksProfileInterface {
   rate: RatingsProps
 }
 export const RatedBooksProfile = ({ rate }: RatedBooksProfileInterface) => {
+  const { book, created_at } = rate
+  const timeAgo = dayjs(created_at).fromNow()
+  const coverUrl = book.cover_url.replace('public', '')
+
   return (
     <Container>
-      <span>{dayjs().locale('pt-br').from(dayjs(rate.created_at))}</span>
+      <span>{timeAgo}</span>
       <BookCard>
         <BookInfo>
-          <img
-            src={rate.book.cover_url.replace('public', '')}
-            alt={rate.book.name}
-          />
+          <img src={coverUrl} alt={book.name} />
           <DetailsBook>
             <TitleAndActorBook>
-              <strong>{rate.book.name}</strong>
-              <span>{rate.book.author}</span>
+              <strong>{book.name}</strong>
+              <span>{book.author}</span>
             </TitleAndActorBook>
             <Stars rate={rate.rate} />
           </DetailsBook>
         </BookInfo>
-        <p>{rate.book.summary}</p>
+        <p>{book.summary}</p>
       </BookCard>
     </Container>
   )

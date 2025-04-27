@@ -5,46 +5,61 @@ import {
   Books,
   UserList,
 } from '@phosphor-icons/react'
-import { BooksInfo, Container, Divisor, UserInfo } from './styles'
+
 import { ItemInfoProfile } from '../ItemInfoProfile'
-import { UserProps } from '@/src/pages/profile/[id].page'
 import { Avatar } from '../ui/Avatar'
+import { UserProps } from '@/src/pages/profile/[id].page'
+import { BooksInfo, Container, Divisor, UserInfo } from './styles'
 
 interface ProfileDetailsProps {
   user: UserProps
 }
 
 export const ProfileDetails = ({ user }: ProfileDetailsProps) => {
+  const {
+    name,
+    avatar_url,
+    created_at,
+    totalPagesRead,
+    totalBooksRates,
+    totalAuthorRead,
+    mostRatedCategory,
+  } = user
+
+  const membershipYear = dayjs(new Date(created_at)).year()
+
   return (
     <Container>
       <UserInfo>
-        <Avatar imageUrl={user.avatar_url} imageName={user.name} />
-        <strong>{user.name}</strong>
-        <span>membro desde {dayjs(new Date(user.created_at)).year()}</span>
+        <Avatar imageUrl={avatar_url} imageName={name} />
+        <strong>{name}</strong>
+        <span>membro desde {membershipYear}</span>
       </UserInfo>
+
       <Divisor />
+
       <BooksInfo>
         <ItemInfoProfile
           icon={<BookOpen size={32} />}
-          title={user.totalPagesRead}
+          title={totalPagesRead}
           description="Páginas lidas"
         />
 
         <ItemInfoProfile
           icon={<Books size={32} />}
-          title={user.totalBooksRates}
+          title={totalBooksRates}
           description="Livros avaliados"
         />
 
         <ItemInfoProfile
           icon={<UserList size={32} />}
-          title={user.totalAuthorRead}
+          title={totalAuthorRead}
           description="Autores lidos"
         />
 
         <ItemInfoProfile
           icon={<BookmarkSimple size={32} />}
-          title={user.mostRatedCategory}
+          title={mostRatedCategory}
           description="Categoria mais lida"
         />
       </BooksInfo>

@@ -16,6 +16,7 @@ import { Stars } from '../Stars'
 import { Avatar } from '../Avatar'
 
 dayjs.extend(relativeTime)
+dayjs.locale('pt-br')
 
 interface Book {
   id: string
@@ -59,7 +60,7 @@ export const Card = ({ rating }: BookCardProps) => {
     [router],
   )
 
-  const formattedDate = dayjs(rating.created_at).locale('pt-br').fromNow()
+  const formattedDate = dayjs(rating.created_at).fromNow()
 
   const truncatedDescription = (text: string) =>
     text.length > 100 && !isExpanded ? `${text.slice(0, 100)}... ` : text
