@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { Container, ItemInfo } from './styles'
 
 interface ItemInfoProfileProps {
@@ -11,14 +11,12 @@ export const ItemInfoProfile = ({
   icon,
   title,
   description,
-}: ItemInfoProfileProps) => {
-  return (
-    <Container>
-      {icon}
-      <ItemInfo>
-        <strong>{title}</strong>
-        <span>{description}</span>
-      </ItemInfo>
-    </Container>
-  )
-}
+}: ItemInfoProfileProps) => (
+  <Container>
+    {icon}
+    <ItemInfo>
+      <strong>{title}</strong>
+      <span>{description}</span>
+    </ItemInfo>
+  </Container>
+)

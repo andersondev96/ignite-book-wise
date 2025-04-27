@@ -12,11 +12,9 @@ export const ButtonAuth = ({
   imageUrl,
   title,
   ...rest
-}: ButtonAuthProps) => {
-  return (
-    <Container {...rest}>
-      {icon || (imageUrl && <img src={imageUrl} alt="" />)}
-      <span>{title}</span>
-    </Container>
-  )
-}
+}: ButtonAuthProps) => (
+  <Container {...rest}>
+    {icon || (imageUrl && <img src={imageUrl} alt="title" />)}
+    <span>{title}</span>
+  </Container>
+)

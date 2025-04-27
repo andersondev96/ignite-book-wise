@@ -1,4 +1,13 @@
+import { useCallback, useEffect, useState } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
+import { BookmarkSimple, BookOpen, X } from '@phosphor-icons/react'
+import { useSession } from 'next-auth/react'
+
+import { api } from '@/src/lib/axios'
+import { LoginModal } from '../LoginModal'
+import { RattingCard } from '../RattingCard'
+import { RattingForm, type RateFormData } from '../RattingForm'
+import { Stars } from '../ui/Stars'
 import {
   About,
   BookData,
@@ -14,14 +23,7 @@ import {
   Title,
   TitleAndActorBook,
 } from './styles'
-import { BookmarkSimple, BookOpen, X } from '@phosphor-icons/react'
-import { useCallback, useEffect, useState } from 'react'
-import { api } from '@/src/lib/axios'
-import { useSession } from 'next-auth/react'
-import { LoginModal } from '../LoginModal'
-import { RattingCard } from '../RattingCard'
-import { RattingForm, type RateFormData } from '../RattingForm'
-import { Stars } from '../ui/Stars'
+
 interface ModalBookDetailsProps {
   id: string
 }
@@ -59,16 +61,18 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
 
   const { status } = useSession()
 
-  const fetchBook = useCallback(async () => {
-    await api
-      .get(`books/details/${id}`)
-      .then((response) => setBook(response.data))
-      .catch((err) => `Erro ao carregar detalhes do livro: ${err}`)
+  const fetchBookDetails = useCallback(async () => {
+    try {
+      const { data } = await api.get(`books/details/${id}`)
+      setBook(data)
+    } catch (err) {
+      console.error(`Erro ao carregar detalhes do livro: ${err}`)
+    }
   }, [id])
 
   useEffect(() => {
-    fetchBook()
-  }, [fetchBook])
+    fetchBookDetails()
+  }, [fetchBookDetails])
 
   const fetchCategories = useCallback(async () => {
     if (!book) return
@@ -90,52 +94,38 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
     }
   }, [book])
 
-  const handleShowRatingsForm = useCallback(() => {
-    if (status === 'authenticated') {
-      setShowRatingForm(true)
-    } else {
-      setShowLoginModal(true)
+  const handleShowRatingsForm = () => {
+    status === 'authenticated'
+      ? setShowRatingForm(true)
+      : setShowLoginModal(true)
+  }
+
+  const handleRateSubmit = async (data: RateFormData) => {
+    if (!book) {
+      return
     }
-  }, [status])
 
-  const onSubmit = useCallback(
-    async (data: RateFormData) => {
-      if (!book) {
-        return
-      }
-      console.log('Enviando', data)
-      try {
-        const bookId = book.id
-        const { description, rate } = data
-
-        const response = await api.post(`/books/${bookId}/rate`, {
-          description,
-          rate,
-        })
-
-        if (response.status === 201) {
-          setShowRatingForm(false)
-
-          fetchBook()
-        }
-      } catch (err) {
-        console.error(err)
-      }
-    },
-    [book, fetchBook],
-  )
+    try {
+      await api.post(`/books/${book.id}/rate`, {
+        description: <data value="" className="des"></data>,
+        rate: data.rate,
+      })
+      setShowRatingForm(false)
+      fetchBookDetails()
+    } catch (err) {
+      console.error('Erro ao enviar avaliação:', err)
+    }
+  }
 
   useEffect(() => {
-    if (book) {
-      fetchCategories()
-    }
-  }, [book, fetchCategories])
+    fetchCategories()
+  }, [fetchCategories])
 
   if (!book) {
     return null
   }
 
-  const categoryNames = categories.map((category) => category.name).join(', ')
+  const categoryNames = categories.map(({ name }) => name).join(', ')
 
   return (
     <Dialog.Portal>
@@ -145,6 +135,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
         <CloseButton>
           <X size={21} />
         </CloseButton>
+
         <BookInfo>
           <BookData>
             <img src={book.cover_url.replace('public', '')} alt={book.name} />
@@ -153,12 +144,14 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
                 <strong>{book.name}</strong>
                 <span>{book.author}</span>
               </TitleAndActorBook>
+
               <RatingBook>
-                <Stars mode="view" rate={book.ratings[0].rate} />
-                <span>3 avaliações</span>
+                <Stars mode="view" rate={book.ratings[0]?.rate ?? 0} />
+                <span>{book.ratings.length} avaliações</span>
               </RatingBook>
             </BookDataDescription>
           </BookData>
+
           <About>
             <Category>
               <BookmarkSimple size={24} />
@@ -184,7 +177,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
             <strong onClick={handleShowRatingsForm}>Avaliar</strong>
           </Title>
 
-          {showRatingForm && <RattingForm onSubmit={onSubmit} />}
+          {showRatingForm && <RattingForm onSubmit={handleRateSubmit} />}
           {showLoginModal && (
             <Dialog.Root open={showLoginModal} onOpenChange={setShowLoginModal}>
               <Dialog.Portal>

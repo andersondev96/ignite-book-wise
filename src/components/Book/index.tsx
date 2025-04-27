@@ -1,9 +1,9 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { Stars } from '../ui/Stars'
-import { BookInfo, BookName, Container } from './styles'
 import { ModalBookDetails } from '../ModalBookDetails'
+import { BookInfo, BookName, Container } from './styles'
 
-interface BookSchema {
+interface Book {
   id: string
   name: string
   author: string
@@ -12,15 +12,17 @@ interface BookSchema {
 }
 
 interface BookProps {
-  book: BookSchema
+  book: Book
 }
 
 export const Book = ({ book }: BookProps) => {
+  const imageUrl = book.cover_url.replace('public', '')
+
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
         <Container>
-          <img src={book.cover_url.replace('public', '')} alt={book.name} />
+          <img src={imageUrl} alt={book.name} />
           <BookInfo>
             <BookName>
               <strong>{book.name}</strong>

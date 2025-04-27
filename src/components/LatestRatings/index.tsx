@@ -10,6 +10,21 @@ import { Card } from '../ui/Card'
 
 import { LastRatingContainer, LatestRatingsContainer } from './styles'
 
+interface Book {
+  id: string
+  name: string
+  author: string
+  summary: string
+  cover_url: string
+  created_at: string
+}
+
+interface User {
+  id: string
+  name: string
+  avatar_url: string
+}
+
 interface Rating {
   id: string
   rate: number
@@ -17,19 +32,8 @@ interface Rating {
   created_at: string
   book_id: string
   user_id: string
-  book: {
-    id: string
-    name: string
-    author: string
-    summary: string
-    cover_url: string
-    created_at: string
-  }
-  user: {
-    id: string
-    name: string
-    avatar_url: string
-  }
+  book: Book
+  user: User
 }
 
 export const LatestRatings = () => {
