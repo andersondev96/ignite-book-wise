@@ -12,6 +12,7 @@ import { ClipLoader } from 'react-spinners'
 import { Tags } from '@/src/components/ui/Tags'
 import { ModalBookDetails } from '@/src/components/ModalBookDetails'
 import { Category } from '@/src/components/ModalBookDetails/styles'
+import { useRouter } from 'next/router'
 
 export interface BookSchema {
   id: string
@@ -34,13 +35,15 @@ export const ExplorePage: NextPageWithLayout = () => {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [bookSelected, setBookSelected] = useState<string | null>(null)
 
+  const route = useRouter()
+
   const loadingBookSelected = useCallback(() => {
-    const bookId = localStorage.getItem('bookId')
+    const bookId = route.query.bookId as string
+
     if (bookId) {
       setBookSelected(bookId)
-      localStorage.removeItem('bookId')
     }
-  }, [])
+  }, [route.query.bookId])
 
   const loadingCategories = useCallback(() => {
     api

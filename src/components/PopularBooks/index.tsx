@@ -1,4 +1,11 @@
+import { useCallback, useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { ClipLoader } from 'react-spinners'
 import { CaretRight } from '@phosphor-icons/react'
+
+import { api } from '@/src/lib/axios'
+import { Stars } from '../ui/Stars'
 import {
   Container,
   PopularBookCard,
@@ -6,12 +13,6 @@ import {
   TitleBook,
   TitleSection,
 } from './styles'
-import { useCallback, useEffect, useState } from 'react'
-import { api } from '@/src/lib/axios'
-import { Stars } from '../ui/Stars'
-import Link from 'next/link'
-import { ClipLoader } from 'react-spinners'
-import { useRouter } from 'next/router'
 
 interface Rating {
   id: string
@@ -27,29 +28,34 @@ export const PopularBooks = () => {
   const [ratings, setRatings] = useState<Rating[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
-  const route = useRouter()
+  const router = useRouter()
 
-  useEffect(() => {
-    api
-      .get('/books/populars')
-      .then((response) => {
-        setRatings(response.data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.log(err)
-        setLoading(false)
-      })
+  const fetchPopularBooks = useCallback(async () => {
+    try {
+      const { data } = await api.get<Rating[]>('/books/populars')
+      setRatings(data)
+    } catch (error) {
+      console.error('Erro ao buscar livros populares:', error)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
-  const handleSelectedBook = useCallback(
-    (bookId: string) => {
-      localStorage.setItem('bookId', bookId)
+  useEffect(() => {
+    fetchPopularBooks()
+  }, [fetchPopularBooks])
 
-      route.push('explore')
-    },
-    [route],
-  )
+  const handleSelectedBook = (bookId: string) => {
+    router.push(`explore?bookId=${bookId}`)
+  }
+
+  if (loading) {
+    return (
+      <Container>
+        <ClipLoader size={50} color="#4fa94d" />
+      </Container>
+    )
+  }
 
   return (
     <Container>
@@ -61,31 +67,25 @@ export const PopularBooks = () => {
         </Link>
       </TitleSection>
 
-      {loading ? (
-        <ClipLoader size={50} color="#4fa94d" loading={loading} />
-      ) : (
-        <PopularsBooks>
-          {ratings.map((rating) => {
-            return (
-              <PopularBookCard key={rating.id}>
-                <img
-                  src={rating.book.cover_url.replace('public', '')}
-                  alt={rating.book.name}
-                  onClick={() => handleSelectedBook(rating.book.id)}
-                />
+      <PopularsBooks>
+        {ratings.map(({ id, rate, book }) => (
+          <PopularBookCard key={id}>
+            <img
+              src={book.cover_url.replace('public', '')}
+              alt={book.name}
+              onClick={() => handleSelectedBook(book.id)}
+            />
 
-                <div>
-                  <TitleBook>
-                    <span>{rating.book.name}</span>
-                    <p>{rating.book.author}</p>
-                  </TitleBook>
-                  <Stars rate={rating.rate} />
-                </div>
-              </PopularBookCard>
-            )
-          })}
-        </PopularsBooks>
-      )}
+            <div>
+              <TitleBook>
+                <span>{book.name}</span>
+                <p>{book.author}</p>
+              </TitleBook>
+              <Stars rate={rate} />
+            </div>
+          </PopularBookCard>
+        ))}
+      </PopularsBooks>
     </Container>
   )
 }

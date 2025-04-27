@@ -54,8 +54,7 @@ export const Card = ({ rating }: BookCardProps) => {
 
   const handleSelectedBook = useCallback(
     (bookId: string) => {
-      localStorage.setItem('bookId', bookId)
-      router.push('explore')
+      router.push(`explore?bookId=${bookId}`)
     },
     [router],
   )
