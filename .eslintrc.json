@@ -1,11 +1,43 @@
 {
 	"extends": [
-		"@rocketseat/eslint-config/react"
+		"@rocketseat/eslint-config/react",
+		"plugin:import/recommended"
 		// "next/core-web-vitals"
 	],
+	"settings": {
+		"import/resolver": {
+			"typescript": {
+				"alwaysTryTypes": true
+			}
+		}
+	},
 	"rules": {
 		"@typescript-eslint/no-explicit-any": "off",
 		"camelcase": "off",
-		"@typescript-eslint/ban-types": "off"
+		"import/order": [
+			"error",
+			{
+				"groups": [
+					"builtin",
+					"external",
+					"internal",
+					["parent", "sibling", "index"]
+				],
+				"pathGroups": [
+					{
+						"pattern": "react",
+						"group": "external",
+						"position": "before"
+					}
+				],
+				"pathGroupsExcludedImportTypes": ["builtin"],
+				"newlines-between": "always",
+				"alphabetize": {
+					"order": "asc",
+					"caseInsensitive": true
+				}
+			}
+		],
+		"import/no-named-as-default-member": "off"
 	}
 }

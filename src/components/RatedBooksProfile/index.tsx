@@ -1,7 +1,7 @@
-import { RatingsProps } from '@/src/pages/profile/[id].page'
-
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+
+import { RatingsProps } from '@/src/pages/profile/[id].page'
 import 'dayjs/locale/pt-br'
 
 import {
