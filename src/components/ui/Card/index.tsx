@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react'
-import { useRouter } from 'next/router'
+
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { useRouter } from 'next/router'
 import 'dayjs/locale/pt-br'
 
 import {
@@ -12,8 +13,8 @@ import {
   BookInfoSection,
   Text,
 } from './styles'
-import { Stars } from '../Stars'
 import { Avatar } from '../Avatar'
+import { Stars } from '../Stars'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')

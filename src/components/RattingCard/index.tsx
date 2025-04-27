@@ -1,7 +1,8 @@
-import { Stars } from '../ui/Stars'
-import { Container, Header, User, UserInfo } from './styles'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+
+import { Container, Header, User, UserInfo } from './styles'
+import { Stars } from '../ui/Stars'
 import 'dayjs/locale/pt-br'
 
 dayjs.extend(relativeTime)

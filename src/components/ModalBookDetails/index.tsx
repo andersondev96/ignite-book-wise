@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
-import * as Dialog from '@radix-ui/react-dialog'
+
 import { BookmarkSimple, BookOpen, X } from '@phosphor-icons/react'
+import * as Dialog from '@radix-ui/react-dialog'
 import { useSession } from 'next-auth/react'
 
 import { api } from '@/src/lib/axios'
+
 import { LoginModal } from '../LoginModal'
 import { RattingCard } from '../RattingCard'
 import { RattingForm, type RateFormData } from '../RattingForm'
-import { Stars } from '../ui/Stars'
 import {
   About,
   BookData,
@@ -23,6 +24,7 @@ import {
   Title,
   TitleAndActorBook,
 } from './styles'
+import { Stars } from '../ui/Stars'
 
 interface ModalBookDetailsProps {
   id: string
@@ -107,7 +109,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
 
     try {
       await api.post(`/books/${book.id}/rate`, {
-        description: <data value="" className="des"></data>,
+        description: data.description,
         rate: data.rate,
       })
       setShowRatingForm(false)

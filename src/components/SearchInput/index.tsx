@@ -1,6 +1,8 @@
-import { MagnifyingGlass } from '@phosphor-icons/react'
-import { Container, Input } from './styles'
 import { InputHTMLAttributes } from 'react'
+
+import { MagnifyingGlass } from '@phosphor-icons/react'
+
+import { Container, Input } from './styles'
 
 type SearchInputProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string

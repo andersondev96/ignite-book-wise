@@ -1,19 +1,14 @@
-import { useForm } from 'react-hook-form'
+import { useCallback, useMemo } from 'react'
+
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Check, X } from '@phosphor-icons/react'
+import { useSession } from 'next-auth/react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+import { Button, Container, Footer, Form, Header, UserInfo } from './styles'
 import { Stars } from '../ui/Stars'
 import { TextArea } from '../ui/TextArea'
-import { Button, Container, Footer, Form, Header, UserInfo } from './styles'
-import { useSession } from 'next-auth/react'
-import { useCallback, useEffect, useState } from 'react'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-
-interface User {
-  id: string
-  name: string | null
-  email: string | null
-  avatar_url: string | null
-}
 
 const rateFormSchema = z.object({
   description: z.string().max(450),
@@ -27,8 +22,7 @@ interface RatingFormProps {
 }
 
 export const RattingForm = ({ onSubmit }: RatingFormProps) => {
-  const { data, status } = useSession()
-  const [user, setUser] = useState<User>()
+  const { data: session, status } = useSession()
   const {
     register,
     handleSubmit,
@@ -42,11 +36,12 @@ export const RattingForm = ({ onSubmit }: RatingFormProps) => {
     },
   })
 
-  useEffect(() => {
-    if (status === 'authenticated' && data.user) {
-      setUser(data.user)
+  const user = useMemo(() => {
+    if (status === 'authenticated') {
+      return session?.user
     }
-  }, [data?.user, status])
+    return null
+  }, [session?.user, status])
 
   const handleRateOnChange = useCallback(
     (value: number) => {
@@ -54,6 +49,16 @@ export const RattingForm = ({ onSubmit }: RatingFormProps) => {
     },
     [setValue],
   )
+
+  const submissionMessage = useMemo(() => {
+    if (!isSubmitted) {
+      return null
+    }
+
+    return Object.keys(errors).length === 0
+      ? 'Avaliação salva com sucesso'
+      : 'Erro ao enviar avaliação'
+  }, [isSubmitted, errors])
 
   return (
     <Container>
@@ -74,12 +79,8 @@ export const RattingForm = ({ onSubmit }: RatingFormProps) => {
           {...register('description')}
         />
         <Footer>
-          {isSubmitted &&
-            (!errors ? (
-              <span>Avaliação salva com sucesso</span>
-            ) : (
-              <span>Erro ao enviar avaliação</span>
-            ))}
+          {submissionMessage && <span>{submissionMessage}</span>}
+
           <Button type="reset">
             <X size={24} color="#8381D9" />
           </Button>
