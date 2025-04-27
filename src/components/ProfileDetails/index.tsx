@@ -1,15 +1,16 @@
-import dayjs from 'dayjs'
 import {
   BookmarkSimple,
   BookOpen,
   Books,
   UserList,
 } from '@phosphor-icons/react'
+import dayjs from 'dayjs'
+
+import { UserProps } from '@/src/pages/profile/[id].page'
 
 import { ItemInfoProfile } from '../ItemInfoProfile'
-import { Avatar } from '../ui/Avatar'
-import { UserProps } from '@/src/pages/profile/[id].page'
 import { BooksInfo, Container, Divisor, UserInfo } from './styles'
+import { Avatar } from '../ui/Avatar'
 
 interface ProfileDetailsProps {
   user: UserProps

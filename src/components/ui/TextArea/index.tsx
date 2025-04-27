@@ -4,6 +4,7 @@ import {
   useState,
   type ChangeEvent,
 } from 'react'
+
 import { Container, Counter } from './styles'
 
 type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {}

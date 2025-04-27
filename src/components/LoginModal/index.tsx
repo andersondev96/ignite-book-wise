@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
-import * as Dialog from '@radix-ui/react-dialog'
+
 import { X } from '@phosphor-icons/react'
+import * as Dialog from '@radix-ui/react-dialog'
 import { signIn } from 'next-auth/react'
 
 import { ButtonAuth } from '../ButtonAuth'

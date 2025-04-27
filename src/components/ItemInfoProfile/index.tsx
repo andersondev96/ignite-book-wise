@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+
 import { Container, ItemInfo } from './styles'
 
 interface ItemInfoProfileProps {

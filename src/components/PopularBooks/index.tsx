@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
+
+import { CaretRight } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ClipLoader } from 'react-spinners'
-import { CaretRight } from '@phosphor-icons/react'
 
 import { api } from '@/src/lib/axios'
-import { Stars } from '../ui/Stars'
+
 import {
   Container,
   PopularBookCard,
@@ -13,6 +14,7 @@ import {
   TitleBook,
   TitleSection,
 } from './styles'
+import { Stars } from '../ui/Stars'
 
 interface Rating {
   id: string

@@ -1,9 +1,11 @@
+import { ReactElement, ReactNode } from 'react'
+
+import { NextPage } from 'next'
+import { AppProps } from 'next/app'
 import { Nunito } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
-import { AppProps } from 'next/app'
+
 import { globalStyles } from '../styles/global'
-import { NextPage } from 'next'
-import { ReactElement, ReactNode } from 'react'
 
 export const nunito = Nunito({ subsets: ['latin'] })
 

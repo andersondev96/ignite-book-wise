@@ -1,6 +1,7 @@
-import { styled } from '@/stitches.config'
 import * as Dialog from '@radix-ui/react-dialog'
 import { keyframes } from '@stitches/react'
+
+import { styled } from '@/stitches.config'
 
 const overlayShow = keyframes({
   '0%': { opacity: 0 },

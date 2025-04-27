@@ -1,6 +1,8 @@
 import { ReactNode } from 'react'
-import { Container, Content } from './styles'
+
 import Head from 'next/head'
+
+import { Container, Content } from './styles'
 import { SideBar } from '../components/ui/SideBar'
 
 type DefaultLayoutProps = {

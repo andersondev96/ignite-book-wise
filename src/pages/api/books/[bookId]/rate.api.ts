@@ -1,8 +1,10 @@
-import { prisma } from '@/src/lib/prisma'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
-import { buildNextAuthOptions } from '../../auth/[...nextauth].api'
 import { z } from 'zod'
+
+import { prisma } from '@/src/lib/prisma'
+
+import { buildNextAuthOptions } from '../../auth/[...nextauth].api'
 
 const rateBodySchema = z.object({
   description: z.string().max(450),

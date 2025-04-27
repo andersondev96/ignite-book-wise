@@ -1,5 +1,6 @@
-import { styled } from '@/stitches.config'
 import { Star } from '@phosphor-icons/react'
+
+import { styled } from '@/stitches.config'
 
 export const Container = styled('div', {
   display: 'flex',

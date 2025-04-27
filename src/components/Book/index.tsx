@@ -1,7 +1,8 @@
 import * as Dialog from '@radix-ui/react-dialog'
-import { Stars } from '../ui/Stars'
+
 import { ModalBookDetails } from '../ModalBookDetails'
 import { BookInfo, BookName, Container } from './styles'
+import { Stars } from '../ui/Stars'
 
 interface Book {
   id: string

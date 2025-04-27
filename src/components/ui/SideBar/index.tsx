@@ -1,8 +1,10 @@
+import { useCallback } from 'react'
+
 import { SignIn, SignOut } from '@phosphor-icons/react'
+import { signOut, useSession } from 'next-auth/react'
+
 import { Navigation } from '../Navigation'
 import { LogInButton, SideBarContainer, SignOutButton } from './styles'
-import { signOut, useSession } from 'next-auth/react'
-import { useCallback } from 'react'
 
 export const SideBar = () => {
   const { data: session, status } = useSession()

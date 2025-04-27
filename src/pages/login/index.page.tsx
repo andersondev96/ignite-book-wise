@@ -1,8 +1,9 @@
 import { useCallback } from 'react'
-import { signIn } from 'next-auth/react'
-import { useRouter } from 'next/router'
+
 import { RocketLaunch } from '@phosphor-icons/react/dist/ssr'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { signIn } from 'next-auth/react'
 
 import { ButtonAuth } from '@/src/components/ButtonAuth'
 import { AuthButtons, Container, LoginForm } from '@/src/styles/pages/login'

@@ -1,7 +1,9 @@
 import { useRef, useState, MouseEvent } from 'react'
-import { FilterItem } from '../../FilterItem'
-import { Container } from './styles'
+
 import { Category } from '@prisma/client'
+
+import { Container } from './styles'
+import { FilterItem } from '../../FilterItem'
 
 interface TagsProps {
   categories: Category[]

@@ -1,18 +1,21 @@
-import * as Dialog from '@radix-ui/react-dialog'
 import { useCallback, useEffect, useState, type ReactElement } from 'react'
-import { NextPageWithLayout } from '../_app.page'
-import { DefaultLayout } from '@/src/layouts'
-import { Container, Header, ListBooks } from '@/src/styles/pages/explore'
-import { PageTitle } from '@/src/components/ui/PageTitle'
+
 import { Binoculars } from '@phosphor-icons/react'
-import { SearchInput } from '@/src/components/SearchInput'
-import { Book } from '@/src/components/Book'
-import { api } from '@/src/lib/axios'
+import * as Dialog from '@radix-ui/react-dialog'
+import { useRouter } from 'next/router'
 import { ClipLoader } from 'react-spinners'
-import { Tags } from '@/src/components/ui/Tags'
+
+import { Book } from '@/src/components/Book'
 import { ModalBookDetails } from '@/src/components/ModalBookDetails'
 import { Category } from '@/src/components/ModalBookDetails/styles'
-import { useRouter } from 'next/router'
+import { SearchInput } from '@/src/components/SearchInput'
+import { PageTitle } from '@/src/components/ui/PageTitle'
+import { Tags } from '@/src/components/ui/Tags'
+import { DefaultLayout } from '@/src/layouts'
+import { api } from '@/src/lib/axios'
+import { Container, Header, ListBooks } from '@/src/styles/pages/explore'
+
+import { NextPageWithLayout } from '../_app.page'
 
 export interface BookSchema {
   id: string

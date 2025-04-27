@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
+
 import { CaretRight } from '@phosphor-icons/react'
 import Link from 'next/link'
-import { ClipLoader } from 'react-spinners'
 import { useSession } from 'next-auth/react'
+import { ClipLoader } from 'react-spinners'
 
 import { api } from '@/src/lib/axios'
 
