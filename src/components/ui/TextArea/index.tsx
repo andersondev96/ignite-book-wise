@@ -7,28 +7,32 @@ import {
 
 import { Container, Counter } from './styles'
 
-type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {}
+type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement>
+
+const MAX_CHARACTERS = 450
 
 export const TextArea = ({ onChange, ...rest }: TextAreaProps) => {
-  const maxCharacters = 450
-  const [totalCharacters, setTotalCharacters] = useState(0)
   const [text, setText] = useState('')
 
-  const contCharacters = useCallback(
+  const handleChange = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) => {
-      let newValue = event.target.value
+      let value = event.target.value
 
-      if (newValue.length > 450) {
-        newValue = newValue.slice(0, 450)
+      if (value.length > MAX_CHARACTERS) {
+        value = value.slice(0, MAX_CHARACTERS)
       }
 
-      setTotalCharacters(newValue.length)
-
-      setText(newValue)
+      setText(value)
 
       if (onChange) {
-        event.target.value = newValue
-        onChange(event)
+        const customEvent = {
+          ...event,
+          target: {
+            ...event.target,
+            value,
+          },
+        }
+        onChange(customEvent as ChangeEvent<HTMLTextAreaElement>)
       }
     },
     [onChange],
@@ -36,9 +40,9 @@ export const TextArea = ({ onChange, ...rest }: TextAreaProps) => {
 
   return (
     <Container>
-      <textarea {...rest} value={text} onChange={contCharacters} />
+      <textarea {...rest} value={text} onChange={handleChange} />
       <Counter>
-        {totalCharacters}/{maxCharacters}
+        {text.length}/{MAX_CHARACTERS}
       </Counter>
     </Container>
   )

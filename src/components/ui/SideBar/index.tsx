@@ -9,9 +9,13 @@ import { LogInButton, SideBarContainer, SignOutButton } from './styles'
 export const SideBar = () => {
   const { data: session, status } = useSession()
 
-  const handleSignOut = useCallback(async () => {
-    await signOut({ callbackUrl: '/login' })
+  const handleSignOut = useCallback(() => {
+    signOut({ callbackUrl: '/login' })
   }, [])
+
+  const isAuthenticated = session && status === 'authenticated'
+  const userFirstName = session?.user?.name?.split(' ')[0] ?? ''
+  const userAvatar = session?.user?.avatar_url ?? '/images/user.png'
 
   return (
     <SideBarContainer>
@@ -21,10 +25,10 @@ export const SideBar = () => {
       </div>
 
       <footer>
-        {session && status === 'authenticated' ? (
+        {isAuthenticated ? (
           <SignOutButton>
-            <img src={session.user.avatar_url ?? '/images/user.png'} alt="" />
-            <span>{session.user?.name?.split(' ')[0]}</span>
+            <img src={userAvatar} alt={userFirstName} />
+            <span>{userFirstName}</span>
             <SignOut size={20} onClick={handleSignOut} />
           </SignOutButton>
         ) : (

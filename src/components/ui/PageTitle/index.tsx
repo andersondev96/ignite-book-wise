@@ -7,11 +7,9 @@ type PageTitleProps = ComponentProps<typeof Container> & {
   icon: ReactNode
 }
 
-export const PageTitle = ({ title, icon, ...props }: PageTitleProps) => {
-  return (
-    <Container {...props}>
-      {icon}
-      <h1>{title}</h1>
-    </Container>
-  )
-}
+export const PageTitle = ({ title, icon, ...props }: PageTitleProps) => (
+  <Container {...props}>
+    {icon}
+    <h1>{title}</h1>
+  </Container>
+)

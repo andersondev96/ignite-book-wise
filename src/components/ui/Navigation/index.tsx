@@ -1,5 +1,7 @@
 import path from 'path'
 
+import { useMemo } from 'react'
+
 import { Binoculars, User } from '@phosphor-icons/react'
 import { ChartLineUp } from '@phosphor-icons/react/dist/ssr'
 import { useRouter } from 'next/router'
@@ -11,40 +13,48 @@ export const Navigation = () => {
   const { status, data } = useSession()
   const { pathname } = useRouter()
 
-  const menu = [
-    { title: 'Início', icon: <ChartLineUp />, href: '/', permission: 'public' },
-    {
-      title: 'Explorar',
-      icon: <Binoculars />,
-      href: '/explore',
-      permission: 'public',
-    },
-    {
-      title: 'Perfil',
-      icon: <User />,
-      href: `/profile/${data?.user.id}`,
-      permission: 'private',
-    },
-  ]
+  const menu = useMemo(
+    () => [
+      {
+        title: 'Início',
+        icon: <ChartLineUp />,
+        href: '/',
+        permission: 'public',
+      },
+      {
+        title: 'Explorar',
+        icon: <Binoculars />,
+        href: '/explore',
+        permission: 'public',
+      },
+      {
+        title: 'Perfil',
+        icon: <User />,
+        href: `/profile/${data?.user.id}`,
+        permission: 'private',
+      },
+    ],
+    [data?.user],
+  )
 
-  console.log(pathname)
+  const isAuthenticated = status === 'authenticated'
 
   return (
     <NavigationContainer>
-      {menu.map((item, key) => {
-        if (item.permission === 'public' || status === 'authenticated') {
-          return (
-            <NavItemContainer
-              key={key}
-              href={item.href}
-              active={path.join('/', item.href) === pathname}
-            >
-              {item.icon}
-              {item.title}
-            </NavItemContainer>
-          )
+      {menu.map((item) => {
+        const isAccessible = item.permission === 'public' || isAuthenticated
+        const isActive = path.join('/', item.href) === pathname
+
+        if (!isAccessible) {
+          return null
         }
-        return null
+
+        return (
+          <NavItemContainer key={item.href} href={item.href} active={isActive}>
+            {item.icon}
+            {item.title}
+          </NavItemContainer>
+        )
       })}
     </NavigationContainer>
   )
