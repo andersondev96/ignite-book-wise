@@ -13,47 +13,43 @@ export default async function handle(
   const categoryId = req.query.category as string
   const name = req.query.name as string
 
-  const where: any = {}
+  const filters: any = {}
 
-  if (categoryId) {
-    where.categories = {
-      some: categoryId,
+  if (name) {
+    filters.name = {
+      contains: name,
     }
   }
 
-  const books = await prisma.book.findMany({
-    where: {
-      ...(name && {
-        name: {
-          contains: name,
-        },
-      }),
-      ...(categoryId && {
-        categories: {
-          some: {
-            categoryId,
-          },
-        },
-      }),
-    },
-    include: {
-      ratings: true,
-    },
-  })
-
-  const booksWithAvgRatings = books.map((book) => {
-    const totalRatings = book.ratings.length
-    const sumRatings = book.ratings.reduce(
-      (acc, rating) => acc + rating.rate,
-      0,
-    )
-    const avgRating = totalRatings > 0 ? sumRatings / totalRatings : 0
-
-    return {
-      ...book,
-      avgRating,
+  if (categoryId) {
+    filters.categories = {
+      some: {
+        categoryId,
+      },
     }
-  })
+  }
 
-  return res.status(201).json(booksWithAvgRatings)
+  try {
+    const books = await prisma.book.findMany({
+      where: filters,
+      include: {
+        ratings: true,
+      },
+    })
+
+    const booksWithAvgRatings = books.map((book) => {
+      const totalRatings = book.ratings.length
+      const sumRatings = book.ratings.reduce((acc, { rate }) => acc + rate, 0)
+      const avgRating = totalRatings > 0 ? sumRatings / totalRatings : 0
+
+      return {
+        ...book,
+        avgRating,
+      }
+    })
+
+    return res.status(200).json(booksWithAvgRatings)
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal Server Error' })
+  }
 }
