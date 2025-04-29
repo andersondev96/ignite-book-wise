@@ -42,6 +42,16 @@ export const UserInfo = styled('div', {
 export const Form = styled('form', {
   display: 'flex',
   flexDirection: 'column',
+
+  '.error': {
+    color: 'red',
+    fontSize: '$sm',
+  },
+
+  '.success': {
+    color: 'green',
+    fontSize: '$sm',
+  },
 })
 
 export const Footer = styled('div', {
@@ -49,6 +59,7 @@ export const Footer = styled('div', {
 
   display: 'flex',
   justifyContent: 'flex-end',
+  alignItems: 'center',
   gap: '8px',
 })
 

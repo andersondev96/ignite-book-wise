@@ -1,9 +1,9 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Check, X } from '@phosphor-icons/react'
 import { useSession } from 'next-auth/react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Button, Container, Footer, Form, Header, UserInfo } from './styles'
@@ -27,14 +27,23 @@ export const RattingForm = ({ onSubmit }: RatingFormProps) => {
     register,
     handleSubmit,
     setValue,
-    watch,
-    formState: { errors, isSubmitted },
+    control,
+    formState: { errors, isSubmitting },
+    reset,
   } = useForm<RateFormData>({
     resolver: zodResolver(rateFormSchema),
     defaultValues: {
       rate: 1,
     },
   })
+
+  const rateValue = useWatch({
+    control,
+    name: 'rate',
+  })
+
+  const [submissionError, setSubmissionError] = useState<string | null>(null)
+  const [submissionSuccess, setSubmissionSuccess] = useState(false)
 
   const user = useMemo(() => {
     if (status === 'authenticated') {
@@ -45,46 +54,68 @@ export const RattingForm = ({ onSubmit }: RatingFormProps) => {
 
   const handleRateOnChange = useCallback(
     (value: number) => {
-      setValue('rate', value)
+      setValue('rate', value, { shouldDirty: true })
     },
     [setValue],
   )
 
-  const submissionMessage = useMemo(() => {
-    if (!isSubmitted) {
-      return null
+  const handleFormSubmit = async (data: RateFormData) => {
+    try {
+      await onSubmit(data)
+      setSubmissionSuccess(true)
+      setSubmissionError(null)
+      reset({ description: '', rate: 1 })
+    } catch (error) {
+      setSubmissionError('Erro ao enviar avaliação.')
+      setSubmissionSuccess(false)
     }
-
-    return Object.keys(errors).length === 0
-      ? 'Avaliação salva com sucesso'
-      : 'Erro ao enviar avaliação'
-  }, [isSubmitted, errors])
+  }
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(handleFormSubmit)}>
         <Header>
           <UserInfo>
             <img src={user?.avatar_url ?? ''} alt={user?.name ?? ''} />
             <span>{user?.name}</span>
           </UserInfo>
           <Stars
-            rate={watch('rate')}
+            rate={rateValue}
             mode="edit"
             onRateChange={handleRateOnChange}
+            {...register('rate')}
           />
         </Header>
         <TextArea
+          value={rateValue}
           placeholder="Escreva a sua avaliação"
           {...register('description')}
         />
+        {errors.description && (
+          <span className="error">{errors.description.message}</span>
+        )}
         <Footer>
-          {submissionMessage && <span>{submissionMessage}</span>}
+          {submissionError && <span className="error">{submissionError}</span>}
+          {submissionSuccess && (
+            <span className="success">Avaliação enviada com sucesso!</span>
+          )}
 
-          <Button type="reset">
+          <Button
+            type="button"
+            onClick={() =>
+              reset(
+                { description: '', rate: 1 },
+                {
+                  keepDirty: false,
+                  keepValues: false,
+                  keepDefaultValues: false,
+                },
+              )
+            }
+          >
             <X size={24} color="#8381D9" />
           </Button>
-          <Button type="submit">
+          <Button type="submit" disabled={isSubmitting}>
             <Check size={24} color="#50B2C0" />
           </Button>
         </Footer>

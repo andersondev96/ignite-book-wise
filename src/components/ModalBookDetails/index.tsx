@@ -107,16 +107,13 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
       return
     }
 
-    try {
-      await api.post(`/books/${book.id}/rate`, {
-        description: data.description,
-        rate: data.rate,
-      })
-      setShowRatingForm(false)
-      fetchBookDetails()
-    } catch (err) {
-      console.error('Erro ao enviar avaliação:', err)
-    }
+    await api.post(`/books/${book.id}/rate`, {
+      description: data.description,
+      rate: data.rate,
+    })
+
+    setShowRatingForm(false)
+    await fetchBookDetails()
   }
 
   useEffect(() => {
