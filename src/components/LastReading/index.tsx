@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { CaretRight } from '@phosphor-icons/react'
+import {
+  Book as PrismaBook,
+  User as PrismaUser,
+  Rating as PrismaRating,
+} from '@prisma/client'
 import Link from 'next/link'
 import { useSession } from 'next-auth/react'
 import { ClipLoader } from 'react-spinners'
@@ -10,30 +15,11 @@ import { api } from '@/src/lib/axios'
 import { Container, Title } from './styles'
 import { Card } from '../ui/Card'
 
-interface Book {
-  id: string
-  name: string
-  author: string
-  summary: string
-  cover_url: string
-  created_at: string
-}
-
-interface User {
-  id: string
-  name: string
-  avatar_url: string
-}
-
-interface Rating {
-  id: string
-  rate: number
-  description: string
-  created_at: string
+type Rating = PrismaRating & {
+  book: PrismaBook
+  user: PrismaUser
   book_id: string
   user_id: string
-  book: Book
-  user: User
 }
 
 export const LastReading = () => {

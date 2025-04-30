@@ -55,10 +55,17 @@ interface Book {
   }[]
 }
 
+interface BookDetailsResponse {
+  book: Book
+  ratingsAvg: number
+}
+
 export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
+  const [bookDetails, setBookDetails] = useState<BookDetailsResponse | null>(
+    null,
+  )
   const [showRatingForm, setShowRatingForm] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
-  const [book, setBook] = useState<Book | null>(null)
   const [categories, setCategories] = useState<Category[]>([])
 
   const { status } = useSession()
@@ -66,7 +73,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
   const fetchBookDetails = useCallback(async () => {
     try {
       const { data } = await api.get(`books/details/${id}`)
-      setBook(data)
+      setBookDetails(data)
     } catch (err) {
       console.error(`Erro ao carregar detalhes do livro: ${err}`)
     }
@@ -77,10 +84,12 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
   }, [fetchBookDetails])
 
   const fetchCategories = useCallback(async () => {
-    if (!book) return
+    if (!bookDetails) return
 
     try {
-      const categoryIds = book.categories.map((category) => category.categoryId)
+      const categoryIds = bookDetails.book.categories.map(
+        (category) => category.categoryId,
+      )
 
       const categoryRequests = categoryIds.map((categoryId) =>
         api.get(`/categories/${categoryId}`),
@@ -94,7 +103,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
     } catch (err) {
       console.error(`Ocorreu um erro ao carregar as categorias: ${err}`)
     }
-  }, [book])
+  }, [bookDetails])
 
   const handleShowRatingsForm = () => {
     status === 'authenticated'
@@ -103,11 +112,11 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
   }
 
   const handleRateSubmit = async (data: RateFormData) => {
-    if (!book) {
+    if (!bookDetails) {
       return
     }
 
-    await api.post(`/books/${book.id}/rate`, {
+    await api.post(`/books/${bookDetails.book.id}/rate`, {
       description: data.description,
       rate: data.rate,
     })
@@ -120,9 +129,11 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
     fetchCategories()
   }, [fetchCategories])
 
-  if (!book) {
+  if (!bookDetails) {
     return null
   }
+
+  const { book, ratingsAvg } = bookDetails
 
   const categoryNames = categories.map(({ name }) => name).join(', ')
 
@@ -145,7 +156,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
               </TitleAndActorBook>
 
               <RatingBook>
-                <Stars mode="view" rate={book.ratings[0]?.rate ?? 0} />
+                <Stars mode="view" rate={ratingsAvg} />
                 <span>{book.ratings.length} avaliações</span>
               </RatingBook>
             </BookDataDescription>

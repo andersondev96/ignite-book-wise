@@ -1,22 +1,17 @@
+import { Book as PrismaBook } from '@prisma/client'
 import * as Dialog from '@radix-ui/react-dialog'
 
 import { ModalBookDetails } from '../ModalBookDetails'
 import { BookInfo, BookName, Container } from './styles'
 import { Stars } from '../ui/Stars'
 
-interface Book {
-  id: string
-  name: string
-  author: string
-  cover_url: string
-  avgRating: number
+type BookComponentProps = {
+  book: PrismaBook & {
+    avgRating: number
+  }
 }
 
-interface BookProps {
-  book: Book
-}
-
-export const Book = ({ book }: BookProps) => {
+export const Book = ({ book }: BookComponentProps) => {
   const imageUrl = book.cover_url.replace('public', '')
 
   return (

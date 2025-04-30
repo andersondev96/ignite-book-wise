@@ -1,5 +1,10 @@
 import { useCallback, useState } from 'react'
 
+import {
+  Book as PrismaBook,
+  User as PrismaUser,
+  Rating as PrismaRating,
+} from '@prisma/client'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useRouter } from 'next/router'
@@ -19,37 +24,16 @@ import { Stars } from '../Stars'
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
-interface Book {
-  id: string
-  name: string
-  author: string
-  summary: string
-  cover_url: string
-  created_at: string
+type RatingComponentProps = {
+  rating: PrismaRating & {
+    book: PrismaBook
+    user: PrismaUser
+    book_id: string
+    user_id: string
+  }
 }
 
-interface User {
-  id: string
-  name: string
-  avatar_url: string
-}
-
-interface Rating {
-  id: string
-  rate: number
-  description: string
-  created_at: string
-  book_id: string
-  user_id: string
-  book: Book
-  user: User
-}
-
-interface BookCardProps {
-  rating: Rating
-}
-
-export const Card = ({ rating }: BookCardProps) => {
+export const Card = ({ rating }: RatingComponentProps) => {
   const router = useRouter()
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -71,7 +55,7 @@ export const Card = ({ rating }: BookCardProps) => {
         {rating.user && (
           <AuthorInfo href={`/profile/${rating.user.id}`}>
             <Avatar
-              imageUrl={rating.user.avatar_url}
+              imageUrl={rating.user.avatar_url ?? ''}
               imageName={rating.user.name}
               size="small"
             />
