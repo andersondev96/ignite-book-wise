@@ -15,7 +15,6 @@ import { BackButton, Container, Main } from '@/src/styles/pages/profile'
 
 import { NextPageWithLayout } from '../_app.page'
 
-
 export interface RatingsProps {
   id: string
   rate: number

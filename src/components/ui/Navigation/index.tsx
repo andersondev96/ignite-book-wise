@@ -43,7 +43,10 @@ export const Navigation = () => {
     <NavigationContainer>
       {menu.map((item) => {
         const isAccessible = item.permission === 'public' || isAuthenticated
-        const isActive = path.join('/', item.href) === pathname
+        const isActive =
+          pathname.startsWith(`/profile`) && item.href.startsWith('/profile')
+            ? true
+            : path.join('/', item.href) === pathname
 
         if (!isAccessible) {
           return null
