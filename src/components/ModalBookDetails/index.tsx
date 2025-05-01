@@ -143,16 +143,21 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
         <BookInfo>
           <BookData>
             <img src={book.cover_url.replace('public', '')} alt={book.name} />
-            <BookDataDescription>
-              <TitleAndActorBook>
-                <strong>{book.name}</strong>
-                <span>{book.author}</span>
-              </TitleAndActorBook>
 
-              <RatingBook>
-                <Stars mode="view" rate={ratingsAvg} />
-                <span>{book.ratings.length} avaliações</span>
-              </RatingBook>
+            <BookDataDescription>
+              <Dialog.Title asChild>
+                <TitleAndActorBook>
+                  <strong>{book.name}</strong>
+                  <span>{book.author}</span>
+                </TitleAndActorBook>
+              </Dialog.Title>
+
+              <Dialog.Description asChild>
+                <RatingBook>
+                  <Stars mode="view" rate={ratingsAvg} />
+                  <span>{book.ratings.length} avaliações</span>
+                </RatingBook>
+              </Dialog.Description>
             </BookDataDescription>
           </BookData>
 
