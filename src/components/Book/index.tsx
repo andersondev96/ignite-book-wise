@@ -2,7 +2,7 @@ import { Book as PrismaBook } from '@prisma/client'
 import * as Dialog from '@radix-ui/react-dialog'
 
 import { ModalBookDetails } from '../ModalBookDetails'
-import { BookInfo, BookName, Container } from './styles'
+import { BookImage, BookInfo, BookName, Container } from './styles'
 import { Stars } from '../ui/Stars'
 
 type BookComponentProps = {
@@ -18,7 +18,7 @@ export const Book = ({ book }: BookComponentProps) => {
     <Dialog.Root>
       <Dialog.Trigger asChild>
         <Container>
-          <img src={imageUrl} alt={book.name} />
+          <BookImage src={imageUrl} alt={book.name} />
           <BookInfo>
             <BookName>
               <strong>{book.name}</strong>

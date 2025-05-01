@@ -2,57 +2,63 @@ import { styled } from '@/stitches.config'
 
 export const Container = styled('div', {
   display: 'grid',
-  height: '100%',
-  gridTemplateColumns: '1fr 822px',
-  gap: 64,
+  gridTemplateColumns: '1fr 1fr',
+  height: '100vh',
+  padding: '2rem',
   overflow: 'hidden',
-  padding: 20,
+
+  '@md': {
+    gridTemplateColumns: '1fr',
+    padding: '1.5rem',
+  },
 
   img: {
-    width: '598px',
-    height: '912px',
+    width: '100%',
+    height: 'auto',
+    maxHeight: '90vh',
+    objectFit: 'cover',
+    borderRadius: '12px',
+
+    '@md': {
+      display: 'none',
+    },
   },
 })
 
 export const LoginForm = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-
-  marginTop: '245px',
+  justifyContent: 'center',
+  maxWidth: '440px',
+  width: '100%',
+  margin: '0 auto',
 
   h1: {
     color: '$gray100',
-    fontSize: '$lg',
+    fontSize: '$2xl',
     fontWeight: '$bold',
-
-    marginBottom: '2px',
+    marginBottom: '0.5rem',
   },
 
   span: {
-    color: '$gray200',
+    color: '$gray300',
     fontSize: '$md',
+    lineHeight: 1.5,
   },
 
-  '@bp2': {
-    marginTop: '100px',
-  },
-
-  '@bp1': {
-    marginTop: '50px',
-    h1: {
-      fontSize: '$md',
-    },
-
-    span: {
-      fontSize: '$sm',
-    },
+  '@sm': {
+    h1: { fontSize: '$xl' },
+    span: { fontSize: '$sm' },
   },
 })
 
 export const AuthButtons = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  gap: '$4',
+  gap: '1rem',
+  marginTop: '2.5rem',
 
-  marginTop: '40px',
+  button: {
+    transition: 'all 0.2s ease-in-out',
+  },
 })

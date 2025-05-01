@@ -36,6 +36,7 @@ export default function Login() {
     <>
       <Head>
         <title>Login</title>
+        <link rel="shortcut icon" href="/favicon.svg" type="image/svg" />
       </Head>
       <Container>
         <img src="/images/background-login.png" alt="Plano de fundo do login" />

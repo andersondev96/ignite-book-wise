@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react'
 
-import { Container } from './styles'
+import { Container, IconWrapper } from './styles'
 
 type ButtonAuthProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   icon?: ReactNode
@@ -15,7 +15,9 @@ export const ButtonAuth = ({
   ...rest
 }: ButtonAuthProps) => (
   <Container {...rest}>
-    {icon || (imageUrl && <img src={imageUrl} alt="title" />)}
+    <IconWrapper>
+      {icon || (imageUrl && <img src={imageUrl} alt="title" loading="lazy" />)}
+    </IconWrapper>
     <span>{title}</span>
   </Container>
 )

@@ -2,23 +2,36 @@ import { styled } from '@/stitches.config'
 
 export const Container = styled('div', {
   display: 'flex',
-  gap: '20px',
+  gap: '1.25rem',
 
-  width: '318px',
+  width: '100%',
+  maxWidth: '320px',
   height: '184px',
 
   background: '$gray700',
+
   borderRadius: '8px',
+  padding: '1rem 1.25rem',
 
-  padding: '16px 20px',
+  transition: 'box-shadow 0.2s, transform 0.2s',
+  cursor: 'pointer',
 
-  img: {
-    width: '108px',
-    height: '152px',
-    objectFit: 'cover',
+  '&:hover': {
+    boxShadow: '0 0 0 2px $purple200',
+    transform: 'translateY(-2px)',
   },
 
-  cursor: 'pointer',
+  '&:focus': {
+    outline: '2px solid $purple200',
+    outlineOffset: '2px',
+  },
+})
+
+export const BookImage = styled('img', {
+  width: '108px',
+  height: '152px',
+  objectFit: 'cover',
+  borderRadius: '4px',
 })
 
 export const BookInfo = styled('div', {
@@ -32,13 +45,15 @@ export const BookName = styled('div', {
   flexDirection: 'column',
 
   strong: {
-    fontSize: '$xs',
+    fontSize: '$sm',
     fontWeight: 'bold',
     color: '$gray100',
+    lineHeight: '1.4',
   },
 
   span: {
     fontSize: '$sm',
     color: '$gray400',
+    marginTop: '4px',
   },
 })
