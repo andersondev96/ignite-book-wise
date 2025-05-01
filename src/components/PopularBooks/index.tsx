@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { CaretRight } from '@phosphor-icons/react'
+import type { Book as PrismaBook, Rating as PrismaRating } from '@prisma/client'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ClipLoader } from 'react-spinners'
@@ -10,31 +11,24 @@ import { api } from '@/src/lib/axios'
 import {
   Container,
   PopularBookCard,
-  PopularsBooks,
+  PopularBooksContainer,
   TitleBook,
   TitleSection,
 } from './styles'
 import { Stars } from '../ui/Stars'
 
-interface Rating {
-  id: string
-  rate: number
-  book: {
-    id: string
-    name: string
-    cover_url: string
-    author: string
-  }
+type RatingSchema = PrismaRating & {
+  book: PrismaBook
 }
 export const PopularBooks = () => {
-  const [ratings, setRatings] = useState<Rating[]>([])
+  const [ratings, setRatings] = useState<RatingSchema[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 
   const router = useRouter()
 
   const fetchPopularBooks = useCallback(async () => {
     try {
-      const { data } = await api.get<Rating[]>('/books/populars')
+      const { data } = await api.get<RatingSchema[]>('/books/populars')
       setRatings(data)
     } catch (error) {
       console.error('Erro ao buscar livros populares:', error)
@@ -69,7 +63,7 @@ export const PopularBooks = () => {
         </Link>
       </TitleSection>
 
-      <PopularsBooks>
+      <PopularBooksContainer>
         {ratings.map(({ id, rate, book }) => (
           <PopularBookCard key={id}>
             <img
@@ -87,7 +81,7 @@ export const PopularBooks = () => {
             </div>
           </PopularBookCard>
         ))}
-      </PopularsBooks>
+      </PopularBooksContainer>
     </Container>
   )
 }

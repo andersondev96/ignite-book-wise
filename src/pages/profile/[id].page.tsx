@@ -1,10 +1,14 @@
 import { ReactElement, useCallback, useEffect, useState } from 'react'
 
 import { CaretLeft, User } from '@phosphor-icons/react'
+import {
+  Book as PrismaBook,
+  Rating as PrismaRating,
+  User as PrismaUser,
+} from '@prisma/client'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 
-import { Book } from '@/src/@types'
 import { ProfileDetails } from '@/src/components/ProfileDetails'
 import { RatedBooksProfile } from '@/src/components/RatedBooksProfile'
 import { SearchInput } from '@/src/components/SearchInput'
@@ -15,19 +19,11 @@ import { BackButton, Container, Main } from '@/src/styles/pages/profile'
 
 import { NextPageWithLayout } from '../_app.page'
 
-export interface RatingsProps {
-  id: string
-  rate: number
-  description: string
-  created_at: string
-  book: Book
+type RatingSchema = PrismaRating & {
+  book: PrismaBook
 }
 
-export interface UserProps {
-  id: string
-  name: string
-  avatar_url: string
-  created_at: string
+type UserSchema = PrismaUser & {
   totalPagesRead: number
   totalBooksRates: number
   totalAuthorRead: number
@@ -36,7 +32,7 @@ export interface UserProps {
 
 interface ProfileProps {
   id: string
-  user: UserProps
+  user: UserSchema
 }
 
 const Profile: NextPageWithLayout<ProfileProps> = () => {
@@ -46,8 +42,8 @@ const Profile: NextPageWithLayout<ProfileProps> = () => {
 
   const isOwnerProfile = session?.user.id === userId
 
-  const [user, setUser] = useState<UserProps | null>(null)
-  const [ratings, setRatings] = useState<RatingsProps[]>([])
+  const [user, setUser] = useState<UserSchema | null>(null)
+  const [ratings, setRatings] = useState<RatingSchema[]>([])
   const [book, setBook] = useState('')
 
   const fetchUserProfile = useCallback(async () => {
@@ -61,7 +57,7 @@ const Profile: NextPageWithLayout<ProfileProps> = () => {
 
   const fetchRatings = useCallback(async () => {
     try {
-      const { data } = await api.get<{ ratings: RatingsProps[] }>(
+      const { data } = await api.get<{ ratings: RatingSchema[] }>(
         `profile/${userId}/rates${book ? `?book=${book}` : ''}`,
       )
       setRatings(data.ratings || [])

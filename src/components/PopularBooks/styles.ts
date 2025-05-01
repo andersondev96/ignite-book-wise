@@ -23,7 +23,7 @@ export const TitleSection = styled('div', {
   },
 })
 
-export const PopularsBooks = styled('div', {
+export const PopularBooksContainer = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   gap: '12px',

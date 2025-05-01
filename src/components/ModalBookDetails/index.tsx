@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { BookmarkSimple, BookOpen, X } from '@phosphor-icons/react'
+import {
+  Book as PrismaBook,
+  Rating as PrismaRating,
+  User as PrismaUser,
+} from '@prisma/client'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useSession } from 'next-auth/react'
 
@@ -30,33 +35,22 @@ interface ModalBookDetailsProps {
   id: string
 }
 
-interface Category {
+type Category = {
   categoryId: string
   name: string
 }
 
-interface Book {
-  id: string
-  name: string
-  author: string
-  cover_url: string
-  total_pages: string
+type RatingsSchema = PrismaRating & {
+  user: PrismaUser
+}
+
+type BookSchema = PrismaBook & {
   categories: Category[]
-  ratings: {
-    id: string
-    rate: number
-    description: string
-    created_at: string
-    user: {
-      id: string
-      name: string
-      avatar_url: string
-    }
-  }[]
+  ratings: RatingsSchema[]
 }
 
 interface BookDetailsResponse {
-  book: Book
+  book: BookSchema
   ratingsAvg: number
 }
 

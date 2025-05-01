@@ -1,29 +1,21 @@
+import { Rating as PrismaRating, User as PrismaUser } from '@prisma/client'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { Container, Header, User, UserInfo } from './styles'
 import { Stars } from '../ui/Stars'
+
 import 'dayjs/locale/pt-br'
 
 dayjs.extend(relativeTime)
 dayjs.locale('pt-br')
 
-interface User {
-  id: string
-  name: string
-  avatar_url: string
-}
-
-interface Rating {
-  id: string
-  rate: number
-  description: string
-  created_at: string
-  user: User
+type RatingSchema = PrismaRating & {
+  user: PrismaUser
 }
 
 interface RatingCardProps {
-  rating: Rating
+  rating: RatingSchema
 }
 
 export const RattingCard = ({ rating }: RatingCardProps) => {
@@ -34,7 +26,7 @@ export const RattingCard = ({ rating }: RatingCardProps) => {
     <Container>
       <Header>
         <User href={`profile/${user.id}`}>
-          <img src={user?.avatar_url} alt={user.name} />
+          <img src={user.avatar_url ?? ''} alt={user.name} />
           <UserInfo>
             <strong>{user.name}</strong>
             <span>{timeAgo}</span>

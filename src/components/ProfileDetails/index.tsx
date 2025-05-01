@@ -4,16 +4,22 @@ import {
   Books,
   UserList,
 } from '@phosphor-icons/react'
+import { User as PrismaUser } from '@prisma/client'
 import dayjs from 'dayjs'
-
-import { UserProps } from '@/src/pages/profile/[id].page'
 
 import { ItemInfoProfile } from '../ItemInfoProfile'
 import { BooksInfo, Container, Divisor, UserInfo } from './styles'
 import { Avatar } from '../ui/Avatar'
 
+type UserSchema = PrismaUser & {
+  totalPagesRead: number
+  totalBooksRates: number
+  totalAuthorRead: number
+  mostRatedCategory: string
+}
+
 interface ProfileDetailsProps {
-  user: UserProps
+  user: UserSchema
 }
 
 export const ProfileDetails = ({ user }: ProfileDetailsProps) => {
@@ -32,7 +38,7 @@ export const ProfileDetails = ({ user }: ProfileDetailsProps) => {
   return (
     <Container>
       <UserInfo>
-        <Avatar imageUrl={avatar_url} imageName={name} />
+        <Avatar imageUrl={avatar_url ?? ''} imageName={name} />
         <strong>{name}</strong>
         <span>membro desde {membershipYear}</span>
       </UserInfo>

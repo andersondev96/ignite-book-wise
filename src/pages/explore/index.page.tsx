@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState, type ReactElement } from 'react'
 
 import { Binoculars } from '@phosphor-icons/react'
+import { Book as PrismaBook, Category as PrismaCategory } from '@prisma/client'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useRouter } from 'next/router'
 import { ClipLoader } from 'react-spinners'
 
 import { Book } from '@/src/components/Book'
 import { ModalBookDetails } from '@/src/components/ModalBookDetails'
-import { Category } from '@/src/components/ModalBookDetails/styles'
 import { SearchInput } from '@/src/components/SearchInput'
 import { PageTitle } from '@/src/components/ui/PageTitle'
 import { Tags } from '@/src/components/ui/Tags'
@@ -17,24 +17,15 @@ import { Container, Header, ListBooks } from '@/src/styles/pages/explore'
 
 import { NextPageWithLayout } from '../_app.page'
 
-export interface BookSchema {
-  id: string
-  name: string
-  author: string
-  cover_url: string
+type BookSchema = PrismaBook & {
   avgRating: number
-}
-
-export interface Category {
-  id: string
-  name: string
 }
 
 export const ExplorePage: NextPageWithLayout = () => {
   const [books, setBooks] = useState<BookSchema[]>([])
   const [name, setName] = useState('')
   const [loading, setLoading] = useState<boolean>(true)
-  const [categories, setCategories] = useState<Category[]>([])
+  const [categories, setCategories] = useState<PrismaCategory[]>([])
   const [selectedCategory, setSelectedCategory] = useState('')
   const [bookSelected, setBookSelected] = useState<string | null>(null)
 
