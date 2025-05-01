@@ -5,7 +5,7 @@ import {
   type ChangeEvent,
 } from 'react'
 
-import { Container, Counter } from './styles'
+import { Container, Counter, StyledTextarea } from './styles'
 
 type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement>
 
@@ -40,7 +40,7 @@ export const TextArea = ({ onChange, ...rest }: TextAreaProps) => {
 
   return (
     <Container>
-      <textarea {...rest} value={text} onChange={handleChange} />
+      <StyledTextarea {...rest} value={text} onChange={handleChange} />
       <Counter>
         {text.length}/{MAX_CHARACTERS}
       </Counter>

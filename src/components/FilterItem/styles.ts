@@ -1,32 +1,33 @@
 import { styled } from '@/stitches.config'
 
 export const Container = styled('div', {
-  display: 'flex',
+  display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
 
-  maxWidth: '100vw',
-  height: '34px',
-
-  marginTop: '54px',
-
-  // background: '$purple200',
-  border: '1px solid $purple100',
+  height: '36px',
+  padding: '0 20px',
   borderRadius: '999px',
+  border: '1px solid $purple100',
+  backgroundColor: 'transparent',
 
-  padding: '4px 16px',
-
-  span: {
-    fontSize: '$md',
-    color: '$purple100',
-    // color: '$gray100',
-  },
+  fontSize: '$md',
+  fontWeight: 500,
+  color: '$purple100',
+  whiteSpace: 'nowrap',
 
   cursor: 'pointer',
+  userSelect: 'none',
+  transition: 'all 0.2s ease',
 
   '&:hover': {
     background: '$purple200',
-    transition: 'all 0.2s',
+    color: '$white',
+  },
+
+  '&:focus': {
+    outline: '2px solid $purple200',
+    outlineOffset: '2px',
   },
 
   variants: {
@@ -34,10 +35,7 @@ export const Container = styled('div', {
       true: {
         background: '$purple200',
         border: 'none',
-
-        span: {
-          color: '$white',
-        },
+        color: '$white',
       },
     },
   },

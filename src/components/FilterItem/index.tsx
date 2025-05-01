@@ -14,7 +14,7 @@ export const FilterItem = ({ title, active, onClick }: FilterItemProps) => {
   }, [onClick])
 
   return (
-    <Container onClick={handleClick} active={active}>
+    <Container onClick={handleClick} active={active} tabIndex={0}>
       <span>{title}</span>
     </Container>
   )

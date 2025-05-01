@@ -48,6 +48,7 @@ export const Tags = ({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseUp}
       onMouseUp={handleMouseUp}
+      className={isDragging ? 'dragging' : ''}
     >
       <FilterItem
         title="Tudo"
