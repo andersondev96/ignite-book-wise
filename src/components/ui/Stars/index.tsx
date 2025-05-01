@@ -5,6 +5,7 @@ import {
   StarContainer,
   StarBackground,
   StarForeground,
+  StarForegroundWrapper,
 } from './styles'
 
 type StarsProps = {
@@ -47,41 +48,30 @@ export const Stars = ({ mode = 'view', rate, onRateChange }: StarsProps) => {
 
   const getStarStyle = useCallback(
     (index: number) => {
-      if (hoveredRate !== null && isEditable) {
-        return { width: hoveredRate >= index ? '100%' : '0%' }
-      }
+      const activeRate = hoveredRate ?? currentRate
+      const fill = activeRate >= index ? 1 : 0
 
-      if (currentRate >= index) {
-        return { width: '100%' }
-      }
-
-      if (currentRate + 0.5 >= index) {
-        return { width: '50%' }
-      }
-
-      return { width: '0%' }
+      return { width: `${fill * 100}%` }
     },
-    [currentRate, hoveredRate, isEditable],
+    [currentRate, hoveredRate],
   )
 
-  const stars = useMemo(() => Array.from({ length: 5 }, (_, i) => i + 1), [])
+  const stars = useMemo(() => [1, 2, 3, 4, 5], [])
 
   return (
     <Container>
-      {stars.map((starIndex) => (
+      {stars.map((starValue, index) => (
         <StarContainer
-          key={starIndex}
-          onClick={() => handleClick(starIndex)}
-          onMouseEnter={() => handleMouseEnter(starIndex)}
+          key={index}
+          onClick={() => handleClick(starValue)}
+          onMouseEnter={() => handleMouseEnter(starValue)}
           onMouseLeave={handleMouseLeave}
           style={{ cursor: isEditable ? 'pointer' : 'default' }}
         >
           <StarBackground size={16} weight="fill" />
-          <StarForeground
-            style={getStarStyle(starIndex)}
-            size={16}
-            weight="fill"
-          />
+          <StarForegroundWrapper style={getStarStyle(starValue)}>
+            <StarForeground size={16} weight="fill" />
+          </StarForegroundWrapper>
         </StarContainer>
       ))}
     </Container>

@@ -3,14 +3,27 @@ import { styled } from '@stitches/react'
 export const Container = styled('div', {
   display: 'flex',
   alignItems: 'center',
-  fontSize: '$lg',
-  fontWeight: '700',
+  gap: '0.75rem',
+  marginBottom: '2.5rem',
   color: '$gray100',
-  marginBottom: '40px',
+
+  h1: {
+    fontSize: '$2xl',
+    fontWeight: '700',
+    lineHeight: '1.2',
+  },
 
   svg: {
-    marginRight: '12px',
-    fontSize: '32px',
+    flexShrink: 0,
+    width: '2rem',
+    height: '2rem',
     color: '$green100',
+  },
+
+  '@media (max-width: 768px)': {
+    h1: {
+      fontSize: '$lg',
+    },
+    marginBottom: '1.5rem',
   },
 })
