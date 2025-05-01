@@ -4,20 +4,25 @@ import Link from 'next/link'
 export const NavigationContainer = styled('nav', {
   display: 'flex',
   flexDirection: 'column',
-  gap: '$7',
+  gap: '$4',
 })
 export const NavItemContainer = styled(Link, {
-  textDecoration: 'none',
-  color: '$gray400',
-  fontSize: '$md',
+  all: 'unset',
+  cursor: 'pointer',
   display: 'flex',
   alignItems: 'center',
+  gap: '$3',
+  fontSize: '$md',
+  padding: '12px 16px',
+  borderRadius: '6px',
+  color: '$gray300',
   position: 'relative',
-  paddingLeft: '1rem',
+  transition: 'background 0.3s ease, color 0.3s ease',
 
   svg: {
-    marginRight: '$3',
-    size: '1.25rem',
+    width: '20px',
+    height: '20px',
+    color: 'inherit',
   },
 
   variants: {
@@ -30,10 +35,12 @@ export const NavItemContainer = styled(Link, {
           content: '""',
           position: 'absolute',
           left: 0,
+          top: '50%',
+          transform: 'translateY(-50%)',
           width: '4px',
-          height: '24px',
+          height: '60%',
           background: 'linear-gradient(to bottom, #7FD1CC, #9694F5)',
-          borderRadius: '2px',
+          borderRadius: '999px',
         },
       },
     },

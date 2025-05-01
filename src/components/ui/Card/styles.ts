@@ -1,23 +1,29 @@
-import Link from 'next/link'
-
 import { styled } from '@/stitches.config'
 
 export const BookCardContainer = styled('div', {
   background: '$gray600',
-  width: '608px',
+  width: '100%',
+  maxWidth: '608px',
   marginTop: '16px',
   borderRadius: '8px',
-  padding: '20px 24px',
+  padding: '24px 32px',
+  boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
+  transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+
+  '&:hover': {
+    transform: 'scale(1.02)',
+    boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
+  },
 })
 export const AuthorSection = styled('section', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  marginBottom: '16px',
 })
 
-export const AuthorInfo = styled(Link, {
+export const AuthorInfo = styled('a', {
   textDecoration: 'none',
-
   display: 'flex',
   alignItems: 'center',
   gap: '16px',
@@ -25,7 +31,7 @@ export const AuthorInfo = styled(Link, {
   span: {
     color: '$gray100',
     fontSize: '$md',
-    fontWeight: '$regular',
+    fontWeight: '$bold',
   },
 
   p: {
@@ -36,37 +42,50 @@ export const AuthorInfo = styled(Link, {
 })
 
 export const BookInfoSection = styled('section', {
-  marginTop: '32px',
   display: 'flex',
   gap: '20px',
+  marginTop: '16px',
+  alignItems: 'flex-start',
 
   img: {
-    width: '108px',
+    width: '120px',
+    height: '180px',
+    objectFit: 'cover',
+    borderRadius: '8px',
     cursor: 'pointer',
+    transform: 'transform 0.2s ease',
+
+    '&:hover': {
+      transform: 'scale(1.05)',
+    },
   },
 })
 
 export const BookInfoContent = styled('div', {
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'space-between',
+  flex: 1,
 
   strong: {
     color: '$gray100',
     fontWeight: '$bold',
-    fontSize: '$xs',
+    fontSize: '$lg',
+    marginBottom: '8px',
   },
 
   span: {
     color: '$gray400',
     fontWeight: '$regular',
     fontSize: '$sm',
+    marginBottom: '12px',
   },
 })
 
 export const Text = styled('p', {
-  marginTop: '20px',
   color: '$gray300',
   fontSize: '$sm',
+  marginTop: '12px',
 
   span: {
     fontSize: '$sm',
