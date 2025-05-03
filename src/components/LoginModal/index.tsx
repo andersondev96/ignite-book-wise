@@ -11,6 +11,7 @@ import {
   Content,
   LoginContent,
   Overlay,
+  Title,
 } from './styles'
 
 const providers = [
@@ -40,8 +41,7 @@ export const LoginModal = () => {
         </CloseButton>
 
         <LoginContent>
-          <span>Faça login para deixar sua avaliação</span>
-
+          <Title>Faça login para deixar sua avaliação</Title>
           <AuthButtons>
             {providers.map(({ provider, icon, title }) => (
               <ButtonAuth

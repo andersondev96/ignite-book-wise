@@ -12,7 +12,7 @@ import { ClipLoader } from 'react-spinners'
 
 import { api } from '@/src/lib/axios'
 
-import { Container, Title } from './styles'
+import { Container, Header, LoaderWrapper } from './styles'
 import { Card } from '../ui/Card'
 
 type Rating = PrismaRating & {
@@ -26,7 +26,6 @@ export const LastReading = () => {
   const [rating, setRating] = useState<Rating>()
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const { data: session } = useSession()
-
   const userId = session?.user.id
 
   const fetchLastReading = useCallback(async () => {
@@ -50,9 +49,9 @@ export const LastReading = () => {
 
   if (isLoading) {
     return (
-      <Container>
-        <ClipLoader size={50} color="#4fa94d" />
-      </Container>
+      <LoaderWrapper>
+        <ClipLoader size={40} color="#4fa94d" />
+      </LoaderWrapper>
     )
   }
 
@@ -62,13 +61,13 @@ export const LastReading = () => {
 
   return (
     <Container>
-      <Title>
+      <Header>
         <span>Sua última leitura</span>
         <Link href={`/profile/${userId}`}>
           Ver todas
           <CaretRight size={16} />
         </Link>
-      </Title>
+      </Header>
       {<Card rating={rating} />}
     </Container>
   )

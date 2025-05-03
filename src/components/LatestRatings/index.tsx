@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { ChartLineUp } from '@phosphor-icons/react'
-import type {
+import {
   Book as PrismaBook,
   User as PrismaUser,
   Rating as PrismaRating,
@@ -11,7 +11,12 @@ import { ClipLoader } from 'react-spinners'
 import { api } from '@/src/lib/axios'
 
 import { LastReading } from '../LastReading'
-import { LastRatingContainer, LatestRatingsContainer } from './styles'
+import {
+  LatestRatingsContainer,
+  LastRatingSection,
+  SectionTitle,
+  LoaderWrapper,
+} from './styles'
 import { Card } from '../ui/Card'
 import { PageTitle } from '../ui/PageTitle'
 
@@ -41,9 +46,9 @@ export const LatestRatings = () => {
 
   if (isLoading) {
     return (
-      <LastRatingContainer>
-        <ClipLoader size={50} color="#4fa94d" />
-      </LastRatingContainer>
+      <LoaderWrapper>
+        <ClipLoader size={40} color="#4fa94d" />
+      </LoaderWrapper>
     )
   }
 
@@ -51,12 +56,13 @@ export const LatestRatings = () => {
     <LatestRatingsContainer>
       <PageTitle title="Início" icon={<ChartLineUp />} />
       <LastReading />
-      <LastRatingContainer>
-        <span>Avaliações mais recentes</span>
+
+      <LastRatingSection>
+        <SectionTitle>Avaliações mais recentes</SectionTitle>
         {ratings.map((rating) => {
           return <Card key={rating.id} rating={rating} />
         })}
-      </LastRatingContainer>
+      </LastRatingSection>
     </LatestRatingsContainer>
   )
 }

@@ -36,20 +36,19 @@ export const Overlay = styled(Dialog.Overlay, {
 export const Content = styled(Dialog.Content, {
   display: 'flex',
   flexDirection: 'column',
-  gap: '40px',
+  gap: '2.5rem',
   width: '680px',
-  maxHeight: '100vh',
-  borderRadius: '4px',
+  maxWidth: '100%',
+  height: '100vh',
+  borderRadius: '0 0 0 12px',
   position: 'fixed',
   right: 0,
   top: 0,
-  transform: 'translateY(-50%)',
   padding: '64px 48px',
-
   backgroundColor: '$gray800',
   overflowY: 'auto',
-
   animation: `${contentShow} 300ms ease-in-out forwards`,
+  transform: 'translateY(-50%)',
 
   '&[data-state="open"]': {
     outline: 'none',
@@ -57,6 +56,12 @@ export const Content = styled(Dialog.Content, {
 
   '&[data-state="closed"]': {
     animation: `${contentHide} 300ms ease-in-out forwards`,
+  },
+
+  '@media (max-width: 768px)': {
+    width: '100%',
+    padding: '48px 24px',
+    borderRadius: 0,
   },
 })
 
@@ -74,23 +79,29 @@ export const CloseButton = styled(Dialog.Close, {
 export const BookInfo = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  gap: '40px',
-
-  width: '564px',
-  height: '414px',
-  padding: '24px 32px',
+  gap: '2rem',
+  backgroundColor: '$gray700',
+  padding: '2rem',
   borderRadius: '10px',
-  background: '$gray700',
+  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.2)',
 })
 
 export const BookData = styled('div', {
   display: 'flex',
-  gap: '32px',
+  flexDirection: 'row',
+  gap: '2rem',
 
   img: {
     width: '171px',
     height: '242px',
-    objectFit: 'contain',
+    borderRadius: '6px',
+    objectFit: 'cover',
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.3)',
+  },
+
+  '@media (max-width: 480px)': {
+    flexDirection: 'column',
+    alignItems: 'center',
   },
 })
 
@@ -103,12 +114,13 @@ export const BookDataDescription = styled('div', {
 export const TitleAndActorBook = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  gap: '8px',
+  gap: '0.25rem',
 
   strong: {
-    fontSize: '$sm',
-    fontWeight: 'bold',
+    fontSize: '$xl',
+    fontWeight: '700',
     color: '$gray100',
+    lineHeight: '1.4',
   },
 
   span: {
@@ -188,7 +200,8 @@ export const Pages = styled('div', {
 export const RatingsSection = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  gap: '16px',
+  gap: '1.5rem',
+  paddingTop: '1rem',
 })
 
 export const Title = styled('div', {
@@ -197,20 +210,19 @@ export const Title = styled('div', {
   justifyContent: 'space-between',
 
   span: {
-    fontSize: '$sm',
-    color: '$gray200',
+    fontSize: '$lg',
+    fontWeight: '600',
+    color: '$gray100',
   },
 
   strong: {
-    fontSize: '$md',
+    fontSize: '$sm',
     fontWeight: 'bold',
     color: '$purple100',
-
     cursor: 'pointer',
 
     '&:hover': {
-      opacity: '0.8',
-      transition: 'all 0.2s',
+      TextDecoder: 'underline',
     },
   },
 })

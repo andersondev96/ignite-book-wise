@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 
 import { Container, ItemInfo } from './styles'
+import { IconWrapper } from '../ButtonAuth/styles'
 
 interface ItemInfoProfileProps {
   icon: ReactNode
@@ -14,7 +15,7 @@ export const ItemInfoProfile = ({
   description,
 }: ItemInfoProfileProps) => (
   <Container>
-    {icon}
+    <IconWrapper>{icon}</IconWrapper>
     <ItemInfo>
       <strong>{title}</strong>
       <span>{description}</span>
