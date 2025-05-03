@@ -13,7 +13,12 @@ import { PageTitle } from '@/src/components/ui/PageTitle'
 import { Tags } from '@/src/components/ui/Tags'
 import { DefaultLayout } from '@/src/layouts'
 import { api } from '@/src/lib/axios'
-import { Container, Header, ListBooks } from '@/src/styles/pages/explore'
+import {
+  Container,
+  Header,
+  ListBooks,
+  LoadingWrapper,
+} from '@/src/styles/pages/explore'
 
 import { NextPageWithLayout } from '../_app.page'
 
@@ -75,6 +80,14 @@ export const ExplorePage: NextPageWithLayout = () => {
     loadingCategories()
   }, [fetchBooks, loadingBookSelected, loadingCategories])
 
+  if (loading) {
+    return (
+      <LoadingWrapper>
+        <ClipLoader size={50} color="#4fa94d" loading={loading} />
+      </LoadingWrapper>
+    )
+  }
+
   return (
     <>
       <Container>
@@ -86,20 +99,19 @@ export const ExplorePage: NextPageWithLayout = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </Header>
+
         <Tags
           categories={categories}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-        {loading ? (
-          <ClipLoader size={50} color="#4fa94d" loading={loading} />
-        ) : (
+        {
           <ListBooks>
             {books.map((book) => (
               <Book key={book.id} book={book} />
             ))}
           </ListBooks>
-        )}
+        }
       </Container>
       <Dialog.Root
         open={!!bookSelected}
