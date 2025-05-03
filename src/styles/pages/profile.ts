@@ -4,8 +4,8 @@ import { styled } from '@/stitches.config'
 
 export const Container = styled('div', {
   display: 'flex',
-  justifyContent: 'space-between',
   alignItems: 'flex-start',
+  justifyContent: 'center',
   gap: '4rem',
   padding: '2rem',
   flexWrap: 'nowrap',
@@ -17,9 +17,8 @@ export const Container = styled('div', {
 })
 
 export const Main = styled('main', {
-  flex: 1,
-  maxWidth: '680px',
-  width: '100%',
+  width: '680px',
+  minHeight: '600px',
 
   '> span': {
     color: '$gray400',
