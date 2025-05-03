@@ -5,27 +5,33 @@ export const Container = styled('div', {
   alignItems: 'center',
   width: 'auto',
   height: '48px',
-  padding: '20px 14px',
-
+  padding: '0 1rem',
   border: '1px solid $gray500',
-  borderRadius: '4px',
+  borderRadius: '8px',
+  backgroundColor: '$gray800',
+  transition: 'border 0.2s, box-shadow 0.2s',
 
-  marginBottom: '16px',
+  '&:focus-within': {
+    borderColor: '$green100',
+    boxShadow: '0 0 0 2px $colors$green100',
+  },
 
   svg: {
-    marginLeft: '20px',
-    color: '$gray500',
+    marginLeft: '0.75rem',
+    color: '$gray400',
+    flexShrink: 0,
   },
 })
 
 export const Input = styled('input', {
-  width: '100%',
-  border: 0,
-  boxShadow: 0,
-  outline: 0,
-
+  flex: 1,
   background: 'transparent',
-
-  color: '$gray400',
+  border: 'none',
+  outline: 'none',
+  color: '$gray100',
   fontSize: '$md',
+
+  '::placeholder': {
+    color: '$gray400',
+  },
 })

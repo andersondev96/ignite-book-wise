@@ -1,32 +1,34 @@
 import { styled } from '@/stitches.config'
 
 export const Container = styled('div', {
+  width: '320px',
+  flexShrink: 0,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  height: '100%',
-  paddingLeft: '99px',
-
+  padding: '2rem',
   borderLeft: '1px solid $gray700',
+  borderRadius: '12px',
+
+  '@media(max-width: 1024px)': {
+    borderLeft: 'none',
+    borderTop: '1px solid $gray700',
+    width: '100%',
+    marginTop: '2rem',
+  },
 })
 
 export const UserInfo = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  marginBottom: '40px',
-
-  img: {
-    width: '72px',
-    height: '72px',
-    borderRadius: '999px',
-    objectFit: 'cover',
-  },
+  marginBottom: '1.25rem',
 
   strong: {
-    fontSize: '$md',
+    fontSize: '$lg',
     color: '$gray100',
     fontWeight: 'bold',
+    marginTop: '2rem',
   },
 
   span: {
@@ -43,8 +45,10 @@ export const Divisor = styled('div', {
 })
 
 export const BooksInfo = styled('div', {
-  marginTop: '32px',
+  marginTop: '2rem',
   display: 'flex',
   flexDirection: 'column',
-  gap: '40px',
+  gap: '1.5rem',
+  width: '100%',
+  paddingLeft: '3rem',
 })
