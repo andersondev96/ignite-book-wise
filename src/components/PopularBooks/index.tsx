@@ -9,7 +9,9 @@ import { ClipLoader } from 'react-spinners'
 import { api } from '@/src/lib/axios'
 
 import {
+  BookInfo,
   Container,
+  ImageWrapper,
   PopularBookCard,
   PopularBooksContainer,
   TitleBook,
@@ -23,7 +25,6 @@ type RatingSchema = PrismaRating & {
 export const PopularBooks = () => {
   const [ratings, setRatings] = useState<RatingSchema[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-
   const router = useRouter()
 
   const fetchPopularBooks = useCallback(async () => {
@@ -66,19 +67,17 @@ export const PopularBooks = () => {
       <PopularBooksContainer>
         {ratings.map(({ id, rate, book }) => (
           <PopularBookCard key={id}>
-            <img
-              src={book.cover_url.replace('public', '')}
-              alt={book.name}
-              onClick={() => handleSelectedBook(book.id)}
-            />
+            <ImageWrapper onClick={() => handleSelectedBook(book.id)}>
+              <img src={book.cover_url.replace('public', '')} alt={book.name} />
+            </ImageWrapper>
 
-            <div>
+            <BookInfo>
               <TitleBook>
                 <span>{book.name}</span>
                 <p>{book.author}</p>
               </TitleBook>
               <Stars rate={rate} />
-            </div>
+            </BookInfo>
           </PopularBookCard>
         ))}
       </PopularBooksContainer>
