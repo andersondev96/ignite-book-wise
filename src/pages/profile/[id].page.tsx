@@ -15,7 +15,12 @@ import { SearchInput } from '@/src/components/SearchInput'
 import { PageTitle } from '@/src/components/ui/PageTitle'
 import { DefaultLayout } from '@/src/layouts'
 import { api } from '@/src/lib/axios'
-import { BackButton, Container, Main } from '@/src/styles/pages/profile'
+import {
+  BackButton,
+  Container,
+  EmptyStateMessage,
+  Main,
+} from '@/src/styles/pages/profile'
 
 import { NextPageWithLayout } from '../_app.page'
 
@@ -98,10 +103,10 @@ const Profile: NextPageWithLayout<ProfileProps> = () => {
             <RatedBooksProfile key={rating.id} rate={rating} />
           ))
         ) : (
-          <span>
+          <EmptyStateMessage>
             Nenhum resultado encontrado para a buca de{' '}
             <strong>&quot;{book}&quot;</strong>
-          </span>
+          </EmptyStateMessage>
         )}
       </Main>
 

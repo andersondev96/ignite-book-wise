@@ -39,7 +39,7 @@ export const Card = ({ rating }: RatingComponentProps) => {
 
   const handleSelectedBook = useCallback(
     (bookId: string) => {
-      router.push(`explore?bookId=${bookId}`)
+      router.push(`/explore?bookId=${bookId}`)
     },
     [router],
   )

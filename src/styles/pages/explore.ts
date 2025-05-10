@@ -44,3 +44,10 @@ export const LoadingWrapper = styled('div', {
   alignItems: 'center',
   minHeight: '200px',
 })
+
+export const EmptyStateMessage = styled('span', {
+  marginTop: '2rem',
+  textAlign: 'center',
+  color: '$gray200',
+  display: 'block',
+})

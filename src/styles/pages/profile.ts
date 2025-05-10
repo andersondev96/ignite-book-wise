@@ -19,14 +19,17 @@ export const Container = styled('div', {
 export const Main = styled('main', {
   width: '680px',
   minHeight: '600px',
+})
 
-  '> span': {
-    color: '$gray400',
-    fontSize: '$sm',
+export const EmptyStateMessage = styled('span', {
+  marginTop: '2rem',
+  textAlign: 'center',
+  color: '$gray400',
+  fontSize: '$sm',
+  display: 'block',
 
-    strong: {
-      color: '$gray100',
-    },
+  strong: {
+    color: '$gray100',
   },
 })
 

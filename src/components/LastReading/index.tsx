@@ -25,11 +25,14 @@ type Rating = PrismaRating & {
 export const LastReading = () => {
   const [rating, setRating] = useState<Rating>()
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const userId = session?.user.id
 
   const fetchLastReading = useCallback(async () => {
-    if (!userId) return
+    if (!userId) {
+      setIsLoading(false)
+      return
+    }
 
     try {
       const { data } = await api.get<Rating>(
@@ -44,8 +47,10 @@ export const LastReading = () => {
   }, [userId])
 
   useEffect(() => {
-    fetchLastReading()
-  }, [fetchLastReading])
+    if (status !== 'loading') {
+      fetchLastReading()
+    }
+  }, [fetchLastReading, status])
 
   if (isLoading) {
     return (
@@ -55,7 +60,7 @@ export const LastReading = () => {
     )
   }
 
-  if (!rating) {
+  if (!userId || !rating) {
     return null
   }
 

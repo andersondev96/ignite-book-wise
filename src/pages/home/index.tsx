@@ -7,12 +7,14 @@ import { HomeContainer } from '@/src/styles/pages/home'
 
 import { NextPageWithLayout } from '../_app.page'
 
-const HomePage: NextPageWithLayout = () => (
-  <HomeContainer>
-    <LatestRatings />
-    <PopularBooks />
-  </HomeContainer>
-)
+const HomePage: NextPageWithLayout = () => {
+  return (
+    <HomeContainer>
+      <LatestRatings />
+      <PopularBooks />
+    </HomeContainer>
+  )
+}
 
 HomePage.getLayout = (page: ReactElement) => {
   return <DefaultLayout title="Início">{page}</DefaultLayout>

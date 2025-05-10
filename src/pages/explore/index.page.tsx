@@ -15,6 +15,7 @@ import { DefaultLayout } from '@/src/layouts'
 import { api } from '@/src/lib/axios'
 import {
   Container,
+  EmptyStateMessage,
   Header,
   ListBooks,
   LoadingWrapper,
@@ -52,8 +53,6 @@ export const ExplorePage: NextPageWithLayout = () => {
   }, [])
 
   const fetchBooks = useCallback(async () => {
-    setLoading(true)
-
     const params = new URLSearchParams()
 
     if (selectedCategory) {
@@ -75,10 +74,17 @@ export const ExplorePage: NextPageWithLayout = () => {
   }, [selectedCategory, name])
 
   useEffect(() => {
-    fetchBooks()
     loadingBookSelected()
     loadingCategories()
   }, [fetchBooks, loadingBookSelected, loadingCategories])
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      fetchBooks()
+    }, 400)
+
+    return () => clearTimeout(handler)
+  }, [name, fetchBooks])
 
   if (loading) {
     return (
@@ -95,6 +101,7 @@ export const ExplorePage: NextPageWithLayout = () => {
           <PageTitle title="Explorar" icon={<Binoculars size={32} />} />
           <SearchInput
             name="actor"
+            value={name}
             placeholder="Buscar livro ou autor"
             onChange={(e) => setName(e.target.value)}
           />
@@ -105,13 +112,18 @@ export const ExplorePage: NextPageWithLayout = () => {
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-        {
+        {books.length > 0 ? (
           <ListBooks>
             {books.map((book) => (
               <Book key={book.id} book={book} />
             ))}
           </ListBooks>
-        }
+        ) : (
+          <EmptyStateMessage>
+            Nenhum resultado encontrado para a buca de{' '}
+            <strong>&quot;{name}&quot;</strong>
+          </EmptyStateMessage>
+        )}
       </Container>
       <Dialog.Root
         open={!!bookSelected}
