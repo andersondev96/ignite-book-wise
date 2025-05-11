@@ -29,6 +29,14 @@ export const Container = styled('div', {
     webkitLineClamp: 4,
     webkitBoxOrient: 'vertical',
   },
+
+  variants: {
+    isOwner: {
+      true: {
+        background: '$gray600',
+      },
+    },
+  },
 })
 
 export const Header = styled('div', {

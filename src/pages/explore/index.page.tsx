@@ -28,6 +28,8 @@ type BookSchema = PrismaBook & {
 }
 
 export const ExplorePage: NextPageWithLayout = () => {
+  const router = useRouter()
+  const { query, isReady } = useRouter()
   const [books, setBooks] = useState<BookSchema[]>([])
   const [name, setName] = useState('')
   const [loading, setLoading] = useState<boolean>(true)
@@ -73,6 +75,24 @@ export const ExplorePage: NextPageWithLayout = () => {
     }
   }, [selectedCategory, name])
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+
+    setName(value)
+
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          book: value || undefined,
+        },
+      },
+      undefined,
+      { shallow: true },
+    )
+  }
+
   useEffect(() => {
     loadingBookSelected()
     loadingCategories()
@@ -85,6 +105,13 @@ export const ExplorePage: NextPageWithLayout = () => {
 
     return () => clearTimeout(handler)
   }, [name, fetchBooks])
+
+  useEffect(() => {
+    if (isReady) {
+      const bookParam = query.book?.toString() || ''
+      setName(bookParam)
+    }
+  }, [isReady, query.book])
 
   if (loading) {
     return (
@@ -103,7 +130,7 @@ export const ExplorePage: NextPageWithLayout = () => {
             name="actor"
             value={name}
             placeholder="Buscar livro ou autor"
-            onChange={(e) => setName(e.target.value)}
+            onChange={handleSearchChange}
           />
         </Header>
 

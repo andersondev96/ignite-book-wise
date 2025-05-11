@@ -42,6 +42,7 @@ interface ProfileProps {
 
 const Profile: NextPageWithLayout<ProfileProps> = () => {
   const router = useRouter()
+  const { query, isReady } = useRouter()
   const { id: userId } = router.query as { id: string }
   const { status, data: session } = useSession()
 
@@ -71,12 +72,37 @@ const Profile: NextPageWithLayout<ProfileProps> = () => {
     }
   }, [userId, book])
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+
+    setBook(value)
+
+    router.push(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          book: value || undefined,
+        },
+      },
+      undefined,
+      { shallow: true },
+    )
+  }
+
   useEffect(() => {
     if (userId) {
       fetchUserProfile()
       fetchRatings()
     }
   }, [userId, fetchUserProfile, fetchRatings])
+
+  useEffect(() => {
+    if (isReady) {
+      const bookParam = query.book?.toString() || ''
+      setBook(bookParam)
+    }
+  }, [isReady, query.book])
 
   if (!user) {
     return null
@@ -95,8 +121,9 @@ const Profile: NextPageWithLayout<ProfileProps> = () => {
         )}
         <SearchInput
           name="book"
+          value={book}
           placeholder="Buscar livro avaliado"
-          onChange={(e) => setBook(e.target.value)}
+          onChange={handleSearchChange}
         />
         {ratings.length > 0 ? (
           ratings.map((rating) => (
