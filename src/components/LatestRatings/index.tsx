@@ -60,7 +60,7 @@ export const LatestRatings = () => {
       <LastRatingSection>
         <SectionTitle>Avaliações mais recentes</SectionTitle>
         {ratings.map((rating) => {
-          return <Card key={rating.id} rating={rating} />
+          return <Card key={rating.id} rating={rating} type="popular" />
         })}
       </LastRatingSection>
     </LatestRatingsContainer>

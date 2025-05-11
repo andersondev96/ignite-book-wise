@@ -1,7 +1,6 @@
 import { styled } from '@/stitches.config'
 
 export const BookCardContainer = styled('div', {
-  background: '$gray600',
   width: '100%',
   maxWidth: '608px',
   marginTop: '16px',
@@ -10,6 +9,17 @@ export const BookCardContainer = styled('div', {
   boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
   transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
 
+  variants: {
+    type: {
+      latest: {
+        background: '$gray600',
+      },
+      popular: {
+        background: '$gray700',
+      },
+    },
+  },
+
   '&:hover': {
     transform: 'scale(1.02)',
     boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
@@ -17,8 +27,8 @@ export const BookCardContainer = styled('div', {
 })
 export const AuthorSection = styled('section', {
   display: 'flex',
-  alignItems: 'center',
   justifyContent: 'space-between',
+  alignItems: 'center',
   marginBottom: '16px',
 })
 
@@ -41,10 +51,28 @@ export const AuthorInfo = styled('a', {
   },
 })
 
+export const CardContentWrapper = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+
+  variants: {
+    type: {
+      latest: {
+        flexDirection: 'row-reverse',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+      },
+      popular: {
+        flexDirection: 'column',
+      },
+    },
+  },
+})
+
 export const BookInfoSection = styled('section', {
   display: 'flex',
   gap: '20px',
-  marginTop: '16px',
   alignItems: 'flex-start',
 
   img: {
@@ -57,6 +85,17 @@ export const BookInfoSection = styled('section', {
 
     '&:hover': {
       transform: 'scale(1.05)',
+    },
+  },
+
+  variants: {
+    type: {
+      latest: {
+        marginTop: '8px',
+      },
+      popular: {
+        marginTop: '16px',
+      },
     },
   },
 })
@@ -93,4 +132,15 @@ export const Text = styled('p', {
     color: '$purple100',
     cursor: 'pointer',
   },
+})
+
+export const StarsWrapper = styled('div', {
+  marginLeft: 'auto',
+})
+
+export const DateText = styled('p', {
+  color: '$gray400',
+  fontSize: '$sm',
+  fontWeight: '$regular',
+  marginBottom: '8px',
 })

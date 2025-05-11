@@ -73,7 +73,7 @@ export const LastReading = () => {
           <CaretRight size={16} />
         </Link>
       </Header>
-      {<Card rating={rating} />}
+      {<Card rating={rating} type="latest" />}
     </Container>
   )
 }
