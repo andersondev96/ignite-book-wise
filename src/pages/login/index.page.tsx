@@ -52,6 +52,7 @@ export default function Login() {
                 imageUrl={icon}
                 title={title}
                 onClick={async () => await handleSignIn(provider)}
+                data-testid={`login-${provider}`}
               />
             ))}
 
@@ -59,6 +60,7 @@ export default function Login() {
               icon={<RocketLaunch size={32} />}
               title="Acessar como visitante"
               onClick={handleGuestAccess}
+              data-testid="guest-access"
             />
           </AuthButtons>
         </LoginForm>

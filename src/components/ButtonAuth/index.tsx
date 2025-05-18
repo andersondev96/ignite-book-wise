@@ -6,6 +6,7 @@ type ButtonAuthProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   icon?: ReactNode
   imageUrl?: string
   title: string
+  'data-testid'?: string
 }
 
 export const ButtonAuth = ({
