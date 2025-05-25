@@ -1,0 +1,44 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Book /> > matches snapshot 1`] = `
+<div>
+  <div
+    aria-controls="radix-:r0:"
+    aria-expanded="false"
+    aria-haspopup="dialog"
+    class="c-BGoLR"
+    data-state="closed"
+    type="button"
+  >
+    <img
+      alt="Clean Code"
+      class="c-eTEsVg"
+      src="/images/clean-code.jpg"
+    />
+    <div
+      class="c-bUiVO"
+    >
+      <div
+        class="c-gyJOfl"
+      >
+        <strong>
+          Clean Code
+        </strong>
+        <span>
+          Robert C. Martin
+        </span>
+      </div>
+      <div
+        data-rate="4"
+        data-testid="stars"
+      />
+    </div>
+  </div>
+  <div
+    data-testid="modal-book-details"
+  >
+    Modal for Book ID: 
+    04c3f36a-456b-46a4-a115-82e749f458a0
+  </div>
+</div>
+`;
