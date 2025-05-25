@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react'
-import { vi } from 'vitest'
+import { vi, describe, it, expect } from 'vitest'
+import '@testing-library/jest-dom'
 
-import Login from '../pages/login/index.page'
+import Login from '../../pages/login/index.page'
 
 vi.mock('next/router', () => ({
   useRouter: () => ({
