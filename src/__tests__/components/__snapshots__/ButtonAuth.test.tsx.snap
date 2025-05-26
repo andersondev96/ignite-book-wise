@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<ButtonAuth /> > matches snapshot 1`] = `
+<div>
+  <button
+    class="c-ljeQoi"
+  >
+    <div
+      class="c-isaqtF"
+    >
+      <img
+        alt="title"
+        loading="lazy"
+        src="/images/icons/logo_google.svg"
+      />
+    </div>
+    <span>
+      Entrar com o Google
+    </span>
+  </button>
+</div>
+`;
