@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<FilterItem /> > renders with active styles when active 1`] = `
+<div
+  class="c-dPKmXm c-dPKmXm-bWxTnJ-isActive-true"
+  tabindex="0"
+>
+  <span>
+    suspense
+  </span>
+</div>
+`;
+
+exports[`<FilterItem /> > renders with default styles when not active 1`] = `
+<div
+  class="c-dPKmXm"
+  tabindex="0"
+>
+  <span>
+    suspense
+  </span>
+</div>
+`;

@@ -31,7 +31,7 @@ export const Container = styled('div', {
   },
 
   variants: {
-    active: {
+    isActive: {
       true: {
         background: '$purple200',
         border: 'none',
