@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<ItemInfoProfile /> > matches snapshot 1`] = `
+<div>
+  <div
+    class="c-hekitF"
+  >
+    <div
+      class="c-isaqtF"
+    >
+      <span
+        data-testid="item-icon"
+      >
+        Icon
+      </span>
+    </div>
+    <div
+      class="c-iPLZlQ"
+    >
+      <strong>
+        200
+      </strong>
+      <span>
+        Páginas Lidas
+      </span>
+    </div>
+  </div>
+</div>
+`;
