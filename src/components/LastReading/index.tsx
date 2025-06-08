@@ -54,7 +54,7 @@ export const LastReading = () => {
 
   if (isLoading) {
     return (
-      <LoaderWrapper>
+      <LoaderWrapper role="status">
         <ClipLoader size={40} color="#4fa94d" />
       </LoaderWrapper>
     )

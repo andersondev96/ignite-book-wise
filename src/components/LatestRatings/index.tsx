@@ -31,7 +31,8 @@ export const LatestRatings = () => {
 
   const fetchLatestRatings = useCallback(async () => {
     try {
-      const { data } = await api.get<RatingSchema[]>('/ratings/latest')
+      const response = await api.get<RatingSchema[]>('/ratings/latest')
+      const data = response?.data || []
       setRatings(data)
     } catch (error) {
       console.error('Error fetching latest ratings:', error)
@@ -46,7 +47,7 @@ export const LatestRatings = () => {
 
   if (isLoading) {
     return (
-      <LoaderWrapper>
+      <LoaderWrapper role="status">
         <ClipLoader size={40} color="#4fa94d" />
       </LoaderWrapper>
     )
