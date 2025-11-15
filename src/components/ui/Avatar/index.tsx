@@ -1,13 +1,32 @@
 import { AvatarContainer } from './styles'
 
+type AvatarSize = 'big' | 'small' | 'sm' | 'lg'
+
 type AvatarProps = {
-  imageName: string
-  imageUrl: string
-  size?: 'big' | 'small'
+  src?: string | null
+  alt: string
+  size?: AvatarSize
 }
 
-export const Avatar = ({ imageName, imageUrl, size = 'big' }: AvatarProps) => (
-  <AvatarContainer size={size}>
-    <img src={imageUrl} alt={imageName} loading="lazy" />
-  </AvatarContainer>
-)
+const mapSize = (size: AvatarSize): 'big' | 'small' => {
+  switch (size) {
+    case 'sm':
+    case 'small':
+      return 'small'
+    case 'lg':
+    case 'big':
+    default:
+      return 'big'
+  }
+}
+
+export const Avatar = ({ src, alt, size = 'big' }: AvatarProps) => {
+  const mappedSize = mapSize(size)
+  const imageUrl = src || '/images/default-avatar.png'
+
+  return (
+    <AvatarContainer size={mappedSize}>
+      <img src={imageUrl} alt={alt} loading="lazy" />
+    </AvatarContainer>
+  )
+}

@@ -1,4 +1,4 @@
-import { createStitches } from '@stitches/react'
+import { createStitches } from "@stitches/react";
 
 export const { styled, getCssText, globalCss, theme } = createStitches({
   theme: {
@@ -9,14 +9,16 @@ export const { styled, getCssText, globalCss, theme } = createStitches({
     space: {
       px: '1px',
       1: '0.25rem',
-      2: '0.5rem',
+      2: '0.5rem', 
       3: '0.75rem',
-      4: '1rem',
+      4: '1rem',   
       5: '1.25rem',
-      6: '1.5rem',
+      6: '1.5rem', 
       7: '1.75rem',
-      8: '2rem',
+      8: '2rem',   
       10: '2.5rem',
+      12: '3rem',  
+      16: '4rem',  
     },
 
     fontSizes: {
@@ -72,11 +74,13 @@ export const { styled, getCssText, globalCss, theme } = createStitches({
       lg: '20px',
       full: '99999px',
     },
-
-    media: {
-      sm: '(min-width: 640px)',
-      md: '(min-width: 768px)',
-      lg: '(min-width: 1024px)',
-    },
+  },
+  
+  media: {
+    sm: '(min-width: 320px)',
+    md: '(min-width: 768px)',
+    lg: '(min-width: 1024px)',
+    xl: '(min-width: 1280px)',
+    xxl: '(min-width: 1536px)',
   },
 })

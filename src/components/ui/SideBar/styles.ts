@@ -1,5 +1,4 @@
 import Link from 'next/link'
-
 import { styled } from '@/stitches.config'
 
 export const SideBarContainer = styled('aside', {
@@ -16,16 +15,13 @@ export const SideBarContainer = styled('aside', {
   flexDirection: 'column',
   justifyContent: 'space-between',
   zIndex: 10,
-  transition: 'transform 0.3 ease',
+  transition: 'transform 0.3s ease',
+  transform: 'translateX(-110%)',
 
   '.logo': {
     width: '128px',
     marginBottom: '64px',
   },
-
-  transform: 'translateX(-110%)',
-
-  paddingTop: '24px',
 
   variants: {
     open: {
@@ -35,11 +31,16 @@ export const SideBarContainer = styled('aside', {
     },
   },
 
+
   '@lg': {
-    transform: 'translateX(0) !important',
-    position: 'fixed',
-    top: '20px',
-    left: '20px',
+    position: 'static',
+    transform: 'translateX(0)',
+    top: 'auto',
+    left: 'auto',
+    width: '232px',
+    height: 'auto',
+    minHeight: 'calc(100vh - 40px)',
+    margin: '20px',
   },
 
   '> .close-button': {

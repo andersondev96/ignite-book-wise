@@ -1,146 +1,166 @@
 import { styled } from '@/stitches.config'
 
-export const BookCardContainer = styled('div', {
+export const BookCardContainer = styled('article', {
   width: '100%',
-  maxWidth: '608px',
-  marginTop: '16px',
-  borderRadius: '8px',
-  padding: '24px 32px',
-  boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-  transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-
-  variants: {
-    type: {
-      latest: {
-        background: '$gray600',
-      },
-      popular: {
-        background: '$gray700',
-      },
-    },
-  },
-
+  borderRadius: '$md',
+  padding: '$6',
+  background: '$gray700',
+  border: '2px solid transparent',
+  transition: 'border-color 0.2s',
+  
   '&:hover': {
-    transform: 'scale(1.02)',
-    boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
+    borderColor: '$gray600',
   },
 })
-export const AuthorSection = styled('section', {
+
+export const AuthorSection = styled('div', {
   display: 'flex',
+  alignItems: 'flex-start',
   justifyContent: 'space-between',
-  alignItems: 'center',
-  marginBottom: '16px',
+  marginBottom: '$8',
+  gap: '$4',
 })
 
 export const AuthorInfo = styled('a', {
   textDecoration: 'none',
   display: 'flex',
   alignItems: 'center',
-  gap: '16px',
+  gap: '$4',
+  flex: 1,
+  minWidth: 0,
+  transition: 'opacity 0.2s',
+
+  '&:hover': {
+    opacity: 0.8,
+  },
+
+  '&:focus': {
+    outline: '2px solid $green100',
+    outlineOffset: '2px',
+    borderRadius: '$sm',
+  },
+})
+
+export const UserInfo = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$1',
+  minWidth: 0,
 
   span: {
     color: '$gray100',
     fontSize: '$md',
-    fontWeight: '$bold',
+    fontWeight: '$regular',
+    lineHeight: '$base',
   },
 
-  p: {
+  time: {
     color: '$gray400',
     fontSize: '$sm',
     fontWeight: '$regular',
+    lineHeight: '$base',
   },
+})
+
+export const StarsWrapper = styled('div', {
+  flexShrink: 0,
 })
 
 export const CardContentWrapper = styled('div', {
   display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-
-  variants: {
-    type: {
-      latest: {
-        flexDirection: 'row-reverse',
-        justifyContent: 'space-between',
-        alignItems: 'flex-start',
-      },
-      popular: {
-        flexDirection: 'column',
-      },
-    },
-  },
+  gap: '$5',
 })
 
-export const BookInfoSection = styled('section', {
-  display: 'flex',
-  gap: '20px',
-  alignItems: 'flex-start',
-
+export const BookImageWrapper = styled('div', {
+  flexShrink: 0,
+  width: '108px',
+  height: '152px',
+  borderRadius: '$sm',
+  overflow: 'hidden',
+  cursor: 'pointer',
+  
   img: {
-    width: '120px',
-    height: '180px',
+    width: '100%',
+    height: '100%',
     objectFit: 'cover',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    transform: 'transform 0.2s ease',
-
-    '&:hover': {
-      transform: 'scale(1.05)',
-    },
+    transition: 'transform 0.2s',
   },
-
-  variants: {
-    type: {
-      latest: {
-        marginTop: '8px',
-      },
-      popular: {
-        marginTop: '16px',
-      },
-    },
+  
+  '&:hover img': {
+    transform: 'scale(1.05)',
+  },
+  
+  '&:focus': {
+    outline: '2px solid $green100',
+    outlineOffset: '2px',
   },
 })
 
 export const BookInfoContent = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
+  gap: '$5',
   flex: 1,
+  minWidth: 0,
+})
+
+export const BookTitleSection = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$2',
 
   strong: {
     color: '$gray100',
+    fontSize: '$md',
     fontWeight: '$bold',
-    fontSize: '$lg',
-    marginBottom: '8px',
+    lineHeight: '$short',
   },
 
   span: {
     color: '$gray400',
+    fontSize: '$sm',
     fontWeight: '$regular',
-    fontSize: '$sm',
-    marginBottom: '12px',
+    lineHeight: '$base',
   },
 })
 
-export const Text = styled('p', {
-  color: '$gray300',
+export const BookDescription = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '$2',
+  
+  p: {
+    color: '$gray300',
+    fontSize: '$sm',
+    lineHeight: '$base',
+    margin: 0,
+  },
+})
+
+export const ExpandButton = styled('button', {
+  all: 'unset',
   fontSize: '$sm',
-  marginTop: '12px',
+  fontWeight: '$bold',
+  color: '$purple100',
+  cursor: 'pointer',
+  alignSelf: 'flex-start',
+  transition: 'color 0.2s',
+  lineHeight: '$base',
+  
+  '&:hover': {
+    color: '$purple200',
+  },
 
-  span: {
-    fontSize: '$sm',
-    fontWeight: '$bold',
-    color: '$purple100',
-    cursor: 'pointer',
+  '&:focus': {
+    outline: '2px solid $green100',
+    outlineOffset: '2px',
+    borderRadius: '$xs',
   },
 })
 
-export const StarsWrapper = styled('div', {
-  marginLeft: 'auto',
-})
-
-export const DateText = styled('p', {
+export const DateText = styled('time', {
   color: '$gray400',
   fontSize: '$sm',
   fontWeight: '$regular',
-  marginBottom: '8px',
+  lineHeight: '$base',
 })

@@ -10,78 +10,73 @@ export const TitleSection = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  marginBottom: '16px',
+  marginBottom: '$4',
 
-  span: {
-    fontSize: '$lg',
-    fontWeight: '$bold',
-    color: '$gray100',
+  h2: {
+    fontSize: '$sm',
+    fontWeight: '$regular',
+    color: '$gray200',
   },
 
   a: {
     display: 'flex',
     alignItems: 'center',
-    gap: '8px',
+    gap: '$2',
     textDecoration: 'none',
     color: '$purple100',
     fontSize: '$sm',
     fontWeight: '$bold',
-  },
+    transition: 'color 0.2s',
 
-  '&:hover': {
-    textDecoration: 'underline',
+    '&:hover': {
+      color: '$purple200',
+    },
+
+    '&:focus': {
+      outline: '2px solid $green100',
+      outlineOffset: '2px',
+      borderRadius: '$sm',
+    },
   },
 })
 
 export const PopularBooksContainer = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  overflowX: 'auto',
-  gap: '16px',
-  paddingBottom: '8px',
-
-  '&::-webkit-scrollbar': {
-    height: '6px',
-  },
-
-  '&::-webkit-scrollbar-thumb': {
-    backgroundColor: '$gray600',
-    borderRadius: '8px',
-  },
+  gap: '$3',
 })
 
 export const PopularBookCard = styled('div', {
   background: '$gray700',
-  borderRadius: '10px',
-  padding: '16px',
-  minWidth: '250px',
-
+  borderRadius: '$sm',
+  padding: '$4 $5',
   display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'flex-start',
-  gap: '16px',
-  flexShrink: 0,
-  boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-
-  transition: 'transform 0.2s ease',
+  gap: '$5',
+  cursor: 'pointer',
+  transition: 'background 0.2s',
+  border: '2px solid transparent',
 
   '&:hover': {
-    transform: 'translateY(-2px)',
+    background: '$gray600',
+  },
+
+  '&:focus': {
+    outline: 'none',
+    borderColor: '$green100',
   },
 })
 
 export const ImageWrapper = styled('div', {
-  cursor: 'pointer',
-  img: {
-    width: '64px',
-    height: '94px',
-    objectFit: 'cover',
-    borderRadius: '6px',
-    transition: 'all 0.2s ease-in-out',
+  flexShrink: 0,
+  borderRadius: '$xs',
+  overflow: 'hidden',
+  width: '64px',
+  height: '94px',
 
-    '&:hover': {
-      opacity: '0.85',
-    },
+  img: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
   },
 })
 
@@ -89,22 +84,95 @@ export const BookInfo = styled('div', {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
+  flex: 1,
+  minWidth: 0,
+  gap: '$5',
 })
 
 export const TitleBook = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  marginBottom: '8px',
+  gap: '$1',
 
   span: {
-    color: '$gray100',
     fontSize: '$sm',
-    fontWeight: 'bold',
-    lineHeight: '1.4',
+    fontWeight: '$bold',
+    color: '$gray100',
+    lineHeight: '$short',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
   },
 
   p: {
-    color: '$gray400',
     fontSize: '$xs',
+    color: '$gray400',
+    lineHeight: '$base',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+})
+
+export const LoaderWrapper = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '$3',
+  minHeight: '200px',
+  padding: '$6',
+
+  '.sr-only': {
+    position: 'absolute',
+    width: '1px',
+    height: '1px',
+    padding: 0,
+    margin: '-1px',
+    overflow: 'hidden',
+    clip: 'rect(0, 0, 0, 0)',
+    whiteSpace: 'nowrap',
+    border: 0,
+  },
+})
+
+export const ErrorMessage = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '$4',
+  padding: '$6',
+  minHeight: '200px',
+  backgroundColor: '$gray700',
+  borderRadius: '$md',
+
+  p: {
+    fontSize: '$sm',
+    color: '$gray200',
+    textAlign: 'center',
+  },
+
+  button: {
+    padding: '$2 $4',
+    backgroundColor: '$purple100',
+    color: '$white',
+    border: 'none',
+    borderRadius: '$sm',
+    fontSize: '$sm',
+    fontWeight: '$bold',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s',
+
+    '&:hover': {
+      backgroundColor: '$purple200',
+    },
+
+    '&:focus': {
+      outline: '2px solid $green100',
+      outlineOffset: '2px',
+    },
   },
 })
