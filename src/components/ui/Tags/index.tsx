@@ -2,19 +2,21 @@ import { useRef, useState, MouseEvent } from 'react'
 
 import { Category as PrismaCategory } from '@prisma/client'
 
-import { Container } from './styles'
+import { Container, LoadingContainer } from './styles'
 import { FilterItem } from '../../FilterItem'
 
 interface TagsProps {
   categories: PrismaCategory[]
   selectedCategory: string
   setSelectedCategory: (category: string) => void
+  isLoading?: boolean
 }
 
 export const Tags = ({
   categories,
   selectedCategory,
   setSelectedCategory,
+  isLoading = false,
 }: TagsProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -40,6 +42,19 @@ export const Tags = ({
   }
 
   const handleMouseUp = () => setIsDragging(false)
+
+  if (isLoading) {
+    return (
+      <LoadingContainer role="status" aria-live="polite">
+        <span>Carregando categorias...</span>
+      </LoadingContainer>
+    )
+  }
+
+  if (!Array.isArray(categories)) {
+    console.error('Categories prop is not an array:', categories)
+    return null
+  }
 
   return (
     <Container

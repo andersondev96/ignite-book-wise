@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState, type ReactElement } from 'react'
+import { useEffect, useRef, useState, type ReactElement } from 'react'
 
 import { Binoculars } from '@phosphor-icons/react'
-import { Book as PrismaBook, Category as PrismaCategory } from '@prisma/client'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useRouter } from 'next/router'
 import { ClipLoader } from 'react-spinners'
@@ -22,89 +21,58 @@ import {
 } from '@/src/styles/pages/explore'
 
 import { NextPageWithLayout } from '../_app.page'
-
-type BookSchema = PrismaBook & {
-  avgRating: number
-}
+import { useQuery } from '@tanstack/react-query'
+import { CategoriesApiResponse } from '@/src/types/category'
+import { ExploreBooksApiResponse } from '@/src/types/book'
 
 export const ExplorePage: NextPageWithLayout = () => {
   const router = useRouter()
   const { query, isReady } = useRouter()
-  const [books, setBooks] = useState<BookSchema[]>([])
+
+  const debounceRef = useRef<NodeJS.Timeout | null>(null)
+
   const [name, setName] = useState('')
-  const [loading, setLoading] = useState<boolean>(true)
-  const [categories, setCategories] = useState<PrismaCategory[]>([])
   const [selectedCategory, setSelectedCategory] = useState('')
   const [bookSelected, setBookSelected] = useState<string | null>(null)
 
-  const route = useRouter()
+  const { data: categoriesData, isLoading: categoriesLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const response = await api.get<CategoriesApiResponse>('/books/categories')
 
-  const loadingBookSelected = useCallback(() => {
-    const bookId = route.query.bookId as string
+      return response.data
+    },
+    staleTime: 1000 * 60 * 10,
+  })
 
+  const { data: booksData, isLoading: booksLoading } = useQuery({
+    queryKey: ['books', selectedCategory, name],
+    queryFn: async () => {
+      const params = new URLSearchParams()
+
+      if (selectedCategory) {
+        params.append('category', selectedCategory)
+      }
+
+      if (name) {
+        params.append('name', name)
+      }
+
+      const response = await api.get<ExploreBooksApiResponse>(
+        `/books?${params.toString()}`,
+      )
+      return response.data
+    },
+    enabled: true,
+    staleTime: 1000 * 60 * 5,
+  })
+
+  useEffect(() => {
+    const bookId = query.bookId as string
     if (bookId) {
       setBookSelected(bookId)
     }
-  }, [route.query.bookId])
-
-  const loadingCategories = useCallback(() => {
-    api
-      .get('books/categories')
-      .then((response) => setCategories(response.data))
-      .catch((err) => console.error('Erro ao carregar as categorias:', err))
-  }, [])
-
-  const fetchBooks = useCallback(async () => {
-    const params = new URLSearchParams()
-
-    if (selectedCategory) {
-      params.append('category', selectedCategory)
-    }
-
-    if (name) {
-      params.append('name', name)
-    }
-
-    try {
-      const response = await api.get(`books?${params.toString()}`)
-      setBooks(response.data)
-    } catch (err) {
-      console.log('Erro ao carregar os livros:', err)
-    } finally {
-      setLoading(false)
-    }
-  }, [selectedCategory, name])
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-
-    setName(value)
-
-    router.push(
-      {
-        pathname: router.pathname,
-        query: {
-          ...router.query,
-          book: value || undefined,
-        },
-      },
-      undefined,
-      { shallow: true },
-    )
-  }
-
-  useEffect(() => {
-    loadingBookSelected()
-    loadingCategories()
-  }, [fetchBooks, loadingBookSelected, loadingCategories])
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      fetchBooks()
-    }, 400)
-
-    return () => clearTimeout(handler)
-  }, [name, fetchBooks])
+  }, [query.bookId])
 
   useEffect(() => {
     if (isReady) {
@@ -113,13 +81,48 @@ export const ExplorePage: NextPageWithLayout = () => {
     }
   }, [isReady, query.book])
 
-  if (loading) {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setName(value)
+
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current)
+    }
+
+    debounceRef.current = setTimeout(() => {
+      router.push(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            book: value || undefined,
+          },
+        },
+        undefined,
+        { shallow: true },
+      )
+    }, 400)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+      }
+    }
+  }, [])
+
+  if (categoriesLoading || (booksLoading && !booksData)) {
     return (
       <LoadingWrapper>
-        <ClipLoader size={50} color="#4fa94d" loading={loading} />
+        <ClipLoader size={50} color="#8381D9" loading />
+        <span className="sr-only">Carregando...</span>
       </LoadingWrapper>
     )
   }
+
+  const books = booksData?.data || []
+  const categories = categoriesData?.data || []
 
   return (
     <>
@@ -138,8 +141,14 @@ export const ExplorePage: NextPageWithLayout = () => {
           categories={categories}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
+          isLoading={categoriesLoading}
         />
-        {books.length > 0 ? (
+
+        {booksLoading ? (
+          <LoadingWrapper>
+            <ClipLoader size={40} color="#8381D9" loading />
+          </LoadingWrapper>
+        ) : books.length > 0 ? (
           <ListBooks>
             {books.map((book) => (
               <Book key={book.id} book={book} />
@@ -147,11 +156,18 @@ export const ExplorePage: NextPageWithLayout = () => {
           </ListBooks>
         ) : (
           <EmptyStateMessage>
-            Nenhum resultado encontrado para a buca de{' '}
-            <strong>&quot;{name}&quot;</strong>
+            {name ? (
+              <>
+                Nenhum resultado encontrado para a buca de{' '}
+                <strong>&quot;{name}&quot;</strong>
+              </>
+            ) : (
+              'Nenhum livro encontrado'
+            )}
           </EmptyStateMessage>
         )}
       </Container>
+
       <Dialog.Root
         open={!!bookSelected}
         onOpenChange={() => setBookSelected(null)}

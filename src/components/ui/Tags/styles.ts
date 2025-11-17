@@ -25,3 +25,13 @@ export const Container = styled('div', {
     padding: '0.5rem',
   },
 })
+
+export const LoadingContainer = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '$4',
+  color: '$gray400',
+  fontSize: '$sm',
+  minHeight: '48px',
+})
