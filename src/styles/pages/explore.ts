@@ -1,4 +1,3 @@
-// src/styles/pages/explore.ts
 import { styled } from '@/stitches.config'
 
 export const Container = styled('div', {

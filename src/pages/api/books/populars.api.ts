@@ -12,16 +12,15 @@ export default async function handle(
   res: NextApiResponse,
 ) {
   if (req.method !== 'GET') {
-    return res.status(405).json({ 
+    return res.status(405).json({
       error: 'Method not allowed',
-      message: 'Only GET requests are allowed' 
+      message: 'Only GET requests are allowed'
     })
   }
 
   try {
     const { limit } = querySchema.parse(req.query)
 
-    // Buscar livros com maior média de avaliações
     const popularBooks = await prisma.book.findMany({
       select: {
         id: true,
@@ -37,12 +36,11 @@ export default async function handle(
       },
       where: {
         ratings: {
-          some: {}, // Apenas livros com pelo menos uma avaliação
+          some: {},
         },
       },
     })
 
-    // Calcular média de avaliações e ordenar
     const booksWithAvgRating = popularBooks
       .map((book) => {
         const totalRatings = book.ratings.length
@@ -60,7 +58,6 @@ export default async function handle(
         }
       })
       .sort((a, b) => {
-        // Ordenar primeiro por média, depois por quantidade de avaliações
         if (b.avgRating !== a.avgRating) {
           return b.avgRating - a.avgRating
         }
@@ -73,7 +70,7 @@ export default async function handle(
     })
   } catch (error) {
     console.error('Error fetching popular books:', error)
-    
+
     if (error instanceof z.ZodError) {
       return res.status(400).json({
         error: 'Invalid query parameters',

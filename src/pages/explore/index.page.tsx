@@ -142,6 +142,7 @@ export const ExplorePage: NextPageWithLayout = () => {
             placeholder="Buscar livro ou autor"
             onChange={handleSearchChange}
             aria-label="Buscar livros por título ou autor"
+            variant="small"
           />
         </Header>
 

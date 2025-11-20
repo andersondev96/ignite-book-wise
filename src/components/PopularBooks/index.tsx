@@ -75,7 +75,6 @@ export const PopularBooks = () => {
     )
   }
 
-  // ✅ CORREÇÃO: Verificar se data.data existe e é um array
   if (!Array.isArray(data.data) || data.data.length === 0) {
     return (
       <Container>

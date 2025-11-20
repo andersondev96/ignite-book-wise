@@ -12,20 +12,17 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  // Permitir apenas GET
   if (req.method !== 'GET') {
-    return res.status(405).json({ 
+    return res.status(405).json({
       error: 'Method not allowed',
-      message: 'Only GET requests are allowed' 
+      message: 'Only GET requests are allowed'
     })
   }
 
   try {
-    // Validar query params
     const { page, limit } = querySchema.parse(req.query)
     const skip = (page - 1) * limit
 
-    // Buscar ratings com paginação
     const [ratings, totalCount] = await Promise.all([
       prisma.rating.findMany({
         orderBy: {
@@ -55,7 +52,6 @@ export default async function handle(
       prisma.rating.count(),
     ])
 
-    // Retornar com metadados de paginação
     return res.status(200).json({
       data: ratings,
       pagination: {
@@ -69,7 +65,7 @@ export default async function handle(
     })
   } catch (error) {
     console.error('Error fetching latest ratings:', error)
-    
+
     if (error instanceof z.ZodError) {
       return res.status(400).json({
         error: 'Invalid query parameters',
