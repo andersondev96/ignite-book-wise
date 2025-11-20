@@ -33,7 +33,7 @@ export const SideBarContainer = styled('aside', {
 
 
   '@lg': {
-    position: 'static',
+    position: 'fixed',
     transform: 'translateX(0)',
     top: 'auto',
     left: 'auto',
