@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState, type ReactElement } from 'react'
-
 import { Binoculars } from '@phosphor-icons/react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useRouter } from 'next/router'
 import { ClipLoader } from 'react-spinners'
+import { useQuery } from '@tanstack/react-query'
 
 import { Book } from '@/src/components/Book'
 import { ModalBookDetails } from '@/src/components/ModalBookDetails'
@@ -18,18 +18,19 @@ import {
   Header,
   ListBooks,
   LoadingWrapper,
+  InlineLoadingIndicator,
 } from '@/src/styles/pages/explore'
+import type { CategoriesApiResponse } from '@/src/types/category'
+import type { ExploreBooksApiResponse } from '@/src/types/book'
 
 import { NextPageWithLayout } from '../_app.page'
-import { useQuery } from '@tanstack/react-query'
-import { CategoriesApiResponse } from '@/src/types/category'
-import { ExploreBooksApiResponse } from '@/src/types/book'
 
 export const ExplorePage: NextPageWithLayout = () => {
   const router = useRouter()
-  const { query, isReady } = useRouter()
+  const { query, isReady } = router
 
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
+  const isInitialMount = useRef(true)
 
   const [name, setName] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
@@ -38,14 +39,17 @@ export const ExplorePage: NextPageWithLayout = () => {
   const { data: categoriesData, isLoading: categoriesLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
-      const response = await api.get<CategoriesApiResponse>('/books/categories')
-
+      const response = await api.get<CategoriesApiResponse>('/categories')
       return response.data
     },
     staleTime: 1000 * 60 * 10,
   })
 
-  const { data: booksData, isLoading: booksLoading } = useQuery({
+  const {
+    data: booksData,
+    isLoading: booksLoading,
+    isFetching: booksFetching,
+  } = useQuery({
     queryKey: ['books', selectedCategory, name],
     queryFn: async () => {
       const params = new URLSearchParams()
@@ -65,6 +69,7 @@ export const ExplorePage: NextPageWithLayout = () => {
     },
     enabled: true,
     staleTime: 1000 * 60 * 5,
+    placeholderData: (previousData) => previousData,
   })
 
   useEffect(() => {
@@ -75,9 +80,10 @@ export const ExplorePage: NextPageWithLayout = () => {
   }, [query.bookId])
 
   useEffect(() => {
-    if (isReady) {
-      const bookParam = query.book?.toString() || ''
+    if (isReady && isInitialMount.current && query.book) {
+      const bookParam = query.book.toString()
       setName(bookParam)
+      isInitialMount.current = false
     }
   }, [isReady, query.book])
 
@@ -112,17 +118,8 @@ export const ExplorePage: NextPageWithLayout = () => {
     }
   }, [])
 
-  if (categoriesLoading || (booksLoading && !booksData)) {
-    return (
-      <LoadingWrapper>
-        <ClipLoader size={50} color="#8381D9" loading />
-        <span className="sr-only">Carregando...</span>
-      </LoadingWrapper>
-    )
-  }
-
-  const books = booksData?.data || []
-  const categories = categoriesData?.data || []
+  const books = booksData?.data ?? []
+  const categories = categoriesData?.data ?? []
 
   return (
     <>
@@ -130,41 +127,60 @@ export const ExplorePage: NextPageWithLayout = () => {
         <Header>
           <PageTitle title="Explorar" icon={<Binoculars size={32} />} />
           <SearchInput
-            name="actor"
+            name="search"
             value={name}
             placeholder="Buscar livro ou autor"
             onChange={handleSearchChange}
           />
         </Header>
 
-        <Tags
-          categories={categories}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          isLoading={categoriesLoading}
-        />
+        {categoriesLoading ? (
+          <LoadingWrapper>
+            <ClipLoader size={30} color="#8381D9" loading />
+            <span className="sr-only">Carregando categorias...</span>
+          </LoadingWrapper>
+        ) : (
+          <Tags
+            categories={categories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            isLoading={false}
+          />
+        )}
 
-        {booksLoading ? (
+        {booksLoading && !booksData ? (
           <LoadingWrapper>
             <ClipLoader size={40} color="#8381D9" loading />
+            <span className="sr-only">Buscando livros...</span>
           </LoadingWrapper>
-        ) : books.length > 0 ? (
-          <ListBooks>
-            {books.map((book) => (
-              <Book key={book.id} book={book} />
-            ))}
-          </ListBooks>
         ) : (
-          <EmptyStateMessage>
-            {name ? (
-              <>
-                Nenhum resultado encontrado para a buca de{' '}
-                <strong>&quot;{name}&quot;</strong>
-              </>
-            ) : (
-              'Nenhum livro encontrado'
+          <>
+            {booksFetching && (
+              <InlineLoadingIndicator role="status" aria-live="polite">
+                <ClipLoader size={20} color="#8381D9" loading />
+                <span>Atualizando resultados...</span>
+              </InlineLoadingIndicator>
             )}
-          </EmptyStateMessage>
+
+            {books.length > 0 ? (
+              <ListBooks>
+                {books.map((book) => (
+                  <Book key={book.id} book={book} />
+                ))}
+              </ListBooks>
+            ) : (
+              <EmptyStateMessage>
+                {name ? (
+                  <>
+                    Nenhum resultado encontrado para a busca de{' '}
+                    <strong>&quot;{name}&quot;</strong>
+                  </>
+                ) : (
+                  'Nenhum livro encontrado'
+                )}
+              </EmptyStateMessage>
+            )}
+          </>
         )}
       </Container>
 
