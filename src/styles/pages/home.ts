@@ -1,4 +1,3 @@
-// src/styles/pages/home.ts
 import { styled } from '@/stitches.config'
 
 export const HomeContainer = styled('div', {
@@ -8,9 +7,8 @@ export const HomeContainer = styled('div', {
   width: '100%',
   maxWidth: '1440px',
   margin: '0 auto',
-  
+
   '@lg': {
-    // ✅ Grid de 2 colunas (Avaliações + Livros Populares)
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1fr) 324px',
     gap: '$16',
@@ -31,34 +29,32 @@ export const Sidebar = styled('aside', {
   flexDirection: 'column',
   gap: '$4',
   width: '100%',
-  
+
   '@lg': {
-    // ✅ Sticky à direita
     position: 'sticky',
     top: '$10',
     alignSelf: 'flex-start',
     maxHeight: 'calc(100vh - $10 * 2)',
     overflowY: 'auto',
     overflowX: 'hidden',
-    
+
     '&::-webkit-scrollbar': {
       width: '6px',
     },
-    
+
     '&::-webkit-scrollbar-track': {
       background: 'transparent',
     },
-    
+
     '&::-webkit-scrollbar-thumb': {
       background: '$gray600',
       borderRadius: '$full',
-      
+
       '&:hover': {
         background: '$gray500',
       },
     },
-    
-    // Firefox
+
     scrollbarWidth: 'thin',
     scrollbarColor: '$gray600 transparent',
   }
@@ -77,7 +73,7 @@ export const SkipLink = styled('a', {
   fontWeight: '$bold',
   zIndex: 9999,
   transition: 'top 0.2s ease',
-  
+
   '&:focus': {
     top: '$4',
     outline: '3px solid $green100',

@@ -1,55 +1,95 @@
+// src/styles/pages/explore.ts
 import { styled } from '@/stitches.config'
 
 export const Container = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  height: '100%',
-  padding: '32px',
-
-  '@media(max-width: 768px)': {
-    padding: '24px 16px',
-  },
+  gap: '$10',
+  width: '100%',
+  maxWidth: '1440px',
+  margin: '0 auto',
 })
 
 export const Header = styled('header', {
   display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'flex-start',
+  flexDirection: 'column',
+  gap: '$4',
+  marginBottom: '$6',
 
-  '@media(max-width: 768px)': {
-    minHeight: 'auto',
+  '@lg': {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '$6',
   },
 })
 
 export const ListBooks = styled('div', {
-  marginTop: '40px',
   display: 'grid',
-  gridTemplateColumns: '1fr 1fr 1fr',
-  gap: '24px',
+  gridTemplateColumns: '1fr',
+  gap: '$4',
+  width: '100%',
+  overflowX: 'hidden',
 
-  '@media(max-width: 768px)': {
-    gridTemplate: '1fr 1fr',
-    gap: '16px',
+  '@media (min-width: 480px)': {
+    gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+    gap: '$5',
   },
 
-  '@media(max-width: 480px)': {
-    gridTemplateColumns: '1fr',
+  '@media (min-width: 640px)': {
+    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+    gap: '$5',
+  },
+
+  '@media (min-width: 768px)': {
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+    gap: '$6',
+  },
+
+  '@media (min-width: 1024px)': {
+    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+    gap: '$6',
+  },
+
+  '@media (min-width: 1280px)': {
+    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+    gap: '$6',
+  },
+
+  '@media (min-width: 1536px)': {
+    gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+    gap: '$8',
+  },
+
+  '@media (min-width: 1920px)': {
+    gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+    gap: '$8',
   },
 })
 
 export const LoadingWrapper = styled('div', {
-  marginTop: '64px',
   display: 'flex',
+  flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   minHeight: '200px',
+  gap: '$4',
 })
 
-export const EmptyStateMessage = styled('span', {
-  marginTop: '2rem',
+export const EmptyStateMessage = styled('div', {
   textAlign: 'center',
   color: '$gray200',
-  display: 'block',
+  fontSize: '$md',
+  padding: '$6',
+
+  '@media (min-width: 768px)': {
+    fontSize: '$lg',
+  },
+
+  strong: {
+    color: '$purple100',
+    fontWeight: '$semibold',
+  },
 })
 
 export const InlineLoadingIndicator = styled('div', {
@@ -61,8 +101,12 @@ export const InlineLoadingIndicator = styled('div', {
   borderRadius: '$md',
   fontSize: '$sm',
   color: '$gray300',
-  marginBottom: '$4',
   border: '1px solid $gray700',
+  width: '100%',
+
+  '@media (min-width: 768px)': {
+    width: 'fit-content',
+  },
 
   span: {
     fontWeight: '$medium',

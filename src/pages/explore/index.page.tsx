@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactElement } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactElement } from 'react'
 import { Binoculars } from '@phosphor-icons/react'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useRouter } from 'next/router'
@@ -39,10 +39,13 @@ export const ExplorePage: NextPageWithLayout = () => {
   const { data: categoriesData, isLoading: categoriesLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
-      const response = await api.get<CategoriesApiResponse>('/categories')
+      const response = await api.get<CategoriesApiResponse>('/books/categories')
       return response.data
     },
     staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    retry: 2,
   })
 
   const {
@@ -69,7 +72,10 @@ export const ExplorePage: NextPageWithLayout = () => {
     },
     enabled: true,
     staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 15,
     placeholderData: (previousData) => previousData,
+    refetchOnWindowFocus: false,
+    retry: 2,
   })
 
   useEffect(() => {
@@ -87,28 +93,31 @@ export const ExplorePage: NextPageWithLayout = () => {
     }
   }, [isReady, query.book])
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setName(value)
+  const handleSearchChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      setName(value)
 
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current)
-    }
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current)
+      }
 
-    debounceRef.current = setTimeout(() => {
-      router.push(
-        {
-          pathname: router.pathname,
-          query: {
-            ...router.query,
-            book: value || undefined,
+      debounceRef.current = setTimeout(() => {
+        router.push(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              book: value || undefined,
+            },
           },
-        },
-        undefined,
-        { shallow: true },
-      )
-    }, 400)
-  }
+          undefined,
+          { shallow: true },
+        )
+      }, 400)
+    },
+    [router],
+  )
 
   useEffect(() => {
     return () => {
@@ -120,68 +129,79 @@ export const ExplorePage: NextPageWithLayout = () => {
 
   const books = booksData?.data ?? []
   const categories = categoriesData?.data ?? []
+  const totalResults = books.length
 
   return (
     <>
-      <Container>
-        <Header>
-          <PageTitle title="Explorar" icon={<Binoculars size={32} />} />
+      <Container id="main-content" role="main" aria-label="Exploração de livros">
+        <Header role="banner">
+          <PageTitle title="Explorar" icon={<Binoculars size={32} aria-hidden="true" />} />
           <SearchInput
             name="search"
             value={name}
             placeholder="Buscar livro ou autor"
             onChange={handleSearchChange}
+            aria-label="Buscar livros por título ou autor"
           />
         </Header>
 
-        {categoriesLoading ? (
-          <LoadingWrapper>
-            <ClipLoader size={30} color="#8381D9" loading />
-            <span className="sr-only">Carregando categorias...</span>
-          </LoadingWrapper>
-        ) : (
-          <Tags
-            categories={categories}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-            isLoading={false}
-          />
-        )}
+        <nav aria-label="Filtros por categoria">
+          {categoriesLoading ? (
+            <LoadingWrapper>
+              <ClipLoader size={30} color="#8381D9" loading />
+              <span className="sr-only">Carregando categorias...</span>
+            </LoadingWrapper>
+          ) : (
+            <Tags
+              categories={categories}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              isLoading={false}
+            />
+          )}
+        </nav>
 
-        {booksLoading && !booksData ? (
-          <LoadingWrapper>
-            <ClipLoader size={40} color="#8381D9" loading />
-            <span className="sr-only">Buscando livros...</span>
-          </LoadingWrapper>
-        ) : (
-          <>
-            {booksFetching && (
-              <InlineLoadingIndicator role="status" aria-live="polite">
-                <ClipLoader size={20} color="#8381D9" loading />
-                <span>Atualizando resultados...</span>
-              </InlineLoadingIndicator>
-            )}
+        <section aria-labelledby="results-heading" aria-live="polite" aria-atomic="true">
+          <h2 id="results-heading" className="sr-only">
+            {totalResults > 0
+              ? `${totalResults} ${totalResults === 1 ? 'livro encontrado' : 'livros encontrados'}`
+              : 'Nenhum livro encontrado'}
+          </h2>
 
-            {books.length > 0 ? (
-              <ListBooks>
-                {books.map((book) => (
-                  <Book key={book.id} book={book} />
-                ))}
-              </ListBooks>
-            ) : (
-              <EmptyStateMessage>
-                {name ? (
-                  <>
-                    Nenhum resultado encontrado para a busca de{' '}
-                    <strong>&quot;{name}&quot;</strong>
-                  </>
-                ) : (
-                  'Nenhum livro encontrado'
-                )}
-              </EmptyStateMessage>
-            )}
-          </>
-        )}
+          {booksLoading && !booksData ? (
+            <LoadingWrapper role="status" aria-label="Carregando livros">
+              <ClipLoader size={40} color="#8381D9" loading />
+              <span className="sr-only">Buscando livros...</span>
+            </LoadingWrapper>
+          ) : (
+            <>
+              {booksFetching && (
+                <InlineLoadingIndicator role="status" aria-live="polite">
+                  <ClipLoader size={20} color="#8381D9" loading />
+                  <span>Atualizando resultados...</span>
+                </InlineLoadingIndicator>
+              )}
+
+              {books.length > 0 ? (
+                <ListBooks role="list">
+                  {books.map((book) => (
+                    <Book key={book.id} book={book} />
+                  ))}
+                </ListBooks>
+              ) : (
+                <EmptyStateMessage role="status">
+                  {name ? (
+                    <>
+                      Nenhum resultado encontrado para a busca de <strong>&quot;{name}&quot;</strong>
+                    </>
+                  ) : (
+                    'Nenhum livro encontrado'
+                  )}
+                </EmptyStateMessage>
+              )}
+            </>
+          )}
+        </section>
       </Container>
 
       <Dialog.Root
