@@ -1,79 +1,97 @@
-import { useCallback, useMemo, useState } from 'react'
-
+import { useState, memo } from 'react'
 import {
   Container,
   StarContainer,
   StarBackground,
-  StarForeground,
   StarForegroundWrapper,
+  StarForeground,
 } from './styles'
 
 type StarsProps = {
-  mode?: 'edit' | 'view'
   rate: number
-  onRateChange?: (rate: number) => void
+  max?: number
+  onChange?: (v: number) => void
+  editable?: boolean
+  'aria-label'?: string
+  size?: number
+  disabled?: boolean
 }
 
-export const Stars = ({ mode = 'view', rate, onRateChange }: StarsProps) => {
-  const [currentRate, setCurrentRate] = useState(rate)
-  const [hoveredRate, setHoveredRate] = useState<number | null>(null)
+export const Stars = memo(function Stars({
+  rate,
+  max = 5,
+  onChange,
+  editable = false,
+  disabled = false,
+  'aria-label': ariaLabel,
+  size = 20,
+}: StarsProps) {
+  const [hovered, setHovered] = useState<number | null>(null)
+  const [focused, setFocused] = useState<number | null>(null)
 
-  const isEditable = mode === 'edit'
+  const displayStars = editable && (hovered !== null ? hovered : focused !== null ? focused : rate) || rate
 
-  const handleClick = useCallback(
-    (value: number) => {
-      if (!isEditable) return
+  const fullStars = Math.floor(displayStars)
+  const hasHalfStar = !editable && displayStars % 1 >= 0.5
 
-      const newValue = value === currentRate ? 0 : value
-      setCurrentRate(newValue)
-      onRateChange?.(newValue)
-    },
-    [currentRate, isEditable, onRateChange],
-  )
+  function setValue(val: number) {
+    if (!disabled && editable && onChange) onChange(val)
+  }
 
-  const handleMouseEnter = useCallback(
-    (value: number) => {
-      if (isEditable) {
-        setHoveredRate(value)
-      }
-    },
-    [isEditable],
-  )
-
-  const handleMouseLeave = useCallback(() => {
-    if (isEditable) {
-      setHoveredRate(null)
-    }
-  }, [isEditable])
-
-  const getStarStyle = useCallback(
-    (index: number) => {
-      const activeRate = hoveredRate ?? currentRate
-      const fill = activeRate >= index ? 1 : 0
-
-      return { width: `${fill * 100}%` }
-    },
-    [currentRate, hoveredRate],
-  )
-
-  const stars = useMemo(() => [1, 2, 3, 4, 5], [])
+  function handleKeyDown(idx: number, e: React.KeyboardEvent) {
+    if (!editable || disabled) return
+    if (e.key === 'Enter' || e.key === ' ') setValue(idx + 1)
+    if (e.key === 'ArrowLeft' && idx > 0) setFocused(idx)
+    if (e.key === 'ArrowRight' && idx < max - 1) setFocused(idx + 2)
+    if (e.key === 'Home') setFocused(1)
+    if (e.key === 'End') setFocused(max)
+  }
 
   return (
-    <Container>
-      {stars.map((starValue, index) => (
-        <StarContainer
-          key={index}
-          onClick={() => handleClick(starValue)}
-          onMouseEnter={() => handleMouseEnter(starValue)}
-          onMouseLeave={handleMouseLeave}
-          style={{ cursor: isEditable ? 'pointer' : 'default' }}
-        >
-          <StarBackground size={16} weight="fill" />
-          <StarForegroundWrapper style={getStarStyle(starValue)}>
-            <StarForeground size={16} weight="fill" />
-          </StarForegroundWrapper>
-        </StarContainer>
-      ))}
+    <Container
+      aria-label={ariaLabel ?? (editable ? `Escolha de avaliação, ${displayStars} de ${max} estrelas` : `${displayStars} de ${max} estrelas`)}
+      role="group"
+      tabIndex={-1}
+      data-testid="rating-stars"
+      style={{ pointerEvents: disabled ? 'none' : undefined, opacity: disabled ? 0.7 : 1 }}
+    >
+      {[...Array(max)].map((_, i) => {
+        let percent: number = 0
+        if (i < fullStars) {
+          percent = 100
+        } else if (i === fullStars && hasHalfStar) {
+          percent = 50
+        }
+
+        if (editable && (hovered !== null || focused !== null)) {
+          percent = i < displayStars ? 100 : 0
+        }
+        return (
+          <StarContainer
+            key={i}
+            tabIndex={editable && !disabled ? 0 : -1}
+            aria-label={editable ? `Dar nota ${i + 1}` : undefined}
+            aria-checked={editable ? (displayStars === i + 1) : undefined}
+            role={editable ? 'radio' : undefined}
+            editable={editable}
+            isActive={displayStars >= i + 1}
+            onMouseEnter={() => editable && !disabled && setHovered(i + 1)}
+            onMouseLeave={() => editable && !disabled && setHovered(null)}
+            onFocus={() => editable && !disabled && setFocused(i + 1)}
+            onBlur={() => editable && !disabled && setFocused(null)}
+            onClick={() => editable && !disabled && setValue(i + 1)}
+            onKeyDown={(e) => handleKeyDown(i, e)}
+            style={{ width: size, height: size, cursor: editable && !disabled ? 'pointer' : undefined }}
+          >
+            <StarBackground weight="fill" />
+            <StarForegroundWrapper style={{ width: `${percent}%` }}>
+              <StarForeground weight="fill" />
+            </StarForegroundWrapper>
+          </StarContainer>
+        )
+      })}
     </Container>
   )
-}
+})
+
+export default Stars
