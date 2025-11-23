@@ -146,7 +146,7 @@ export const About = styled('div', {
   gap: '56px',
 })
 
-export const Category = styled('div', {
+export const CatSection = styled('div', {
   display: 'flex',
   alignItems: 'center',
   gap: '16px',

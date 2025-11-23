@@ -7,16 +7,26 @@ export default async function handle(
   res: NextApiResponse,
 ) {
   if (req.method !== 'GET') {
-    return res.status(405).end()
+    return res.status(405).json({ message: 'Method not allowed' })
   }
 
   const categoryId = req.query.categoryId as string
 
-  const category = await prisma.category.findUnique({
-    where: {
-      id: categoryId,
-    },
-  })
+  if (!categoryId) {
+    return res.status(400).json({ error: 'Missing categoryId parameter' })
+  }
 
-  return res.status(201).json(category)
+  try {
+    const category = await prisma.category.findUnique({
+      where: { id: categoryId },
+    })
+
+    if (!category) {
+      return res.status(404).json({ error: 'Category not found' })
+    }
+    return res.status(201).json(category)
+  } catch (err) {
+    console.log('Error fetching category:', err)
+    return res.status(500).json({ error: 'Internal server error' })
+  }
 }

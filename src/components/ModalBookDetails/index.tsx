@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-
 import { BookmarkSimple, BookOpen, X } from '@phosphor-icons/react'
 import {
   Book as PrismaBook,
@@ -8,7 +7,6 @@ import {
 } from '@prisma/client'
 import * as Dialog from '@radix-ui/react-dialog'
 import { useSession } from 'next-auth/react'
-
 import { api } from '@/src/lib/axios'
 
 import { LoginModal } from '../LoginModal'
@@ -19,7 +17,7 @@ import {
   BookData,
   BookDataDescription,
   BookInfo,
-  Category,
+  CatSection,
   CloseButton,
   Content,
   Overlay,
@@ -62,7 +60,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
 
-  const { status } = useSession()
+  const { status, data: session } = useSession()
 
   const fetchBookDetails = useCallback(async () => {
     try {
@@ -135,26 +133,33 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
     <Dialog.Portal>
       <Overlay />
 
-      <Content>
-        <CloseButton>
+      <Content role="dialog" aria-mode="true" aria-labelledby="modal-book-title">
+        <CloseButton aria-label="Fechar detalhes do livro">
           <X size={21} />
         </CloseButton>
 
         <BookInfo>
           <BookData>
-            <img src={book.cover_url.replace('public', '')} alt={book.name} />
+            <img
+              src={book.cover_url.replace('public', '')}
+              alt={book.name}
+              loading="lazy"
+              width={171}
+              height={242}
+              draggable={false}
+            />
 
             <BookDataDescription>
               <Dialog.Title asChild>
                 <TitleAndActorBook>
-                  <strong>{book.name}</strong>
+                  <strong id="modal-book-title">{book.name}</strong>
                   <span>{book.author}</span>
                 </TitleAndActorBook>
               </Dialog.Title>
 
               <Dialog.Description asChild>
                 <RatingBook>
-                  <Stars mode="view" rate={ratingsAvg} />
+                  <Stars rate={ratingsAvg} aria-label={`Nota média: ${ratingsAvg}`} size={22} />
                   <span>{book.ratings.length} avaliações</span>
                 </RatingBook>
               </Dialog.Description>
@@ -162,16 +167,16 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
           </BookData>
 
           <About>
-            <Category>
-              <BookmarkSimple size={24} />
+            <CatSection>
+              <BookmarkSimple size={24} aria-hidden="true" />
               <div>
                 <span>Categoria</span>
                 <strong>{categoryNames}</strong>
               </div>
-            </Category>
+            </CatSection>
 
             <Pages>
-              <BookOpen size={24} />
+              <BookOpen size={24} aria-hidden="true" />
               <div>
                 <span>Páginas</span>
                 <strong>{book.total_pages}</strong>
@@ -183,10 +188,14 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
         <RatingsSection>
           <Title>
             <span>Avaliações</span>
-            <strong onClick={handleShowRatingsForm}>Avaliar</strong>
+            <strong onClick={handleShowRatingsForm} tabIndex={0} role="button" aria-label="Avaliar livro">
+              Avaliar
+            </strong>
           </Title>
 
-          {showRatingForm && <RattingForm onSubmit={handleRateSubmit} />}
+          {showRatingForm && (
+            <RattingForm onSubmit={handleRateSubmit} />
+          )}
           {showLoginModal && (
             <Dialog.Root open={showLoginModal} onOpenChange={setShowLoginModal}>
               <Dialog.Portal>

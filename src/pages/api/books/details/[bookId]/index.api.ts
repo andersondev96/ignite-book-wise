@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-
 import { prisma } from '@/src/lib/prisma'
 
 export default async function handle(
@@ -7,10 +6,14 @@ export default async function handle(
   res: NextApiResponse,
 ) {
   if (req.method !== 'GET') {
-    return res.status(405).end()
+    return res.status(405).json({ message: 'Method not allowed' })
   }
 
   const bookId = req.query.bookId as string
+
+  if (!bookId) {
+    return res.status(400).json({ error: 'Missing bookId parameter' })
+  }
 
   try {
     const book = await prisma.book.findUnique({
@@ -19,12 +22,8 @@ export default async function handle(
       },
       include: {
         ratings: {
-          include: {
-            user: true,
-          },
-          orderBy: {
-            created_at: 'desc',
-          },
+          include: { user: true },
+          orderBy: { created_at: 'desc' },
         },
         categories: true,
       },
@@ -34,12 +33,8 @@ export default async function handle(
       return res.status(404).json({ error: 'Book not found' })
     }
 
-    const ratingsSum = book.ratings.reduce((acc, rating) => {
-      return acc + rating.rate
-    }, 0)
-
-    const ratingsAvg =
-      book.ratings.length > 0 ? ratingsSum / book.ratings.length : 0
+    const ratingsSum = book.ratings.reduce((acc, rating) => acc + rating.rate, 0)
+    const ratingsAvg = book.ratings.length > 0 ? ratingsSum / book.ratings.length : 0
 
     return res.status(201).json({ book, ratingsAvg })
   } catch (error) {

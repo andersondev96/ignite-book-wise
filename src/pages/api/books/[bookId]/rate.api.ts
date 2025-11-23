@@ -1,9 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 import { z } from 'zod'
-
 import { prisma } from '@/src/lib/prisma'
-
 import { buildNextAuthOptions } from '../../auth/[...nextauth].api'
 
 const rateBodySchema = z.object({
@@ -16,7 +14,7 @@ export default async function handle(
   res: NextApiResponse,
 ) {
   if (req.method !== 'POST') {
-    return res.status(405).end()
+    return res.status(405).json({ error: 'Method not allowed' })
   }
 
   const session = await getServerSession(
@@ -26,12 +24,18 @@ export default async function handle(
   )
 
   if (!session) {
-    return res.status(401).end()
+    return res.status(401).json({ error: 'Not authenticated' })
+  }
+
+  const bookId = req.query.bookId as string
+  const userId = session.user?.id as string
+
+  if (!bookId || !userId) {
+    return res.status(400).json({ error: 'Missing bookId or userId' })
   }
 
   try {
-    const bookId = req.query.bookId as string
-    const userId = session.user.id as string
+
 
     const userAlreadyRated = await prisma.rating.findFirst({
       where: {
@@ -55,9 +59,9 @@ export default async function handle(
       },
     })
 
-    return res.status(201).end()
+    return res.status(201).json({ message: 'Rating create successfully ' })
   } catch (err) {
-    console.error(err)
-    return res.status(400).end()
+    console.error('Error creating rating:', err)
+    return res.status(400).json({ error: err instanceof Error ? err.message : 'Bad request' })
   }
 }
