@@ -186,7 +186,11 @@ export const ExplorePage: NextPageWithLayout = () => {
               {books.length > 0 ? (
                 <ListBooks role="list">
                   {books.map((book) => (
-                    <Book key={book.id} book={book} />
+                    <Book
+                      key={book.id}
+                      book={book}
+                      onOpen={setBookSelected}
+                    />
                   ))}
                 </ListBooks>
               ) : (
