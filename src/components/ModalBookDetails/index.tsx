@@ -1,17 +1,21 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useSession } from 'next-auth/react'
+import { useQuery } from '@tanstack/react-query'
+import * as Dialog from '@radix-ui/react-dialog'
 import { BookmarkSimple, BookOpen, X } from '@phosphor-icons/react'
+import { api } from '@/src/lib/axios'
+
 import {
   Book as PrismaBook,
   Rating as PrismaRating,
   User as PrismaUser,
 } from '@prisma/client'
-import * as Dialog from '@radix-ui/react-dialog'
-import { useSession } from 'next-auth/react'
-import { api } from '@/src/lib/axios'
 
+import type { BookDetailsApiResponse } from '@/src/types/book'
+import type { RateFormData } from '@/src/types/rating'
 import { LoginModal } from '../LoginModal'
 import { RattingCard } from '../RattingCard'
-import { RattingForm, type RateFormData } from '../RattingForm'
+import { RattingForm } from '../RattingForm'
 import {
   About,
   BookData,
@@ -59,43 +63,36 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
   const [showRatingForm, setShowRatingForm] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
-
   const { status, data: session } = useSession()
 
-  const fetchBookDetails = useCallback(async () => {
-    try {
-      const { data } = await api.get(`books/details/${id}`)
-      setBookDetails(data)
-    } catch (err) {
-      console.error(`Erro ao carregar detalhes do livro: ${err}`)
-    }
-  }, [id])
+  const {
+    data,
+    isLoading,
+    error,
+    refetch
+  } = useQuery<BookDetailsApiResponse>({
+    queryKey: ['book-details', id],
+    queryFn: async () => {
+      const { data } = await api.get<BookDetailsApiResponse>(`/books/details/${id}`)
+      return data
+    },
+    enabled: !!id,
+    staleTime: 1000 * 60 * 10,
+    retry: 2,
+  })
 
-  useEffect(() => {
-    fetchBookDetails()
-  }, [fetchBookDetails])
-
-  const fetchCategories = useCallback(async () => {
-    if (!bookDetails) return
-
-    try {
-      const categoryIds = bookDetails.book.categories.map(
-        (category) => category.categoryId,
-      )
-
-      const categoryRequests = categoryIds.map((categoryId) =>
-        api.get(`/categories/${categoryId}`),
-      )
-
-      const categoryResponses = await Promise.all(categoryRequests)
-
-      const categoryData = categoryResponses.map((response) => response.data)
-
-      setCategories(categoryData)
-    } catch (err) {
-      console.error(`Ocorreu um erro ao carregar as categorias: ${err}`)
-    }
-  }, [bookDetails])
+  const handleRateSubmit = useCallback(
+    async (form: RateFormData) => {
+      if (!data) return
+      await api.post(`/books/${data?.book?.id}/rate`, {
+        description: form.description,
+        rate: form.rate
+      })
+      setShowRatingForm(false)
+      refetch()
+    },
+    [data, refetch]
+  )
 
   const handleShowRatingsForm = () => {
     status === 'authenticated'
@@ -103,31 +100,35 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
       : setShowLoginModal(true)
   }
 
-  const handleRateSubmit = async (data: RateFormData) => {
-    if (!bookDetails) {
-      return
-    }
+  const categoryNames = useMemo(
+    () =>
+      (data?.book?.categories || [])
+        .map(cat => cat.category?.name)
+        .filter(Boolean)
+        .join(', '),
+    [data?.book?.categories]
+  )
 
-    await api.post(`/books/${bookDetails.book.id}/rate`, {
-      description: data.description,
-      rate: data.rate,
-    })
-
-    setShowRatingForm(false)
-    await fetchBookDetails()
+  if (isLoading) {
+    return (
+      <Dialog.Portal>
+        <Overlay />
+        <Content>
+          <span>Carregando dados do livro...</span>
+        </Content>
+      </Dialog.Portal>
+    )
   }
-
-  useEffect(() => {
-    fetchCategories()
-  }, [fetchCategories])
-
-  if (!bookDetails) {
-    return null
+  if (error || !data) {
+    return (
+      <Dialog.Portal>
+        <Overlay />
+        <Content>
+          <span>Não foi possível carregar os detalhes.</span>
+        </Content>
+      </Dialog.Portal>
+    )
   }
-
-  const { book, ratingsAvg } = bookDetails
-
-  const categoryNames = categories.map(({ name }) => name).join(', ')
 
   return (
     <Dialog.Portal>
@@ -141,8 +142,8 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
         <BookInfo>
           <BookData>
             <img
-              src={book.cover_url.replace('public', '')}
-              alt={book.name}
+              src={data?.book?.cover_url.replace('public', '')}
+              alt={data?.book.name}
               loading="lazy"
               width={171}
               height={242}
@@ -152,15 +153,22 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
             <BookDataDescription>
               <Dialog.Title asChild>
                 <TitleAndActorBook>
-                  <strong id="modal-book-title">{book.name}</strong>
-                  <span>{book.author}</span>
+                  <strong id="modal-book-title">{data?.book?.name}</strong>
+                  <span>{data?.book?.author}</span>
                 </TitleAndActorBook>
               </Dialog.Title>
 
               <Dialog.Description asChild>
                 <RatingBook>
-                  <Stars rate={ratingsAvg} aria-label={`Nota média: ${ratingsAvg}`} size={22} />
-                  <span>{book.ratings.length} avaliações</span>
+                  <Stars rate={data?.book?.avgRating} aria-label={`Nota média: ${data?.book?.avgRating}`} size={22} />
+                  <span>
+                    {data?.book?.totalRatings ?? 0}{' '}
+                    {data?.book?.totalRatings > 1
+                      ? 'avaliações'
+                      : data?.book?.totalRatings === 1
+                        ? 'avaliação'
+                        : 'nenhuma avaliação'}
+                  </span>
                 </RatingBook>
               </Dialog.Description>
             </BookDataDescription>
@@ -179,7 +187,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
               <BookOpen size={24} aria-hidden="true" />
               <div>
                 <span>Páginas</span>
-                <strong>{book.total_pages}</strong>
+                <strong>{data?.book?.total_pages}</strong>
               </div>
             </Pages>
           </About>
@@ -204,7 +212,7 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
             </Dialog.Root>
           )}
 
-          {book.ratings.map((rating) => {
+          {data?.book?.ratings.map((rating) => {
             return <RattingCard key={rating.id} rating={rating} />
           })}
         </RatingsSection>

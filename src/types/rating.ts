@@ -24,3 +24,8 @@ export type RatingsApiResponse = {
     hasPrevPage: boolean
   }
 }
+
+export type RateFormData = {
+  description: string
+  rate: number
+}

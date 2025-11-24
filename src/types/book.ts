@@ -1,4 +1,5 @@
 import type { Book, Category, Rating, User, CategoriesOnBooks } from '@prisma/client'
+import type { RatingWithUser } from '@/src/types/rating'
 
 export type BookWithRatings = Book & {
   ratings: Rating[]
@@ -72,18 +73,25 @@ export type PopularBooksApiResponse = {
   data: PopularBook[]
 }
 
-export type BookDetails = Book & {
-  ratings: Array<Rating & {
-    user: {
-      id: string
-      name: string
-      avatar_url: string | null
-    }
-  }>
-  categories: Array<{
-    categoryId: string
+export type CategoryOnBook = {
+  categoryId: string
+  category: {
+    id: string
     name: string
+  }
+}
+
+export type BookDetails = Book & {
+  ratings: RatingWithUser[]
+  categories: Array<CategoriesOnBooks & {
+    category: Category
   }>
   avgRating: number
+  totalRatings: number
+}
+
+export type BookDetailsApiResponse = {
+  book: BookDetails
+  ratingsAvg: number
   totalRatings: number
 }

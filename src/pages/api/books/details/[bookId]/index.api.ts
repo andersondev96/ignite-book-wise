@@ -25,7 +25,11 @@ export default async function handle(
           include: { user: true },
           orderBy: { created_at: 'desc' },
         },
-        categories: true,
+        categories: {
+          include: {
+            category: true,
+          }
+        },
       },
     })
 
@@ -35,8 +39,15 @@ export default async function handle(
 
     const ratingsSum = book.ratings.reduce((acc, rating) => acc + rating.rate, 0)
     const ratingsAvg = book.ratings.length > 0 ? ratingsSum / book.ratings.length : 0
+    const totalRatings = book.ratings.length
 
-    return res.status(201).json({ book, ratingsAvg })
+    const bookWithStats = {
+      ...book,
+      avgRating: ratingsAvg,
+      totalRatings,
+    }
+
+    return res.status(200).json({ book: bookWithStats, ratingsAvg })
   } catch (error) {
     console.error('Error fetching book details:', error)
     return res.status(500).json({ error: 'Internal server error' })
