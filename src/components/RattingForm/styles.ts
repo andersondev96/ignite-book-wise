@@ -2,16 +2,16 @@ import { styled } from '@/stitches.config'
 
 export const Container = styled('div', {
   width: '100%',
-  maxWidth: '564px',
-  padding: '24px',
-  borderRadius: '8px',
+  maxWidth: 564,
+  padding: 24,
+  borderRadius: 8,
   background: '$gray700',
   display: 'flex',
   flexDirection: 'column',
-  gap: '16px',
+  gap: 16,
 
   '@media (max-width: 640px)': {
-    padding: '16px',
+    padding: 16,
   },
 })
 
@@ -19,17 +19,18 @@ export const Header = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
-  marginBottom: '16px',
+  gap: 16,
+  marginBottom: 8,
 })
 
 export const UserInfo = styled('div', {
   display: 'flex',
   alignItems: 'center',
-  gap: '12px',
+  gap: 12,
 
   img: {
-    width: '40px',
-    height: '40px',
+    width: 40,
+    height: 40,
     objectFit: 'cover',
     borderRadius: '999px',
     border: '2px solid #7FD1CC',
@@ -45,27 +46,34 @@ export const UserInfo = styled('div', {
 export const Form = styled('form', {
   display: 'flex',
   flexDirection: 'column',
-  gap: '12px',
+  gap: 10,
 
   '.error': {
-    color: 'red',
+    color: '#F75A68',
     fontSize: '$xs',
-    marginTop: '-8px',
+    marginTop: -4,
   },
 
   '.success': {
-    color: 'green',
+    color: '#00B37E',
     fontSize: '$xs',
-    marginTop: '-8px',
+    marginTop: -4,
+  },
+
+  '.info': {
+    color: '$gray300',
+    fontSize: '$xs',
+    marginTop: -4,
   },
 })
 
 export const Footer = styled('div', {
-  marginTop: 'auto',
+  marginTop: 8,
   display: 'flex',
   justifyContent: 'flex-end',
   alignItems: 'center',
-  gap: '8px',
+  gap: 8,
+  flexWrap: 'wrap',
 
   'span.error, span.success': {
     marginRight: 'auto',
@@ -73,19 +81,20 @@ export const Footer = styled('div', {
 })
 
 export const Button = styled('button', {
-  width: '40px',
-  height: '40px',
+  width: 40,
+  height: 40,
   border: 0,
-  borderRadius: '4px',
+  borderRadius: 4,
   background: '$gray600',
-  transition: 'background 0.2s ease',
-
+  transition: 'background 0.2s ease, transform 0.1s ease',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  cursor: 'pointer',
 
-  '&:hover': {
+  '&:hover:not(:disabled)': {
     background: '$gray500',
+    transform: 'translateY(-1px)',
   },
 
   '&:disabled': {

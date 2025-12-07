@@ -4,22 +4,27 @@ import {
   useState,
   type ChangeEvent,
 } from 'react'
-
 import { Container, Counter, StyledTextarea } from './styles'
 
-type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement>
+type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  maxLength?: number
+}
 
-const MAX_CHARACTERS = 450
+const DEFAULT_MAX_CHARACTERS = 450
 
-export const TextArea = ({ onChange, ...rest }: TextAreaProps) => {
+export const TextArea = ({
+  onChange,
+  maxLength = DEFAULT_MAX_CHARACTERS,
+  ...rest
+}: TextAreaProps) => {
   const [text, setText] = useState('')
 
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) => {
       let value = event.target.value
 
-      if (value.length > MAX_CHARACTERS) {
-        value = value.slice(0, MAX_CHARACTERS)
+      if (value.length > maxLength) {
+        value = value.slice(0, maxLength)
       }
 
       setText(value)
@@ -35,14 +40,19 @@ export const TextArea = ({ onChange, ...rest }: TextAreaProps) => {
         onChange(customEvent as ChangeEvent<HTMLTextAreaElement>)
       }
     },
-    [onChange],
+    [onChange, maxLength],
   )
 
   return (
     <Container>
-      <StyledTextarea {...rest} value={text} onChange={handleChange} />
-      <Counter>
-        {text.length}/{MAX_CHARACTERS}
+      <StyledTextarea
+        {...rest}
+        value={text}
+        onChange={handleChange}
+        aria-describedby={rest.id ? `${rest.id}-counter` : undefined}
+      />
+      <Counter id={rest.id ? `${rest.id}-counter` : undefined}>
+        {text.length}/{maxLength}
       </Counter>
     </Container>
   )

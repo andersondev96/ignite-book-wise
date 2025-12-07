@@ -57,9 +57,7 @@ interface BookDetailsResponse {
 }
 
 export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
-  const [bookDetails, setBookDetails] = useState<BookDetailsResponse | null>(
-    null,
-  )
+  const [submitSuccessMessage, setSubmitSuccessMessage] = useState<string | null>(null)
   const [showRatingForm, setShowRatingForm] = useState(false)
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
@@ -84,12 +82,23 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
   const handleRateSubmit = useCallback(
     async (form: RateFormData) => {
       if (!data) return
-      await api.post(`/books/${data?.book?.id}/rate`, {
-        description: form.description,
-        rate: form.rate
-      })
-      setShowRatingForm(false)
-      refetch()
+
+      try {
+        const response = await api.post(`/books/${data?.book?.id}/rate`, {
+          description: form.description,
+          rate: form.rate
+        })
+
+        await refetch()
+
+        const message =
+          response?.data?.message || 'Avaliação enviada com sucesso!'
+
+        setSubmitSuccessMessage(message)
+        setShowRatingForm(false)
+      } catch (err) {
+        throw err
+      }
     },
     [data, refetch]
   )
@@ -200,6 +209,12 @@ export const ModalBookDetails = ({ id }: ModalBookDetailsProps) => {
               Avaliar
             </strong>
           </Title>
+
+          {submitSuccessMessage && (
+            <span style={{ color: '#00B37E', fontSize: '0.875rem' }}>
+              {submitSuccessMessage}
+            </span>
+          )}
 
           {showRatingForm && (
             <RattingForm onSubmit={handleRateSubmit} />

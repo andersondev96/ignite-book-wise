@@ -1,17 +1,14 @@
-import Link from 'next/link'
-
 import { styled } from '@/stitches.config'
+import Link from 'next/link'
 
 export const Container = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-
   width: '100%',
-  Maxwidth: '564px',
+  maxWidth: '564px',
   padding: '24px',
   borderRadius: '8px',
   background: '$gray700',
-
   transition: 'background 0.2s ease',
 
   '&:hover': {
@@ -23,11 +20,6 @@ export const Container = styled('div', {
     color: '$gray300',
     marginTop: '20px',
     lineHeight: '1.6',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    display: '-webkit-box',
-    webkitLineClamp: 4,
-    webkitBoxOrient: 'vertical',
   },
 
   variants: {
@@ -43,17 +35,39 @@ export const Header = styled('div', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
+  gap: '16px',
+})
+
+export const StarsWrapper = styled('div', {
+  display: 'flex',
+  alignItems: 'center',
+})
+
+export const Content = styled('div', {
+  flex: 1,
+})
+
+export const Text = styled('p', {
+  fontSize: '$sm',
+  color: '$gray300',
+  lineHeight: '1.6',
+  margin: 0,
+
+  '@md': {
+    fontSize: '$md',
+  }
 })
 
 export const User = styled(Link, {
-  textDecoration: 'none',
   display: 'flex',
   alignItems: 'center',
-  gap: '16px',
+  gap: '12px',
+  textDecoration: 'none',
+  color: 'inherit',
   transition: 'opacity 0.2s ease',
 
   '&:hover': {
-    opacity: 0.85,
+    opacity: 0.9,
   },
 
   img: {

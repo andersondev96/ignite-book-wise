@@ -3,20 +3,20 @@ import { styled } from '@/stitches.config'
 export const Container = styled('div', {
   position: 'relative',
   width: '100%',
-  maxWidth: '516px',
+  maxWidth: 516,
 })
 
 export const StyledTextarea = styled('textarea', {
   width: '100%',
-  height: '164px',
-  borderRadius: '8px',
+  minHeight: 164,
+  borderRadius: 8,
   background: '$gray800',
   border: '1px solid $gray600',
   padding: '16px 20px',
   resize: 'none',
 
-  fontSize: '14px',
-  lineHeight: '1.6',
+  fontSize: 14,
+  lineHeight: 1.6,
   color: '$gray100',
   fontFamily: 'inherit',
 
@@ -35,9 +35,9 @@ export const StyledTextarea = styled('textarea', {
 
 export const Counter = styled('span', {
   position: 'absolute',
-  bottom: '10px',
-  right: '14px',
-  fontSize: '12px',
+  bottom: 10,
+  right: 14,
+  fontSize: 12,
   color: '$gray400',
   pointerEvents: 'none',
 })
