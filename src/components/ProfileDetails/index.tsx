@@ -3,26 +3,33 @@ import {
   BookOpen,
   Books,
   UserList,
-} from '@phosphor-icons/react'
-import { User as PrismaUser } from '@prisma/client'
-import dayjs from 'dayjs'
+} from "@phosphor-icons/react";
+import { User as PrismaUser } from "@prisma/client";
+import dayjs from "dayjs";
+import { memo, useMemo } from "react";
 
-import { ItemInfoProfile } from '../ItemInfoProfile'
-import { BooksInfo, Container, Divisor, UserInfo } from './styles'
-import { Avatar } from '../ui/Avatar'
+import { ItemInfoProfile } from "../ItemInfoProfile";
+import {
+  Container,
+  UserInfo,
+  Divisor,
+  BooksInfo,
+  MembershipText,
+} from "./styles";
+import { Avatar } from "../ui/Avatar";
 
 type UserSchema = PrismaUser & {
-  totalPagesRead: number
-  totalBooksRates: number
-  totalAuthorRead: number
-  mostRatedCategory: string
-}
+  totalPagesRead: number;
+  totalBooksRates: number;
+  totalAuthorRead: number;
+  mostRatedCategory: string;
+};
 
 interface ProfileDetailsProps {
-  user: UserSchema
+  user: UserSchema;
 }
 
-export const ProfileDetails = ({ user }: ProfileDetailsProps) => {
+export const ProfileDetails = memo(({ user }: ProfileDetailsProps) => {
   const {
     name,
     avatar_url,
@@ -31,45 +38,50 @@ export const ProfileDetails = ({ user }: ProfileDetailsProps) => {
     totalBooksRates,
     totalAuthorRead,
     mostRatedCategory,
-  } = user
+  } = user;
 
-  const membershipYear = dayjs(new Date(created_at)).year()
+  const membershipYear = useMemo(
+    () => dayjs(created_at).format("YYYY"),
+    [created_at]
+  );
 
   return (
-    <Container>
+    <Container aria-label={`Perfil de ${name}`}>
       <UserInfo>
-        <Avatar imageUrl={avatar_url ?? ''} imageName={name} />
+        <Avatar src={avatar_url ?? null} alt={`Foto de ${name}`} size="lg" />
         <strong>{name}</strong>
-        <span>membro desde {membershipYear}</span>
+        <MembershipText>membro desde {membershipYear}</MembershipText>
       </UserInfo>
 
-      <Divisor />
+      <Divisor aria-hidden="true" />
 
-      <BooksInfo>
+      <BooksInfo aria-label="Estatísticas de leitura">
         <ItemInfoProfile
-          icon={<BookOpen size={32} />}
+          icon={<BookOpen size={24} />}
           title={totalPagesRead}
           description="Páginas lidas"
         />
 
         <ItemInfoProfile
-          icon={<Books size={32} />}
+          icon={<Books size={24} />}
           title={totalBooksRates}
           description="Livros avaliados"
         />
 
         <ItemInfoProfile
-          icon={<UserList size={32} />}
+          icon={<UserList size={24} />}
           title={totalAuthorRead}
           description="Autores lidos"
         />
 
         <ItemInfoProfile
-          icon={<BookmarkSimple size={32} />}
+          icon={<BookmarkSimple size={24} />}
           title={mostRatedCategory}
           description="Categoria mais lida"
         />
       </BooksInfo>
     </Container>
-  )
-}
+  );
+});
+
+ProfileDetails.displayName = "ProfileDetails";

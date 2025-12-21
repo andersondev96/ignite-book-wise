@@ -1,24 +1,23 @@
-import { ReactNode } from 'react'
-
-import { Container, ItemInfo } from './styles'
-import { IconWrapper } from '../ButtonAuth/styles'
+import { ReactNode, memo } from "react";
+import { Container, IconWrapper, ItemInfo, Title, Description } from "./styles";
 
 interface ItemInfoProfileProps {
-  icon: ReactNode
-  title: string | number
-  description: string
+  icon: ReactNode;
+  title: string | number;
+  description: string;
+  className?: string;
 }
 
-export const ItemInfoProfile = ({
-  icon,
-  title,
-  description,
-}: ItemInfoProfileProps) => (
-  <Container>
-    <IconWrapper>{icon}</IconWrapper>
-    <ItemInfo>
-      <strong>{title}</strong>
-      <span>{description}</span>
-    </ItemInfo>
-  </Container>
-)
+export const ItemInfoProfile = memo(
+  ({ icon, title, description, className }: ItemInfoProfileProps) => (
+    <Container className={className}>
+      <IconWrapper>{icon}</IconWrapper>
+      <ItemInfo>
+        <Title>{title}</Title>
+        <Description>{description}</Description>
+      </ItemInfo>
+    </Container>
+  )
+);
+
+ItemInfoProfile.displayName = "ItemInfoProfile";

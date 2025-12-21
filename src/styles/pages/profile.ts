@@ -6,8 +6,8 @@ export const Container = styled("div", {
   alignItems: "flex-start",
   justifyContent: "center",
   gap: "$8",
-  padding: "$6", // ✅ Removido objeto responsivo - usar media queries
-  maxWidth: "1440px",
+  padding: "$6",
+  maxWidth: "1200px",
   margin: "0 auto",
   width: "100%",
 
@@ -26,7 +26,6 @@ export const Container = styled("div", {
   },
 
   "@bp2": {
-    // ✅ bp2 é mobile (320px+)
     flexDirection: "column-reverse",
     alignItems: "center",
     gap: "$6",
@@ -34,13 +33,13 @@ export const Container = styled("div", {
 });
 
 export const Main = styled("main", {
-  flex: "1",
-  maxWidth: "800px",
+  flex: 1.7,
+  maxWidth: "880px",
   minHeight: "calc(100vh - 8rem)",
   width: "100%",
 
   "@lg": {
-    maxWidth: "900px",
+    maxWidth: "920px",
   },
 
   "> *": {
@@ -61,7 +60,6 @@ export const EmptyStateMessage = styled("div", {
     fontWeight: "$semibold",
   },
 
-  // ✅ SVG inline ou remover se não existir
   "&::before": {
     content: '""',
     display: "block",
@@ -109,7 +107,6 @@ export const BackButton = styled(Link, {
   },
 });
 
-// ✅ Removidas referências aos componentes inexistentes
 export const HeaderSection = styled("header", {
   display: "flex",
   justifyContent: "space-between",
@@ -152,7 +149,6 @@ export const RatingsSection = styled("section", {
     gap: "$4",
   },
 
-  // ✅ Selector genérico para cards
   "& > [data-rated-book], & > div": {
     marginBottom: 0,
   },

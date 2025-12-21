@@ -1,54 +1,62 @@
-import { styled } from '@/stitches.config'
+import { styled } from "@stitches/react";
 
-export const Container = styled('div', {
-  width: '320px',
+export const Container = styled("aside", {
+  width: "260px",
   flexShrink: 0,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  padding: '2rem',
-  borderLeft: '1px solid $gray700',
-  borderRadius: '12px',
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "2rem 1.5rem",
+  borderLeft: "1px solid $gray700",
+  background: "transparent",
+  borderRadius: 0,
 
-  '@media(max-width: 1024px)': {
-    borderLeft: 'none',
-    borderTop: '1px solid $gray700',
-    width: '100%',
-    marginTop: '2rem',
+  "@bp2": {
+    width: "100%",
+    borderLeft: "none",
+    borderTop: "1px solid $gray800",
+    paddingTop: "2rem",
   },
-})
+});
 
-export const UserInfo = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  marginBottom: '1.25rem',
+export const UserInfo = styled("header", {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  gap: "0.75rem",
+  marginBottom: "2.5rem",
+
+  "& [data-avatar]": {
+    width: "72px",
+    height: "72px",
+  },
 
   strong: {
-    fontSize: '$lg',
-    color: '$gray100',
-    fontWeight: 'bold',
-    marginTop: '2rem',
+    fontSize: "$lg",
+    fontWeight: "$bold",
+    color: "$gray100",
+    lineHeight: 1.3,
+    textAlign: "center",
   },
+});
 
-  span: {
-    fontSize: '$sm',
-    color: '$gray400',
-  },
-})
+export const MembershipText = styled("span", {
+  fontSize: "$sm",
+  color: "$gray400",
+  lineHeight: 1.4,
+});
 
-export const Divisor = styled('div', {
-  borderRadius: '999px',
-  width: '32px',
-  height: '4px',
-  background: '#7FD1CC',
-})
+export const Divisor = styled("div", {
+  width: "32px",
+  height: "3px",
+  borderRadius: "999px",
+  background: "$green100",
+  marginBottom: "2.5rem",
+});
 
-export const BooksInfo = styled('div', {
-  marginTop: '2rem',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1.5rem',
-  width: '100%',
-  paddingLeft: '3rem',
-})
+export const BooksInfo = styled("section", {
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  gap: "1.5rem",
+});
