@@ -1,36 +1,41 @@
-import { useCallback } from 'react'
+import { useCallback } from "react";
 
-import { RocketLaunch } from '@phosphor-icons/react/dist/ssr'
-import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { signIn } from 'next-auth/react'
+import { RocketLaunch } from "@phosphor-icons/react/dist/ssr";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
 
-import { ButtonAuth } from '@/src/components/ButtonAuth'
-import { AuthButtons, Container, LoginForm } from '@/src/styles/pages/login'
+import { ButtonAuth } from "@/src/components/ButtonAuth";
+import {
+  AuthButtons,
+  Container,
+  ImageWrapper,
+  LoginForm,
+} from "@/src/styles/pages/login";
 
 const providers = [
   {
-    provider: 'google',
-    icon: '/images/icons/logo_google.svg',
-    title: 'Entrar com Google',
+    provider: "google",
+    icon: "/images/icons/logo_google.svg",
+    title: "Entrar com Google",
   },
   {
-    provider: 'github',
-    icon: '/images/icons/logo_github.svg',
-    title: 'Entrar com Github',
+    provider: "github",
+    icon: "/images/icons/logo_github.svg",
+    title: "Entrar com Github",
   },
-]
+];
 
 export default function Login() {
-  const router = useRouter()
+  const router = useRouter();
 
   const handleSignIn = useCallback(async (provider: string) => {
-    await signIn(provider, { callbackUrl: '/' })
-  }, [])
+    await signIn(provider, { callbackUrl: "/" });
+  }, []);
 
   const handleGuestAccess = useCallback(() => {
-    router.push('/')
-  }, [router])
+    router.push("/");
+  }, [router]);
 
   return (
     <>
@@ -39,7 +44,12 @@ export default function Login() {
         <link rel="shortcut icon" href="/favicon.svg" type="image/svg" />
       </Head>
       <Container>
-        <img src="/images/background-login.png" alt="Plano de fundo do login" />
+        <ImageWrapper>
+          <img
+            src="/images/background-login.png"
+            alt="Plano de fundo do login"
+          />
+        </ImageWrapper>
 
         <LoginForm>
           <h1>Boas vindas!</h1>
@@ -66,5 +76,5 @@ export default function Login() {
         </LoginForm>
       </Container>
     </>
-  )
+  );
 }

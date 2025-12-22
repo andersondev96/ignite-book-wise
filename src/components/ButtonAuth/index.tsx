@@ -1,13 +1,13 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react'
+import { ButtonHTMLAttributes, ReactNode } from "react";
 
-import { Container, IconWrapper } from './styles'
+import { Container, IconWrapper } from "./styles";
 
 type ButtonAuthProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  icon?: ReactNode
-  imageUrl?: string
-  title: string
-  'data-testid'?: string
-}
+  icon?: ReactNode;
+  imageUrl?: string;
+  title: string;
+  "data-testid"?: string;
+};
 
 export const ButtonAuth = ({
   icon,
@@ -21,4 +21,4 @@ export const ButtonAuth = ({
     </IconWrapper>
     <span>{title}</span>
   </Container>
-)
+);

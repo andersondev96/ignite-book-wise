@@ -1,64 +1,84 @@
-import { styled } from '@/stitches.config'
+import { styled } from "@/stitches.config";
 
-export const Container = styled('div', {
-  display: 'grid',
-  gridTemplateColumns: '1fr 1fr',
-  height: '100vh',
-  padding: '2rem',
-  overflow: 'hidden',
+export const Container = styled("div", {
+  display: "grid",
+  gridTemplateColumns: "1fr",
+  height: "100vh",
+  padding: "$6",
+  gap: "$6",
+  boxSizing: "border-box",
+  overflow: "hidden",
 
-  '@md': {
-    gridTemplateColumns: '1fr',
-    padding: '1.5rem',
+  "@md": {
+    gridTemplateColumns: "1.2fr 1fr", // Reduzido de 1.4fr para dar mais espaço ao form
+    paddingLeft: "$2",
+    paddingRight: "$6",
+    paddingTop: "$4",
+    paddingBottom: "$4",
+    gap: "$8", // Aumentado de $2 para $8 (mais distância dos botões)
+  },
+
+  "@lg": {
+    paddingLeft: "$3",
+    paddingRight: "$8",
+    gap: "$10", // Ainda mais distância em telas grandes
+  },
+});
+
+export const ImageWrapper = styled("div", {
+  display: "none",
+
+  "@md": {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    overflow: "hidden",
+    maxWidth: "600px", // Limita a largura máxima da imagem
   },
 
   img: {
-    width: '100%',
-    height: 'auto',
-    maxHeight: '90vh',
-    objectFit: 'cover',
-    borderRadius: '12px',
+    width: "100%",
+    height: "80vh",
+    minHeight: "550px",
 
-    '@md': {
-      display: 'none',
-    },
+    objectFit: "cover",
+    objectPosition: "center center", // Ajuste conforme necessário
+    borderRadius: "$lg",
+    aspectRatio: "3/4", // Força proporção retangular vertical
   },
-})
+});
 
-export const LoginForm = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  maxWidth: '440px',
-  width: '100%',
-  margin: '0 auto',
+export const LoginForm = styled("section", {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  height: "100%",
+  maxWidth: "420px",
+  width: "100%",
+  margin: "0 auto",
 
   h1: {
-    color: '$gray100',
-    fontSize: '$2xl',
-    fontWeight: '$bold',
-    marginBottom: '0.5rem',
+    color: "$gray100",
+    fontSize: "$2xl",
+    fontWeight: "$bold",
+    marginBottom: "$2",
   },
 
   span: {
-    color: '$gray300',
-    fontSize: '$md',
-    lineHeight: 1.5,
+    color: "$gray300",
+    fontSize: "$md",
+    lineHeight: "$short",
   },
 
-  '@sm': {
-    h1: { fontSize: '$xl' },
-    span: { fontSize: '$sm' },
+  "@sm": {
+    h1: { fontSize: "$xl" },
+    span: { fontSize: "$sm" },
   },
-})
+});
 
-export const AuthButtons = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1rem',
-  marginTop: '2.5rem',
-
-  button: {
-    transition: 'all 0.2s ease-in-out',
-  },
-})
+export const AuthButtons = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "$3",
+  marginTop: "$6",
+});

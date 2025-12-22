@@ -1,57 +1,63 @@
-import { styled } from '@/stitches.config'
+import { styled } from "@/stitches.config";
 
-export const Container = styled('button', {
-  all: 'unset',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '1rem',
+// ButtonAuth/styles.ts
+export const Container = styled("button", {
+  all: "unset",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "flex-start",
+  gap: "$4",
 
-  padding: '1.25rem 1.5rem',
-  width: '100%',
-  maxWidth: '372px',
-  height: '72px',
+  padding: "$4 $5",
+  width: "100%",
+  maxWidth: "100%",
+  borderRadius: "$md",
+  backgroundColor: "$gray600",
+  cursor: "pointer",
 
-  backgroundColor: '$gray600',
-  borderRadius: '8px',
-  cursor: 'pointer',
+  transition: "background 0.2s, transform 0.2s, box-shadow 0.2s",
 
-  transition: 'background 0.2s, opacity 0.2s, transform 0.2s',
-
-  '&:hover': {
-    opacity: 0.9,
-    transform: 'translateY(-1px)',
+  "&:hover": {
+    backgroundColor: "$gray500",
+    transform: "translateY(-1px)",
+    boxShadow: "0 4px 14px rgba(0, 0, 0, 0.35)",
   },
 
-  '&:focus': {
-    outline: '2px solid $purple200',
-    outlineOffset: '2px',
+  "&:focus-visible": {
+    outline: "2px solid $purple200",
+    outlineOffset: "2px",
   },
 
   span: {
-    fontSize: '$lg',
-    fontWeight: 'bold',
-    color: '$gray100',
+    fontSize: "$lg",
+    fontWeight: "$bold",
+    color: "$gray100",
     lineHeight: 1.4,
   },
-})
 
-export const IconWrapper = styled('div', {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  width: '32px',
-  height: '32px',
+  "@sm": {
+    padding: "$3 $4",
+    span: { fontSize: "$md" },
+  },
+});
+
+export const IconWrapper = styled("div", {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "32px",
+  height: "32px",
 
   img: {
-    width: '100%',
-    height: '100%',
-    borderRadius: '4px',
-    objectFit: 'cover',
+    width: "100%",
+    height: "100%",
+    borderRadius: "$xs",
+    objectFit: "cover",
   },
 
   svg: {
-    width: '100%',
-    height: '100%',
-    color: '$purple100',
+    width: "100%",
+    height: "100%",
+    color: "$purple100",
   },
-})
+});
