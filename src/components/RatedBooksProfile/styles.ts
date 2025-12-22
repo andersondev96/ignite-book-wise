@@ -1,90 +1,111 @@
-import { styled } from '@/stitches.config'
+import { styled } from "@/stitches.config";
 
-export const Container = styled('div', {
-  marginTop: '2rem',
-  width: '100%',
-  maxWidth: '640px',
+export const Container = styled("article", {
+  width: "100%",
+  maxWidth: "640px",
+});
 
-  span: {
-    color: '$gray400',
-    fontSize: '$sm',
-    display: 'block',
-    marginBottom: '0.5rem',
-  },
-})
+export const TimeAgo = styled("span", {
+  display: "block",
+  marginBottom: "$2",
+  color: "$gray400",
+  fontSize: "$sm",
+});
 
-export const BookCard = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '1.5rem',
+export const BookCard = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "$4",
 
-  padding: '1.5rem',
-  borderRadius: '12px',
-  background: '$gray700',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-  transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+  padding: "$6",
+  borderRadius: "$md",
+  background: "$gray700",
+  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.05)",
+  cursor: "pointer",
+  transition:
+    "transform 0.2s ease-out, box-shadow 0.2s ease-out, border 0.2s ease-out",
+  border: "1px solid transparent",
 
-  cursor: 'pointer',
-
-  '&:hover': {
-    transform: 'scale(1.02)',
-    boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
-  },
-
-  p: {
-    color: '$gray300',
-    fontSize: '$sm',
-    lineHeight: 1.6,
+  "&:hover": {
+    transform: "translateY(-2px)",
+    boxShadow: "0 8px 20px rgba(0, 0, 0, 0.25)",
+    borderColor: "$gray500",
   },
 
-  '@media(max-width: 768px)': {
-    padding: '1rem',
-  },
-})
-
-export const BookInfo = styled('div', {
-  display: 'flex',
-  gap: '1.5rem',
-
-  img: {
-    width: '98px',
-    height: '134px',
-    borderRadius: '6px',
-    objectFit: 'cover',
-    flexShrink: 0,
+  "&:focus-visible": {
+    outline: "2px solid $green100",
+    outlineOffset: "2px",
   },
 
-  '@media(max-width: 480px)': {
-    flexDirection: 'column',
-    alignItems: 'center',
-
-    img: {
-      width: '80px',
-      height: '110px',
-    },
+  "@md": {
+    padding: "$5",
   },
-})
+});
 
-export const DetailsBook = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-})
+export const BookInfo = styled("div", {
+  display: "flex",
+  gap: "$4",
 
-export const TitleAndActorBook = styled('div', {
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '0.25rem',
+  "@sm": {
+    alignItems: "flex-start",
+  },
+
+  "@md": {
+    gap: "$5",
+  },
+
+  "@media (max-width: 480px)": {
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+  },
+});
+
+export const CoverImage = styled("img", {
+  width: "98px",
+  height: "134px",
+  borderRadius: "$sm",
+  objectFit: "cover",
+  flexShrink: 0,
+
+  "@media (max-width: 480px)": {
+    width: "80px",
+    height: "110px",
+  },
+});
+
+export const DetailsBook = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  flex: 1,
+});
+
+export const TitleAndAuthor = styled("div", {
+  display: "flex",
+  flexDirection: "column",
+  gap: "$1",
 
   strong: {
-    color: '$gray100',
-    fontSize: '$md',
-    fontWeight: '$bold',
+    color: "$gray100",
+    fontSize: "$md",
+    fontWeight: "$bold",
     lineHeight: 1.3,
   },
 
   span: {
-    color: '$gray400',
-    fontSize: '$sm',
+    color: "$gray400",
+    fontSize: "$sm",
   },
-})
+});
+
+export const Summary = styled("p", {
+  color: "$gray300",
+  fontSize: "$sm",
+  lineHeight: 1.6,
+
+  display: "-webkit-box",
+  WebkitLineClamp: 3,
+  WebkitBoxOrient: "vertical",
+  overflow: "hidden",
+});
