@@ -3,47 +3,50 @@ import { styled } from "@/stitches.config";
 
 export const Container = styled("div", {
   display: "flex",
-  alignItems: "flex-start",
-  justifyContent: "center",
-  gap: "$8",
-  padding: "$6",
+  flexDirection: "column",
+  gap: "$6",
+  padding: "$5",
+  width: "100%",
   maxWidth: "1200px",
   margin: "0 auto",
-  width: "100%",
-
-  "@md": {
-    gap: "$10",
-    padding: "$8",
-  },
 
   "@lg": {
-    flexWrap: "nowrap",
-    gap: "$12",
-  },
-
-  "@xl": {
-    padding: "$10",
-  },
-
-  "@bp2": {
-    flexDirection: "column-reverse",
-    alignItems: "center",
-    gap: "$6",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: "$10",
+    padding: "$6",
   },
 });
 
 export const Main = styled("main", {
-  flex: 1.7,
-  maxWidth: "880px",
-  minHeight: "calc(100vh - 8rem)",
   width: "100%",
+  minHeight: "calc(100vh - 8rem)",
 
   "@lg": {
-    maxWidth: "920px",
+    flex: "1 1 auto",
+    maxWidth: "880px",
   },
 
   "> *": {
     marginBottom: "$6",
+  },
+
+  ".profile-details-wrapper": {
+    display: "flex",
+    justifyContent: "center",
+
+    "@lg": {
+      display: "none",
+    },
+  },
+});
+
+export const ProfileAside = styled("aside", {
+  display: "none",
+
+  "@lg": {
+    display: "block",
   },
 });
 

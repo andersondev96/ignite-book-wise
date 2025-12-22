@@ -1,21 +1,22 @@
-import { styled } from "@stitches/react";
+import { styled } from "@/stitches.config";
 
 export const Container = styled("aside", {
-  width: "260px",
+  width: "100%",
   flexShrink: 0,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   padding: "2rem 1.5rem",
-  borderLeft: "1px solid $gray700",
   background: "transparent",
+  boxShadow: "none",
   borderRadius: 0,
+  borderTop: "1px solid $gray700",
 
-  "@bp2": {
-    width: "100%",
-    borderLeft: "none",
-    borderTop: "1px solid $gray800",
-    paddingTop: "2rem",
+  "@lg": {
+    width: "320px",
+    borderTop: "none",
+    borderLeft: "1px solid $gray700",
+    alignItems: "center",
   },
 });
 
@@ -24,7 +25,7 @@ export const UserInfo = styled("header", {
   flexDirection: "column",
   alignItems: "center",
   gap: "0.75rem",
-  marginBottom: "2.5rem",
+  marginBottom: "2rem",
 
   "& [data-avatar]": {
     width: "72px",
@@ -52,11 +53,38 @@ export const Divisor = styled("div", {
   borderRadius: "999px",
   background: "$green100",
   marginBottom: "2.5rem",
+
+  display: "none",
+
+  "@lg": {
+    display: "block",
+  },
 });
 
 export const BooksInfo = styled("section", {
   width: "100%",
   display: "flex",
-  flexDirection: "column",
-  gap: "1.5rem",
+  flexDirection: "row",
+  flexWrap: "wrap",
+  justifyContent: "center",
+  gap: "1.25rem 2rem",
+
+  "& > div": {
+    flex: "0 1 45%",
+    display: "flex",
+    justifyContent: "center",
+  },
+
+  "@lg": {
+    flexDirection: "column",
+    flexWrap: "nowrap",
+    alignItems: "flex-start",
+    gap: "1.5rem",
+
+    "& > div": {
+      flex: "0 0 auto",
+      width: "100%",
+      justifyContent: "flex-start",
+    },
+  },
 });

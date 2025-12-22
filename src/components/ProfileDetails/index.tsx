@@ -61,19 +61,16 @@ export const ProfileDetails = memo(({ user }: ProfileDetailsProps) => {
           title={totalPagesRead}
           description="Páginas lidas"
         />
-
         <ItemInfoProfile
           icon={<Books size={24} />}
           title={totalBooksRates}
           description="Livros avaliados"
         />
-
         <ItemInfoProfile
           icon={<UserList size={24} />}
           title={totalAuthorRead}
           description="Autores lidos"
         />
-
         <ItemInfoProfile
           icon={<BookmarkSimple size={24} />}
           title={mostRatedCategory}

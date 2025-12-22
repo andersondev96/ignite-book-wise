@@ -20,6 +20,7 @@ import {
   HeaderSection,
   SearchSection,
   RatingsSection,
+  ProfileAside,
 } from "@/src/styles/pages/profile";
 
 import { NextPageWithLayout } from "../_app.page";
@@ -144,75 +145,78 @@ const Profile: NextPageWithLayout = () => {
   }
 
   return (
-    <>
-      <Container>
-        <Main role="main" aria-label="Conteúdo principal do perfil">
-          <HeaderSection>
-            {status === "authenticated" && isOwnerProfile ? (
-              <PageTitle title="Perfil" icon={<User aria-hidden="true" />} />
-            ) : (
-              <BackButton href="/" aria-label="Voltar para página inicial">
-                <CaretLeft size={20} aria-hidden="true" />
-                <span>Voltar</span>
-              </BackButton>
-            )}
-          </HeaderSection>
-
-          <SearchSection aria-label="Busca de livros avaliados">
-            <SearchInput
-              name="book"
-              value={searchTerm}
-              placeholder="Buscar livro avaliado"
-              onChange={handleSearchChange}
-              aria-label="Buscar livros avaliados"
-              variant="default"
-            />
-          </SearchSection>
-
-          <RatingsSection
-            aria-label="Livros avaliados"
-            aria-live="polite"
-            aria-busy={isLoadingRatings}
-          >
-            <div id="search-results-info" className="sr-only">
-              {isLoadingRatings
-                ? "Carregando avaliações..."
-                : `${ratings.length} ${
-                    ratings.length === 1
-                      ? "avaliação encontrada"
-                      : "avaliações encontradas"
-                  }`}
-            </div>
-
-            {isLoadingRatings ? (
-              <LoadingContainer>
-                <VisuallyHidden>Carregando avaliações...</VisuallyHidden>
-                <div className="spinner" aria-hidden="true" />
-              </LoadingContainer>
-            ) : hasNoResults ? (
-              <EmptyStateMessage role="status">
-                Nenhum resultado encontrado para a busca de{" "}
-                <strong>&quot;{searchTerm}&quot;</strong>
-              </EmptyStateMessage>
-            ) : (
-              <ul role="list" aria-label="Lista de livros avaliados">
-                {ratings.map((rating) => (
-                  <li key={rating.id} data-rated-book>
-                    <RatedBooksProfile rate={rating} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </RatingsSection>
-        </Main>
+    <Container>
+      <Main role="main" aria-label="Conteúdo principal do perfil">
+        <HeaderSection>
+          {status === "authenticated" && isOwnerProfile ? (
+            <PageTitle title="Perfil" icon={<User aria-hidden="true" />} />
+          ) : (
+            <BackButton href="/" aria-label="Voltar para página inicial">
+              <CaretLeft size={20} aria-hidden="true" />
+              <span>Voltar</span>
+            </BackButton>
+          )}
+        </HeaderSection>
 
         {user && (
-          <aside aria-label="Detalhes do perfil">
+          <div className="profile-details-wrapper">
             <ProfileDetails user={user} />
-          </aside>
+          </div>
         )}
-      </Container>
-    </>
+
+        <SearchSection aria-label="Busca de livros avaliados">
+          <SearchInput
+            name="book"
+            value={searchTerm}
+            placeholder="Buscar livro avaliado"
+            onChange={handleSearchChange}
+            aria-label="Buscar livros avaliados"
+            variant="default"
+          />
+        </SearchSection>
+
+        <RatingsSection
+          aria-label="Livros avaliados"
+          aria-live="polite"
+          aria-busy={isLoadingRatings}
+        >
+          <div id="search-results-info" className="sr-only">
+            {isLoadingRatings
+              ? "Carregando avaliações..."
+              : `${ratings.length} ${
+                  ratings.length === 1
+                    ? "avaliação encontrada"
+                    : "avaliações encontradas"
+                }`}
+          </div>
+
+          {isLoadingRatings ? (
+            <LoadingContainer>
+              <VisuallyHidden>Carregando avaliações...</VisuallyHidden>
+              <div className="spinner" aria-hidden="true" />
+            </LoadingContainer>
+          ) : hasNoResults ? (
+            <EmptyStateMessage role="status">
+              Nenhum resultado encontrado para a busca de{" "}
+              <strong>&quot;{searchTerm}&quot;</strong>
+            </EmptyStateMessage>
+          ) : (
+            <ul role="list" aria-label="Lista de livros avaliados">
+              {ratings.map((rating) => (
+                <li key={rating.id} data-rated-book>
+                  <RatedBooksProfile rate={rating} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </RatingsSection>
+      </Main>
+      {user && (
+        <ProfileAside aria-label="Detalhes do perfil">
+          <ProfileDetails user={user} />
+        </ProfileAside>
+      )}
+    </Container>
   );
 };
 
